@@ -64,7 +64,7 @@
                 <div class="fb5-gradient-page"></div>
                 <canvas id="canv1"></canvas>
                 <div class="fb5-page-book">
-
+                  <FirstPage />
                 </div>
               </div>
             </div>
@@ -75,7 +75,7 @@
                 <div class="fb5-gradient-page"></div>
                 <canvas id="canv2"></canvas>
                 <div class="fb5-page-book">
-portfoios
+                  portfoios
                   <div class="bb-item" data-slug="portfolios">
                     <div class="vc_col-sm-6 bb-custom-side">
                       <div class="content-wrapper">
@@ -115,7 +115,7 @@ portfoios
                                 class="attachment-portfolio_thumbnail size-portfolio_thumbnail wp-post-image" alt="">
                               <div class="mask">
                                 <a href="https://demo.focuxtheme.com/magicbook/portfolio/white-paint/" target="_blank"
-                                  rel="portfolio" class="fancybox ajax" >
+                                  rel="portfolio" class="fancybox ajax">
                                   <h4>White Paint</h4>
                                   <p>Consectetur adipiscing elit. Integer commodo tristique odio, quis fringilla ligu...
                                   </p>
@@ -145,7 +145,7 @@ portfoios
                                 class="attachment-portfolio_thumbnail size-portfolio_thumbnail wp-post-image" alt="">
                               <div class="mask">
                                 <a href="https://demo.focuxtheme.com/magicbook/portfolio/cavalier/" target="_blank"
-                                  rel="portfolio" class="fancybox ajax" >
+                                  rel="portfolio" class="fancybox ajax">
                                   <h4>Cavalier</h4>
                                   <p>Consectetur adipiscing elit. Integer commodo tristique odio, quis fringilla ligu...
                                   </p>
@@ -160,7 +160,7 @@ portfoios
                                 class="attachment-portfolio_thumbnail size-portfolio_thumbnail wp-post-image" alt="">
                               <div class="mask">
                                 <a href="https://demo.focuxtheme.com/magicbook/portfolio/world-of-tomorrow/"
-                                  target="_blank" rel="portfolio" class="fancybox ajax" >
+                                  target="_blank" rel="portfolio" class="fancybox ajax">
                                   <h4>World Of Tomorrow</h4>
                                   <p>Consectetur adipiscing elit. Integer commodo tristique odio, quis fringilla ligu...
                                   </p>
@@ -186,28 +186,12 @@ portfoios
                               </div>
                             </div>
                           </div>
-                         
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="vc_col-sm-6 bb-custom-side">
-                      <div class="content-wrapper">
-                        <div class="container">
-
-                          <div class="wpb_single_image wpb_content_element vc_align_left   cover">
-
-                            <figure class="wpb_wrapper vc_figure">
-                              <div class="vc_single_image-wrapper   vc_box_border_grey"><img loading="lazy"
-                                  decoding="async" width="614" height="766"
-                                  src="https://demo.focuxtheme.com/magicbook/wp-content/uploads/sites/10/2016/10/portfolio-cover.jpg"
-                                  class="vc_single_image-img attachment-full" alt=""></div>
-                            </figure>
-                          </div>
 
                         </div>
                       </div>
                     </div>
+
+
                   </div>
                 </div>
 
@@ -469,6 +453,7 @@ portfoios
   </body>
 </template>
 <script>
+import FirstPage from './pages/FirstPage.vue';
 export default {
   mounted() {
 
@@ -485,6 +470,10 @@ export default {
     
     */    //plugin.async = true;
     document.head.appendChild(plugin);
+  },
+
+  component: {
+    FirstPage
   }
 };
 </script>
@@ -509,4 +498,5 @@ body {
   margin: 0;
   padding: 0;
   overflow: auto !important;
-}</style>
+}
+</style>
