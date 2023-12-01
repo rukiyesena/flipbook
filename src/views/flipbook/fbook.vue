@@ -471,9 +471,29 @@ export default {
     */    //plugin.async = true;
     document.head.appendChild(plugin);
   },
-
-  component: {
+  data() {
+    return {
+      stockList: []
+    }
+  },
+  components: {
     FirstPage
+  },
+  created() {
+    try {
+      this.$store
+      .dispatch("getDataStock")
+      .then(response => {
+        console.log(response)
+        if (response == true) {
+          this.stockList = this.$store.state.StockList;
+          console.log(this.stockList)
+        }
+      });
+    } catch (error) {
+      console.log(error)
+    }
+    
   }
 };
 </script>

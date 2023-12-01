@@ -1,10 +1,10 @@
 /*=========================================================================================
-	File Name: actions.js
-	Description: Vuex Store - actions
-	----------------------------------------------------------------------------------------
-	Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
-	Author: Pixinvent
-	Author URL: http://www.themeforest.net/user/pixinvent
+  File Name: actions.js
+  Description: Vuex Store - actions
+  ----------------------------------------------------------------------------------------
+  Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
+  Author: Pixinvent
+  Author URL: http://www.themeforest.net/user/pixinvent
 ==========================================================================================*/
 
 import router from "../router";
@@ -60,7 +60,7 @@ const actions = {
         KATEGORI: "",
         ARANAN: "",
         ILKKAYIT: "0",
-        SONKAYIT: "50000",
+        SONKAYIT: "50",
         EKSORGU: "",
         ACTID: ""
       };
@@ -70,7 +70,7 @@ const actions = {
           KATEGORI: "",
           ARANAN: "",
           ILKKAYIT: "0",
-          SONKAYIT: "50000",
+          SONKAYIT: "50",
           EKSORGU: "",
           ACTID: state.STOCKPRICETYPEID
         };
@@ -78,16 +78,11 @@ const actions = {
       console.log(args)
       return new Promise((resolve, reject) => {
         try {
-          soap.createClient(url, function(err, client) {
-            client.B2B_LS_STOCK(args, function(err, result) {
-              if (
-                result.B2B_LS_STOCKResult == "-1" &&
-                userJson.musteriTanim == false
-              ) {
-                dispatch("logout");
-              }
+          soap.createClient(url, function (err, client) {
+            client.B2B_LS_STOCK(args, function (err, result) {
+ 
               let veriler = JSON.parse(result.B2B_LS_STOCKResult);
-              commit("eCommerce/STOCK_LIST", veriler);
+              commit("STOCK_LIST", veriler);
             });
           });
           resolve(true);
@@ -124,8 +119,8 @@ const actions = {
       }
       return new Promise((resolve, reject) => {
         try {
-          soap.createClient(url, function(err, client) {
-            client.B2B_LS_STOCKVARYANTLI(args, function(err, result) {
+          soap.createClient(url, function (err, client) {
+            client.B2B_LS_STOCKVARYANTLI(args, function (err, result) {
               if (
                 result.B2B_LS_STOCKVARYANTLIResult == "-1" &&
                 userJson.musteriTanim == false
@@ -156,8 +151,8 @@ const actions = {
       };
       return new Promise((resolve, reject) => {
         try {
-          soap.createClient(url, function(err, client) {
-            client.B2B_LS_CATEGORY(args, function(err, result) {
+          soap.createClient(url, function (err, client) {
+            client.B2B_LS_CATEGORY(args, function (err, result) {
               if (
                 result.B2B_LS_CATEGORYResult == "-1" &&
                 userJson.musteriTanim == false
@@ -207,8 +202,8 @@ const actions = {
         };
       return new Promise((resolve, reject) => {
         try {
-          soap.createClient(url, function(err, client) {
-            client.B2B_LS_SEPET(args, function(err, result) {
+          soap.createClient(url, function (err, client) {
+            client.B2B_LS_SEPET(args, function (err, result) {
               if (
                 result.B2B_LS_SEPETResult == "-1" &&
                 userJson.musteriTanim == false
@@ -262,18 +257,18 @@ const actions = {
         const args = {
           token: state.tokenId
         };
-        soap.createClient(url, function(err, client) {
-          client.tokenKontrolB2B(args, function(err, result) {
-            dispatch("getDataCategory").then(response => {});
+        soap.createClient(url, function (err, client) {
+          client.tokenKontrolB2B(args, function (err, result) {
+            dispatch("getDataCategory").then(response => { });
             if (result.tokenKontrolB2BResult == "-1") {
-              dispatch("getDataStock").then(response => {});
-             
+              dispatch("getDataStock").then(response => { });
+
               commit("clearToken");
               resolve(result.tokenKontrolB2BResult);
             } else {
-              dispatch("getDataStock", true).then(response => {});
-               
-              dispatch("getDataSepet").then(response => {});
+              dispatch("getDataStock", true).then(response => { });
+
+              dispatch("getDataSepet").then(response => { });
             }
             try {
               vm.veriler = JSON.parse(result.tokenKontrolB2BResult);
@@ -300,8 +295,8 @@ const actions = {
       EMAIL: payload.userDetails.email,
       PASS: payload.userDetails.password
     };
-    soap.createClient(url, function(err, client) {
-      client.B2B_LOGINACT(args, function(err, result) {
+    soap.createClient(url, function (err, client) {
+      client.B2B_LOGINACT(args, function (err, result) {
         vm.veriler = JSON.parse(result.B2B_LOGINACTResult);
         if (vm.veriler == "-1" || vm.veriler == "") {
           vs.notify({
@@ -319,7 +314,7 @@ const actions = {
             icon: "icon-alert-circle",
             color: "success"
           });
-          var rand = function() {
+          var rand = function () {
             return Math.random()
               .toString(36)
               .substr(2); // remove `0.`
@@ -368,8 +363,8 @@ const actions = {
       PASS: payload.userDetails.password
     };
     try {
-      soap.createClient(url, function(err, client) {
-        client.B2B_LOGINACT(args, function(err, result) {
+      soap.createClient(url, function (err, client) {
+        client.B2B_LOGINACT(args, function (err, result) {
           vm.veriler = JSON.parse(result.B2B_LOGINACTResult);
           if (vm.veriler == "-1" || vm.veriler == "") {
             vs.notify({
@@ -387,7 +382,7 @@ const actions = {
               icon: "icon-alert-circle",
               color: "success"
             });
-            var rand = function() {
+            var rand = function () {
               return Math.random()
                 .toString(36)
                 .substr(2); // remove `0.`

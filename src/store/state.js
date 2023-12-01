@@ -8,7 +8,7 @@
 ==========================================================================================*/
 
 import navbarSearchAndPinList from "@/layouts/components/navbar/navbarSearchAndPinList"
-import themeConfig from "@/../themeConfig.js"         
+import themeConfig from "@/../themeConfig.js"
 import colors from "@/../themeConfig.js"
 
 // /////////////////////////////////////////////
@@ -50,12 +50,13 @@ const is_touch_device = () => {
 // /////////////////////////////////////////////
 
 const state = {
+  StockList: [],
   AppActiveUser: userDefaults,
   email: '',
   B2BfirmaAdi: '',
   adres: '',
   tel1: '',
-  logoUrl: '', 
+  logoUrl: '',
   bodyOverlay: false,
   isVerticalNavMenuActive: true,
   is_touch_device: is_touch_device(),
@@ -71,7 +72,7 @@ const state = {
   tokenId: "",
   UserId: "",
   ROL: "",
-  STOCKPRICETYPEID:"",
+  STOCKPRICETYPEID: "",
 
   imgurl: "",
 

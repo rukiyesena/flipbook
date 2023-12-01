@@ -16,7 +16,10 @@ const mutations = {
   // /////////////////////////////////////////////
 
   // Vertical NavMenu
+  STOCK_LIST(state, item) {
+		state.StockList = item
 
+	},
   TOGGLE_IS_VERTICAL_NAV_MENU_ACTIVE(state, value) {
     state.isVerticalNavMenuActive = value
   },
