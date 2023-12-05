@@ -9,7 +9,7 @@
         <!-- CONFIGURATION BOOK -->
         <section id="config">
           <ul>
-            <li id="page_width">918</li> <!-- width for page -->
+            <li id="page_width">1500</li> <!-- width for page -->
             <li id="page_height">1298</li> <!-- height for page -->
             <li id="gotopage_width">25</li> <!-- width for field input goto page -->
             <li id="zoom_double_click">1</li> <!-- value zoom after double click -->
@@ -28,24 +28,13 @@
           </ul>
         </section>
         <!-- BACK BUTTON -->
-        <a href="http://www.page-flip.info/newspaper_wp" id="fb5-button-back">&lt; Back </a>
+        <a href="https://www.uzum.com.tr/" id="fb5-button-back">&lt; Geri Dön </a>
         <div id="fb5-container-book">
           <!-- deep linking -->
           <section id="fb5-deeplinking">
             <ul>
-              <li data-address="page1" data-page="1"></li>
-              <li data-address="page2" data-page="2"></li>
-              <li data-address="page3" data-page="3"></li>
-              <li data-address="page4" data-page="4"></li>
-              <li data-address="page5" data-page="5"></li>
-              <li data-address="page6" data-page="6"></li>
-              <li data-address="page7" data-page="7"></li>
-              <li data-address="page8" data-page="8"></li>
-              <li data-address="page9" data-page="9"></li>
-              <li data-address="page10" data-page="10"></li>
-              <li data-address="page11" data-page="11"></li>
-              <li data-address="page12" data-page="12"></li>
-              <li data-address="page13" data-page="13"></li>
+              <li v-for="(item, index) in pages" :key="index" :data-address="'page' + index + 1" :data-page="index + 1">
+              </li>
 
             </ul>
           </section>
@@ -57,256 +46,21 @@
           </section>
           <!--  PAGES -->
           <div id="fb5-book">
-            
+
 
             <!--  page 1 -->
-            <div data-background-image="pages/1.jpg">
+            <div v-for="(item, index) in pages" :key="index">
               <div class="fb5-cont-page-book">
                 <div class="fb5-gradient-page"></div>
                 <canvas id="canv1"></canvas>
                 <div class="fb5-page-book">
-                  74562
-                  <FirstPage :data="stockList"/>
+                  <h1> {{ item.component }}</h1>
+
+                  <component :is="item.component" :key="item.ind"   /> 
                 </div>
               </div>
             </div>
 
-            <!--  page 2 -->
-            <div data-background-image="pages/2.jpg">
-              <div class="fb5-cont-page-book">
-                <div class="fb5-gradient-page"></div>
-                <canvas id="canv2"></canvas>
-                <div class="fb5-page-book">
-                  portfoios
-                  <div class="bb-item" data-slug="portfolios">
-                    <div class="vc_col-sm-6 bb-custom-side">
-                      <div class="content-wrapper">
-                        <div class="container">
-                          <div
-                            class="vc_separator wpb_content_element big vc_separator_align_left vc_sep_width_100 vc_sep_double vc_sep_pos_align_right vc_sep_color_grey vc_separator-has-text">
-                            <span class="vc_sep_holder vc_sep_holder_l"><span class="vc_sep_line"></span></span>
-                            <h4>Portfolios</h4><span class="vc_sep_holder vc_sep_holder_r"><span
-                                class="vc_sep_line"></span></span>
-                          </div>
-                          <ul id="portfolio-filter-oBTIBx9p91" class="portfolio-filters">
-                            <li class="active" data-filter="*">All</li>
-                            <li data-filter=".audio">Audio</li>
-                            <li data-filter=".illustrator">Illustrator</li>
-                            <li data-filter=".video">Video</li>
-                          </ul>
-                          <div id="portfolio-container-oBTIBx9p91" class="portfolio-container">
-                            <div class="portfolio-item illustrator">
-                              <img loading="lazy" decoding="async" width="493" height="476"
-                                src="https://demo.focuxtheme.com/magicbook/wp-content/uploads/sites/10/2016/10/013e4a5544265d0000019ae9c632c1.jpg"
-                                class="attachment-portfolio_thumbnail size-portfolio_thumbnail wp-post-image" alt="">
-                              <div class="mask">
-                                <a href="https://demo.focuxtheme.com/magicbook/portfolio/relaxing-with-coffee/"
-                                  target="_blank" rel="portfolio" class="fancybox ajax">
-                                  <h4>Relaxing With Coffee</h4>
-                                  <p>Consectetur adipiscing elit. Integer commodo tristique odio, quis fringilla ligu...
-                                  </p>
-                                </a>
-                                <a href="https://demo.focuxtheme.com/magicbook/portfolio/relaxing-with-coffee/"
-                                  target="_blank" class="more ajax"><i class="fa fa-info-circle"></i><span>Read
-                                    more</span></a>
-                              </div>
-                            </div>
-                            <div class="portfolio-item video">
-                              <img loading="lazy" decoding="async" width="582" height="800"
-                                src="https://demo.focuxtheme.com/magicbook/wp-content/uploads/sites/10/2016/10/about.jpg"
-                                class="attachment-portfolio_thumbnail size-portfolio_thumbnail wp-post-image" alt="">
-                              <div class="mask">
-                                <a href="https://demo.focuxtheme.com/magicbook/portfolio/white-paint/" target="_blank"
-                                  rel="portfolio" class="fancybox ajax">
-                                  <h4>White Paint</h4>
-                                  <p>Consectetur adipiscing elit. Integer commodo tristique odio, quis fringilla ligu...
-                                  </p>
-                                </a>
-                                <a href="https://demo.focuxtheme.com/magicbook/portfolio/white-paint/" target="_blank"
-                                  class="more ajax"><i class="fa fa-info-circle"></i><span>Read more</span></a>
-                              </div>
-                            </div>
-                            <div class="portfolio-item illustrator">
-                              <img loading="lazy" decoding="async" width="492" height="771"
-                                src="https://demo.focuxtheme.com/magicbook/wp-content/uploads/sites/10/2016/10/01a1ea554b31d2000001bf726e9dd8.jpg"
-                                class="attachment-portfolio_thumbnail size-portfolio_thumbnail wp-post-image" alt="">
-                              <div class="mask">
-                                <a href="https://demo.focuxtheme.com/magicbook/portfolio/night-sky/" target="_blank"
-                                  rel="portfolio" class="fancybox ajax">
-                                  <h4>Night Sky</h4>
-                                  <p>Consectetur adipiscing elit. Integer commodo tristique odio, quis fringilla ligu...
-                                  </p>
-                                </a>
-                                <a href="https://demo.focuxtheme.com/magicbook/portfolio/night-sky/" target="_blank"
-                                  class="more ajax"><i class="fa fa-info-circle"></i><span>Read more</span></a>
-                              </div>
-                            </div>
-                            <div class="portfolio-item audio">
-                              <img loading="lazy" decoding="async" width="476" height="498"
-                                src="https://demo.focuxtheme.com/magicbook/wp-content/uploads/sites/10/2016/10/01e07f5544265e0000019ae9fe25f5.jpg"
-                                class="attachment-portfolio_thumbnail size-portfolio_thumbnail wp-post-image" alt="">
-                              <div class="mask">
-                                <a href="https://demo.focuxtheme.com/magicbook/portfolio/cavalier/" target="_blank"
-                                  rel="portfolio" class="fancybox ajax">
-                                  <h4>Cavalier</h4>
-                                  <p>Consectetur adipiscing elit. Integer commodo tristique odio, quis fringilla ligu...
-                                  </p>
-                                </a>
-                                <a href="https://demo.focuxtheme.com/magicbook/portfolio/cavalier/" target="_blank"
-                                  class="more ajax"><i class="fa fa-info-circle"></i><span>Read more</span></a>
-                              </div>
-                            </div>
-                            <div class="portfolio-item video">
-                              <img loading="lazy" decoding="async" width="439" height="459"
-                                src="https://demo.focuxtheme.com/magicbook/wp-content/uploads/sites/10/2016/10/0184f95544265e0000019ae9cd96d0.jpg"
-                                class="attachment-portfolio_thumbnail size-portfolio_thumbnail wp-post-image" alt="">
-                              <div class="mask">
-                                <a href="https://demo.focuxtheme.com/magicbook/portfolio/world-of-tomorrow/"
-                                  target="_blank" rel="portfolio" class="fancybox ajax">
-                                  <h4>World Of Tomorrow</h4>
-                                  <p>Consectetur adipiscing elit. Integer commodo tristique odio, quis fringilla ligu...
-                                  </p>
-                                </a>
-                                <a href="https://demo.focuxtheme.com/magicbook/portfolio/world-of-tomorrow/"
-                                  target="_blank" class="more ajax"><i class="fa fa-info-circle"></i><span>Read
-                                    more</span></a>
-                              </div>
-                            </div>
-                            <div class="portfolio-item illustrator">
-                              <img loading="lazy" decoding="async" width="445" height="460"
-                                src="https://demo.focuxtheme.com/magicbook/wp-content/uploads/sites/10/2016/10/01f4df5544265e0000019ae9a846bc.jpg"
-                                class="attachment-portfolio_thumbnail size-portfolio_thumbnail wp-post-image" alt="">
-                              <div class="mask">
-                                <a href="https://demo.focuxtheme.com/magicbook/portfolio/practise/" target="_blank"
-                                  rel="portfolio" class="fancybox ajax">
-                                  <h4>Practise</h4>
-                                  <p>Consectetur adipiscing elit. Integer commodo tristique odio, quis fringilla ligu...
-                                  </p>
-                                </a>
-                                <a href="https://demo.focuxtheme.com/magicbook/portfolio/practise/" target="_blank"
-                                  class="more ajax"><i class="fa fa-info-circle"></i><span>Read more</span></a>
-                              </div>
-                            </div>
-                          </div>
-
-                        </div>
-                      </div>
-                    </div>
-
-
-                  </div>
-                </div>
-
-              </div>
-
-            </div>
-            <!--  page 3 -->
-            <div data-background-image="pages/3.jpg">
-              <div class="fb5-cont-page-book">
-                <div class="fb5-gradient-page"></div>
-                <canvas id="canv3"></canvas> <!-- description for page from WYSWIG -->
-                <div class="fb5-page-book">
-
-                </div>
-              </div>
-
-            </div>
-            <!--  page 4 -->
-            <div data-background-image="pages/4.jpg">
-              <div class="fb5-cont-page-book">
-                <div class="fb5-gradient-page"></div>
-                <canvas id="canv4"></canvas>
-                <div class="fb5-page-book">
-
-                </div>
-              </div>
-
-            </div>
-            <!--  page 5 -->
-            <div data-background-image="pages/5.jpg">
-              <div class="fb5-cont-page-book">
-                <div class="fb5-gradient-page"></div>
-                <canvas id="canv5"></canvas>
-                <div class="fb5-page-book">
-
-                </div>
-              </div>
-            </div>
-            <!--  page 6 -->
-            <div data-background-image="pages/6_7.jpg" class="fb5-double fb5-first">
-              <div class="fb5-cont-page-book">
-                <div class="fb5-gradient-page"></div>
-                <canvas id="canv6"></canvas>
-                <div class="fb5-page-book">
-
-                </div>
-              </div>
-
-
-            </div>
-            <!--  page 7 -->
-            <div data-background-image="pages/6_7.jpg" class="fb5-double fb5-second">
-              <div class="fb5-cont-page-book">
-                <div class="fb5-gradient-page"></div>
-                <canvas id="canv7"></canvas>
-                <div class="fb5-page-book">
-                </div>
-              </div>
-            </div>
-            <!--  page 8 -->
-            <div data-background-image="pages/8_9.jpg" class="fb5-double fb5-first">
-              <div class="fb5-cont-page-book">
-                <div class="fb5-gradient-page"></div>
-                <canvas id="canv8"></canvas>
-                <div class="fb5-page-book">
-                </div>
-              </div>
-            </div>
-            <!--  page 9 -->
-            <div data-background-image="pages/8_9.jpg" class="fb5-double fb5-second">
-              <div class="fb5-cont-page-book">
-                <div class="fb5-gradient-page"></div>
-                <canvas id="canv9"></canvas>
-                <div class="fb5-page-book">
-                </div>
-              </div>
-            </div>
-            <!--  page 10 -->
-            <div data-background-image="pages/10.jpg">
-              <div class="fb5-cont-page-book">
-                <div class="fb5-gradient-page"></div>
-                <canvas id="canv10"></canvas>
-                <div class="fb5-page-book">
-                </div>
-              </div>
-            </div>
-            <!--  page 11 -->
-            <div data-background-image="pages/11.jpg">
-              <div class="fb5-cont-page-book">
-                <div class="fb5-gradient-page"></div>
-                <canvas id="canv11"></canvas>
-                <div class="fb5-page-book">
-                </div>
-              </div>
-            </div>
-            <!--  page 12 -->
-            <div data-background-image="pages/12.jpg">
-              <div class="fb5-cont-page-book">
-                <div class="fb5-gradient-page"></div>
-                <canvas id="canv12"></canvas>
-                <div class="fb5-page-book">
-                </div>
-              </div>
-            </div>
-            <div data-background-image="pages/12.jpg">
-              <div class="fb5-cont-page-book">
-                <div class="fb5-gradient-page"></div>
-                <canvas id="canv13"></canvas>
-                <div class="fb5-page-book">
-                  13. sayfaaaaaaskgjlkzdrngjşıejkgkelrgfni
-                </div>
-              </div>
-            </div>
 
           </div>
 
@@ -456,6 +210,12 @@
 </template>
 <script>
 import FirstPage from './pages/FirstPage.vue';
+import SecondPage from './pages/SecondPage.vue';
+import ThirdPage from './pages/ThirdPage.vue';
+import FourthPage from './pages/FourthPage.vue';
+import FifthPage from './pages/FifthPage.vue';
+
+
 export default {
   mounted() {
 
@@ -475,27 +235,43 @@ export default {
   },
   data() {
     return {
-      stockList: []
+      stockList: [],
     }
   },
+  computed: {
+    pages() {
+      console.log(this.$store.state.Pages)
+      return this.$store.state.Pages
+    },
+
+  },
   components: {
-    FirstPage
+    FirstPage,
+    SecondPage,
+    ThirdPage,
+    FourthPage,
+    FifthPage
+  },
+  methods: {
+
   },
   created() {
+
+
     try {
       this.$store
-      .dispatch("getDataStock")
-      .then(response => {
-        console.log(response)
-        if (response == true) {
-          this.stockList = this.$store.state.StockList;
-          console.log(this.stockList )
-        }
-      });
+        .dispatch("getDataStock")
+        .then(response => {
+          console.log(response)
+          if (response == true) {
+            this.stockList = this.$store.state.StockList;
+            console.log(this.stockList)
+          }
+        });
     } catch (error) {
       console.log(error)
     }
-    
+
   }
 };
 </script>

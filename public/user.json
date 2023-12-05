@@ -1,7 +1,54 @@
 {
   "userService": "https://b2bservis.buldans.com.tr/uzumB2B.asmx?WSDL",
   "userLogo": "http://b2b.buldans.com.tr/uploads/buldanslogo.png",
-  "imgUrl": "https://b2bservis.buldans.com.tr/Uploads/", 
-  "themeColor": "#7c6144", 
-  "title": "Buldan's Bayi Satış Ekranı"
+  "imgUrl": "https://b2bservis.buldans.com.tr/Uploads/",
+  "themeColor": "#7c6144",
+  "title": "Buldan's Bayi Satış Ekranı", 
+  "pages": [
+    {
+      "ind": "1",
+      "component": "FirstPage",
+      "title": "İlk Sayfa"
+    },
+    {
+      "ind": "2",
+      "component": "SecondPage",
+      "title": "İkinci Sayfa"
+    },
+    {
+      "ind": "3",
+      "component": "ThirdPage",
+      "title": "Üçüncü Sayfa"
+    },
+    {
+      "ind": "4",
+      "component": "FourthPage",
+      "title": "Dördüncü Sayfa"
+    },
+    {
+      "ind": "6",
+      "component": "FifthPage",
+      "title": "Beşinci Sayfa"
+    },
+    {
+      "ind": "7",
+      "component": "FifthPage",
+      "title": "Beşinci Sayfa"
+    },
+    {
+      "ind": "8",
+      "component": "FifthPage",
+      "title": "Beşinci Sayfa"
+    },
+    {
+      "ind": "9",
+      "component": "FifthPage",
+      "title": "Beşinci Sayfa"
+    },
+    {
+      "ind": "10",
+      "component": "FifthPage",
+      "title": "Beşinci Sayfa"
+    }
+  ]
 }

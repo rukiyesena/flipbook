@@ -51,7 +51,10 @@ const actions = {
   // User/Account
   // /////////////////////////////////////////////
 
-  getDataStock({ commit, dispatch }, isAct) {
+  getDataStock({ commit, dispatch }, isAct) { 
+    commit("PAGES", userJson.pages)
+
+    console.log(userJson.pageSize)
     const soap = require("soap");
     const url = userJson.userService;
     try {

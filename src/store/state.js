@@ -50,6 +50,8 @@ const is_touch_device = () => {
 // /////////////////////////////////////////////
 
 const state = {
+  PageSize: "",
+  Pages: "",
   StockList: [],
   AppActiveUser: userDefaults,
   email: '',
