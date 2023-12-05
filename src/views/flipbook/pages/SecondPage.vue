@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    <topBanner />
+    <topBanner class="top-banner" />
       <header class="header"></header>
       
       <div class="main-wrapper">
@@ -233,35 +233,6 @@ body {
   margin-top: 3em;
   text-align: center; }
 
-.ca-1 {
-  background: url(https://farm1.staticflickr.com/571/21101592188_f5da31c3f5_o.jpg) no-repeat center center;
-}
-
-.ca-2 {
-  background: url("https://watermark.lovepik.com/photo/20211210/large/lovepik-summer-watermelon-picture_501768510.jpg") no-repeat center center;
-}
-
-.ca-3 {
-  background: url("https://watermark.lovepik.com/photo/20211210/large/lovepik-summer-watermelon-picture_501768510.jpg") no-repeat center center;
-}
-
-.ca-4 {
-  background: url("https://watermark.lovepik.com/photo/20211210/large/lovepik-summer-watermelon-picture_501768510.jpg") no-repeat center center;
-}
-
-.ca-5 {
-  background: url("https://farm6.staticflickr.com/5692/21342201074_aef835df8d_k.jpg") no-repeat center center;
-}
-
-.ca-6 {
-  background: url("https://watermark.lovepik.com/photo/20211210/large/lovepik-summer-watermelon-picture_501768510.jpg") no-repeat center center;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 
 .clear-after:after, .main-wrapper .scroll-content .sc-row .content-article .article-info .ai-footer:after, .main-wrapper .scroll-content .sc-row:after, .main-wrapper .hero-image .hero-content .hc-footer:after {
   content: "";
@@ -278,7 +249,7 @@ body {
 
 .main-wrapper {
   position: relative;
-  width: 100vw;
+  width: 5000vw;
   height: 100vh;
   overflow: hidden;
 }
@@ -411,7 +382,10 @@ body {
   height: 360px;
   overflow: hidden;
   position: relative;
+  margin: 0; /* Remove any default margin */
+  padding: 0; /* Remove any default padding */
 }
+
 .main-wrapper .scroll-content .sc-row .content-article:after {
   content: "";
   display: block;
@@ -432,11 +406,11 @@ body {
 }
 .main-wrapper .scroll-content .sc-row .content-article .article-image {
   width: 100%;
-  height: 100%;
-  background-size: cover;
+  background-size: cover; /* Update this line */
   transform: scale(1);
   transition: all 0.25s ease;
 }
+
 .main-wrapper .scroll-content .sc-row .content-article .article-number {
   z-index: 2;
   position: absolute;
@@ -481,4 +455,12 @@ body {
   width: 1px;
   background-color: white;
 }
+.top-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000; /* Adjust the z-index as needed to ensure it appears above other elements */
+}
+
 </style>
