@@ -57,6 +57,7 @@
           </section>
           <!--  PAGES -->
           <div id="fb5-book">
+            
 
             <!--  page 1 -->
             <div data-background-image="pages/1.jpg">
@@ -64,7 +65,8 @@
                 <div class="fb5-gradient-page"></div>
                 <canvas id="canv1"></canvas>
                 <div class="fb5-page-book">
-                  <FirstPage />
+                  74562
+                  <FirstPage :data="stockList"/>
                 </div>
               </div>
             </div>
@@ -487,7 +489,7 @@ export default {
         console.log(response)
         if (response == true) {
           this.stockList = this.$store.state.StockList;
-          console.log(this.stockList)
+          console.log(this.stockList )
         }
       });
     } catch (error) {

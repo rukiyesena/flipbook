@@ -60,7 +60,7 @@ const actions = {
         KATEGORI: "",
         ARANAN: "",
         ILKKAYIT: "0",
-        SONKAYIT: "50",
+        SONKAYIT: "5",
         EKSORGU: "",
         ACTID: ""
       };
@@ -70,7 +70,7 @@ const actions = {
           KATEGORI: "",
           ARANAN: "",
           ILKKAYIT: "0",
-          SONKAYIT: "50",
+          SONKAYIT: "5",
           EKSORGU: "",
           ACTID: state.STOCKPRICETYPEID
         };
@@ -80,12 +80,12 @@ const actions = {
         try {
           soap.createClient(url, function (err, client) {
             client.B2B_LS_STOCK(args, function (err, result) {
- 
               let veriler = JSON.parse(result.B2B_LS_STOCKResult);
               commit("STOCK_LIST", veriler);
+              resolve(true);
+
             });
           });
-          resolve(true);
         } catch (error) {
           resolve(false);
           console.log(error);
