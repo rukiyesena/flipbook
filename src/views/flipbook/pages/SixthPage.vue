@@ -46,9 +46,7 @@ export default {
   border: none;
 }
 
-body {
-  background: #333;
-}
+
 
 #big_image img {
   border-radius: 10px;

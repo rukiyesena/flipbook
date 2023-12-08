@@ -37,18 +37,18 @@
     },
     {
       "ind": "8",
-      "component": "FifthPage",
-      "title": "Beşinci Sayfa"
+      "component": "SeventhPage",
+      "title": "Yedinci Sayfa"
     },
     {
       "ind": "9",
-      "component": "FifthPage",
-      "title": "Beşinci Sayfa"
+      "component": "EighthPage",
+      "title": "Sekizinci Sayfa"
     },
     {
       "ind": "10",
-      "component": "FifthPage",
-      "title": "Beşinci Sayfa"
+      "component": "NinthPage",
+      "title": "Dokuzuncu Sayfa"
     }
   ]
 }

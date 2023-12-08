@@ -1,5 +1,7 @@
 <template>
   <div class="container">
+    <topBanner class="top-banner" />
+
     <div class="gallery">
       <div class="item">
         <div class="overlay">
@@ -30,8 +32,7 @@
           <p>View</p>
         </div>
         <img src="https://b2bservis.buldans.com.tr/Uploads/8681653113778.jpg>
-      </div>
-      <div class="item">
+     <div class="item">
         <div class="overlay">
           <p>View</p>
         </div>
@@ -239,15 +240,29 @@
         </div>
         <img src="https://b2bservis.buldans.com.tr/Uploads/8681653121414.jpg">
       </div>
+      <div class="item">
+        <div class="overlay">
+          <p>View</p>
+        </div>
+        <img src="https://b2bservis.buldans.com.tr/Uploads/8681653121414.jpg">
+      </div>
+      <div class="item">
+        <div class="overlay">
+          <p>View</p>
+        </div>
+        <img src="https://b2bservis.buldans.com.tr/Uploads/8681653121414.jpg">
+      </div>
     </div>
   
   </div>
   
   
-  </div>
+
 </template>
 
 <script>
+import topBanner from "../components/topBanner";
+
 export default {
   data() {
     return {
@@ -257,6 +272,9 @@ export default {
         // Add other image URLs here
       ],
     };
+  },
+  components: {
+    topBanner,
   },
   methods: {
     openImageViewer(imageURL) {
@@ -269,6 +287,13 @@ export default {
 };
 </script>
 <style scoped lang="scss">
+.top-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000; /* Adjust the z-index as needed to ensure it appears above other elements */
+}
 .gallery {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
@@ -292,8 +317,8 @@ export default {
       grid-column: span 2;
     }
     img {
-      width: 100%;
-      height: 100%;
+      width: 150%;
+      height: 170%;
       object-fit: cover;
       object-position: center;
     }
@@ -337,7 +362,7 @@ export default {
   display: none;
   
   img {
-    max-width: 800px;
+    max-width: 1000px;
     box-shadow: 0 10px 40px -10px rgba(0,0,0,0.6);
   }
 }

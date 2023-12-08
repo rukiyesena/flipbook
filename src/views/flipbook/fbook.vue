@@ -214,7 +214,10 @@ import SecondPage from './pages/SecondPage.vue';
 import ThirdPage from './pages/ThirdPage.vue';
 import FourthPage from './pages/FourthPage.vue';
 import FifthPage from './pages/FifthPage.vue';
-
+import SixthPage from './pages/SixthPage.vue';
+import SeventhPage from './pages/SeventhPage.vue';
+import EighthPage from './pages/EighthPage.vue';
+import NinthPage from './pages/NinthPage.vue';
 
 export default {
   mounted() {
@@ -250,7 +253,11 @@ export default {
     SecondPage,
     ThirdPage,
     FourthPage,
-    FifthPage
+    FifthPage,
+    SixthPage,
+    SeventhPage,
+    EighthPage,
+    NinthPage,
   },
   methods: {
 
