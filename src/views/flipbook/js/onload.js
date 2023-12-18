@@ -993,11 +993,11 @@ var Book_v5 = {
         var paddingT=WIDTH_BOOK*this.paddingT;
         var paddingB=WIDTH_BOOK*this.paddingB;        
 		if(DISPLAY=="single"){
-			$("#fb5 .fb5-page-book").css('width',(WIDTH_BOOK-(paddingL+paddingR))+'px');
+			$("#fb5 .fb5-page-book").css('width','100%');
 		}else{
-			$("#fb5 .fb5-page-book").css('width',(WIDTH_BOOK/2-(paddingL+paddingR))+'px');
+			$("#fb5 .fb5-page-book").css('width','100%');
 		}
-        $("#fb5 .fb5-page-book").css('height',(HEIGHT_BOOK-(paddingT+paddingB))+'px');
+        $("#fb5 .fb5-page-book").css('height','100%');
         
         /* SCALE ABOUT near FLIPBOOK  /*/
         $("#fb5 #fb5-about").css('width',(WIDTH_BOOK/2)+'px');

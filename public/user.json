@@ -1,10 +1,15 @@
 {
-  "userService": "https://b2bservis.buldans.com.tr/uzumB2B.asmx?WSDL",
+  "userService": "http://213.74.141.118/fatihFF/uzumFlipbook.asmx?WSDL",
   "userLogo": "http://b2b.buldans.com.tr/uploads/buldanslogo.png",
   "imgUrl": "https://b2bservis.buldans.com.tr/Uploads/",
   "themeColor": "#7c6144",
-  "title": "Buldan's Bayi Satış Ekranı", 
+  "title": "Buldan's Bayi Satış Ekranı",
   "pages": [
+    {
+      "ind": "0",
+      "component": "EntryPage",
+      "title": "Giriş Sayfa"
+    },
     {
       "ind": "1",
       "component": "FirstPage",
@@ -12,41 +17,21 @@
     },
     {
       "ind": "2",
-      "component": "SecondPage",
-      "title": "İkinci Sayfa"
-    },
-    {
-      "ind": "3",
-      "component": "ThirdPage",
-      "title": "Üçüncü Sayfa"
-    },
-    {
-      "ind": "4",
-      "component": "FourthPage",
-      "title": "Dördüncü Sayfa"
+      "component": "TablePageFirst",
+      "title": "Table Sayfa"
     },
     {
       "ind": "6",
-      "component": "FifthPage",
-      "title": "Beşinci Sayfa"
-    },
-    {
-      "ind": "7",
       "component": "SixthPage",
       "title": "altıncı Sayfa"
     },
     {
-      "ind": "8",
+      "ind": "7",
       "component": "SeventhPage",
       "title": "Yedinci Sayfa"
     },
     {
       "ind": "9",
-      "component": "EighthPage",
-      "title": "Sekizinci Sayfa"
-    },
-    {
-      "ind": "10",
       "component": "NinthPage",
       "title": "Dokuzuncu Sayfa"
     }

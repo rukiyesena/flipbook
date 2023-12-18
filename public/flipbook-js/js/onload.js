@@ -71,8 +71,7 @@ speed_bcg:function(books_){
 	
 },
 
-start_book_shortcode:function(){
-console.log(books)
+start_book_shortcode:function(){ 
 	
 	var books=$('#fb5-ajax').attr('data-cat')
 	Ajax_v5.speed_bcg( books  );	 
@@ -147,13 +146,9 @@ auto_select_book:function(books_){
 
 init_book:function(books_){
 		
-		this.all_books_slug=books_;		   		   
-			 console.log(books_)
+		this.all_books_slug=books_;	 
 				 
-		var categories=books_.split(",");  //array
-		console.log($)
-
-		console.log($.address)
+		var categories=books_.split(",");  //array 
 		var address=$.address.pathNames()[0]
 		 
 		 //set category
@@ -211,10 +206,10 @@ addConfigData:function(config_){
 				 });
 					/////
 				 var pdf_url=Book_v5.getConfig('pdf_url');
-				 if( pdf_url.length ){
+			/*	 if( pdf_url.length ){
 						Book_v5.setConfig('pdf_type','js');
 							Book_v5.setConfig('pdfjs_source',pdf_url);
-				 }
+				 }*/
 				 
 				 
 	
@@ -412,8 +407,7 @@ $(document).ready(function(e) {
 					
 					if( $('#fb5-ajax').hasClass('fb5-fullbrowser')  ){
 						$("#fb5-ajax").detach().appendTo('body')
-					}
-					console.log(Ajax_v5)
+					} 
 					Ajax_v5.start_book_shortcode();
 					
 					
@@ -998,11 +992,11 @@ var Book_v5 = {
         var paddingT=WIDTH_BOOK*this.paddingT;
         var paddingB=WIDTH_BOOK*this.paddingB;        
 		if(DISPLAY=="single"){
-			$("#fb5 .fb5-page-book").css('width',(WIDTH_BOOK-(paddingL+paddingR))+'px');
+			$("#fb5 .fb5-page-book").css('width','100%');
 		}else{
-			$("#fb5 .fb5-page-book").css('width',(WIDTH_BOOK/2-(paddingL+paddingR))+'px');
+			$("#fb5 .fb5-page-book").css('width','100%');
 		}
-        $("#fb5 .fb5-page-book").css('height',(HEIGHT_BOOK-(paddingT+paddingB))+'px');
+        $("#fb5 .fb5-page-book").css('height','100%');
         
         /* SCALE ABOUT near FLIPBOOK  /*/
         $("#fb5 #fb5-about").css('width',(WIDTH_BOOK/2)+'px');
@@ -1898,8 +1892,7 @@ var Book_v5 = {
 		     		
 				if( DISPLAY=="double" ){
 						Book_v5.current_right=Book_v5.getCurrentPages(page).right;									
-						if(  Book_v5.current_right!=Book_v5.old_right   ){
-						console.log(sound_sheet)
+						if(  Book_v5.current_right!=Book_v5.old_right   ){ 
 
 							sound_sheet.currentTime=0;
 					//		sound_sheet.play();
@@ -2823,8 +2816,8 @@ var Book_v5 = {
 		 var paddingR=(this.widthBook()*this.paddingR)/zoom;
          var paddingT=(this.widthBook()*this.paddingT)/zoom;
 		 
-         $('#fb5 .odd.turn-page .fb5-page-book').css({'left':paddingL+'px','top':paddingT+'px'});
-		 $('#fb5 .even.turn-page .fb5-page-book').css({'left':paddingR+'px','top':paddingT+'px'});
+         $('#fb5 .odd.turn-page .fb5-page-book').css({'left':'0px','top':'0px'});
+		 $('#fb5 .even.turn-page .fb5-page-book').css({'left':'0px','top':'0px'});
             
          /* RESIZE ABOUT IN FLIPBOOK  /*/
          $('#fb5-about').css({'transform':'scale('+zoom+')','-ms-transform':'scale('+zoom+')','-webkit-transform':'scale('+zoom+')'});

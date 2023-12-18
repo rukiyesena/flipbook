@@ -1,69 +1,139 @@
 <template>
   <div>
-    <topleftbanner />
-    <div data-slug="portfolios">
-      <div class="  bb-custom-side" style="width: 100%;">
+    <topBanner2 :page="page" />
+
+    <div class="bb-item" data-slug="portfolios" style="display: block;">
+      <div class="vc_col-sm-6 bb-custom-side">
         <div class="content-wrapper">
-          <b-row>
-            <b-col>
-              <div id="portfolio-container-oBTIBx9p91" class="portfolio-container" style="width: 100%;">
-                <div class="portfolio-item illustrator" style="height: 350px;" v-for="(value, index) in stockList"
-                  :key="index">
-                  <b-row>
-                    <b-col style="text-align: -webkit-center;">
-                      <img loading="lazy" decoding="async" style="width: auto; height: 350px;"
-                        :src="'data:image/png;base64,' + value.images"
-                        class="attachment-portfolio_thumbnail size-portfolio_thumbnail wp-post-image" alt="">
-                    </b-col>
-                  </b-row>
-
+          <div class="container">
+            <div
+              class="vc_separator wpb_content_element big vc_separator_align_left vc_sep_width_100 vc_sep_double vc_sep_pos_align_right vc_sep_color_grey vc_separator-has-text">
+              <span class="vc_sep_holder vc_sep_holder_l"><span class="vc_sep_line"></span></span>
+              <h4>Portfolios</h4><span class="vc_sep_holder vc_sep_holder_r"><span class="vc_sep_line"></span></span>
+            </div>
+            <ul id="portfolio-filter-oBTIBx9p91" class="portfolio-filters">
+              <li class="active" data-filter="*">All</li>
+              <li data-filter=".audio">Audio</li>
+              <li data-filter=".illustrator">Illustrator</li>
+              <li data-filter=".video">Video</li>
+            </ul>
+            <div id="portfolio-container-oBTIBx9p91" class="portfolio-container">
+              <div class="portfolio-item illustrator">
+                <img loading="lazy" decoding="async" width="493" height="476"
+                  src="https://demo.focuxtheme.com/magicbook/wp-content/uploads/sites/10/2016/10/013e4a5544265d0000019ae9c632c1.jpg"
+                  class="attachment-portfolio_thumbnail size-portfolio_thumbnail wp-post-image" alt="">
+                <div class="mask">
+                  <a href="https://demo.focuxtheme.com/magicbook/portfolio/relaxing-with-coffee/" target="_blank"
+                    rel="portfolio" class="fancybox ajax">
+                    <h4>Relaxing With Coffee</h4>
+                    <p>Consectetur adipiscing elit. Integer commodo tristique odio, quis fringilla ligu...</p>
+                  </a>
+                  <a href="https://demo.focuxtheme.com/magicbook/portfolio/relaxing-with-coffee/" target="_blank"
+                    class="more ajax"><i class="fa fa-info-circle"></i><span>Read
+                      more</span></a>
                 </div>
-
               </div>
-            </b-col>
-            <b-col>
-              <div id="portfolio-container-oBTIBx9p91" class="portfolio-container" style="width: 100%;">
-                <div class="portfolio-item illustrator" style="height: 350px;" v-for="(value, index) in stockList"
-                  :key="index">
-                  <b-row>
-                    <b-col style="text-align: -webkit-center;">
-                      <img loading="lazy" decoding="async" style="width: auto; height: 350px;"
-                        :src="'data:image/png;base64,' + value.images"
-                        class="attachment-portfolio_thumbnail size-portfolio_thumbnail wp-post-image" alt="">
-                    </b-col>
-                  </b-row>
-
+              <div class="portfolio-item video">
+                <img loading="lazy" decoding="async" width="582" height="800"
+                  src="https://demo.focuxtheme.com/magicbook/wp-content/uploads/sites/10/2016/10/about.jpg"
+                  class="attachment-portfolio_thumbnail size-portfolio_thumbnail wp-post-image" alt="">
+                <div class="mask">
+                  <a href="https://demo.focuxtheme.com/magicbook/portfolio/white-paint/" target="_blank" rel="portfolio"
+                    class="fancybox ajax">
+                    <h4>White Paint</h4>
+                    <p>Consectetur adipiscing elit. Integer commodo tristique odio, quis fringilla ligu...</p>
+                  </a>
+                  <a href="https://demo.focuxtheme.com/magicbook/portfolio/white-paint/" target="_blank"
+                    class="more ajax"><i class="fa fa-info-circle"></i><span>Read more</span></a>
                 </div>
-
               </div>
-            </b-col>
+              <div class="portfolio-item illustrator">
+                <img loading="lazy" decoding="async" width="492" height="771"
+                  src="https://demo.focuxtheme.com/magicbook/wp-content/uploads/sites/10/2016/10/01a1ea554b31d2000001bf726e9dd8.jpg"
+                  class="attachment-portfolio_thumbnail size-portfolio_thumbnail wp-post-image" alt="">
+                <div class="mask">
+                  <a href="https://demo.focuxtheme.com/magicbook/portfolio/night-sky/" target="_blank" rel="portfolio"
+                    class="fancybox ajax">
+                    <h4>Night Sky</h4>
+                    <p>Consectetur adipiscing elit. Integer commodo tristique odio, quis fringilla ligu...</p>
+                  </a>
+                  <a href="https://demo.focuxtheme.com/magicbook/portfolio/night-sky/" target="_blank"
+                    class="more ajax"><i class="fa fa-info-circle"></i><span>Read more</span></a>
+                </div>
+              </div>
+              <div class="portfolio-item audio">
+                <img loading="lazy" decoding="async" width="476" height="498"
+                  src="https://demo.focuxtheme.com/magicbook/wp-content/uploads/sites/10/2016/10/01e07f5544265e0000019ae9fe25f5.jpg"
+                  class="attachment-portfolio_thumbnail size-portfolio_thumbnail wp-post-image" alt="">
+                <div class="mask">
+                  <a href="https://demo.focuxtheme.com/magicbook/portfolio/cavalier/" target="_blank" rel="portfolio"
+                    class="fancybox ajax">
+                    <h4>Cavalier</h4>
+                    <p>Consectetur adipiscing elit. Integer commodo tristique odio, quis fringilla ligu...</p>
+                  </a>
+                  <a href="https://demo.focuxtheme.com/magicbook/portfolio/cavalier/" target="_blank" class="more ajax"><i
+                      class="fa fa-info-circle"></i><span>Read more</span></a>
+                </div>
+              </div>
+              <div class="portfolio-item video">
+                <img loading="lazy" decoding="async" width="439" height="459"
+                  src="https://demo.focuxtheme.com/magicbook/wp-content/uploads/sites/10/2016/10/0184f95544265e0000019ae9cd96d0.jpg"
+                  class="attachment-portfolio_thumbnail size-portfolio_thumbnail wp-post-image" alt="">
+                <div class="mask">
+                  <a href="https://demo.focuxtheme.com/magicbook/portfolio/world-of-tomorrow/" target="_blank"
+                    rel="portfolio" class="fancybox ajax">
+                    <h4>World Of Tomorrow</h4>
+                    <p>Consectetur adipiscing elit. Integer commodo tristique odio, quis fringilla ligu...</p>
+                  </a>
+                  <a href="https://demo.focuxtheme.com/magicbook/portfolio/world-of-tomorrow/" target="_blank"
+                    class="more ajax"><i class="fa fa-info-circle"></i><span>Read more</span></a>
+                </div>
+              </div>
+              <div class="portfolio-item illustrator">
+                <img loading="lazy" decoding="async" width="445" height="460"
+                  src="https://demo.focuxtheme.com/magicbook/wp-content/uploads/sites/10/2016/10/01f4df5544265e0000019ae9a846bc.jpg"
+                  class="attachment-portfolio_thumbnail size-portfolio_thumbnail wp-post-image" alt="">
+                <div class="mask">
+                  <a href="https://demo.focuxtheme.com/magicbook/portfolio/practise/" target="_blank" rel="portfolio"
+                    class="fancybox ajax">
+                    <h4>Practise</h4>
+                    <p>Consectetur adipiscing elit. Integer commodo tristique odio, quis fringilla ligu...</p>
+                  </a>
+                  <a href="https://demo.focuxtheme.com/magicbook/portfolio/practise/" target="_blank" class="more ajax"><i
+                      class="fa fa-info-circle"></i><span>Read more</span></a>
+                </div>
+              </div>
+            </div>
 
-          </b-row>
-
-
+          </div>
         </div>
       </div>
+
+
     </div>
+
+
   </div>
 </template>
 <script>
-import topBanner2 from '../components/topBanner2.vue';
 import topleftbanner from '../components/topleftbanner.vue';
-
+import topBanner2 from '../components/topBanner2.vue';
+import rightBanner from '../components/rightBanner.vue';
 export default {
   props: ["page"],
 
-  components: { topleftbanner, topBanner2 },
+  components: { topBanner2, topleftbanner, rightBanner },
   methods: {
     toggleBrowsingContent() {
       this.$refs.heroImage.classList.toggle("browsing-content");
     },
   },
   computed: {
-    stockList() { 
+    stockList() {
       return this.$store.state.StockList
     }
   },
+
 };
 </script>
 

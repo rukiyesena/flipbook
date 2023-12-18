@@ -1,8 +1,7 @@
 <template>
   <div style="text-align: center;">
-    <b-row>
-      <img src="@/assets/images/topBanner/dort.png" alt="topBanner" />
-    </b-row> 
+
+    <img src="@/assets/images/logo/logoFirm.png" alt="topBanner" style="width: 100%;" />
   </div>
 </template>
 

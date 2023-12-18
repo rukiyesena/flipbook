@@ -53,8 +53,7 @@ const actions = {
 
   getDataStock({ commit, dispatch }, isAct) { 
     commit("PAGES", userJson.pages)
-
-    console.log(userJson.pageSize)
+ 
     const soap = require("soap");
     const url = userJson.userService;
     try {
@@ -77,13 +76,12 @@ const actions = {
           EKSORGU: "",
           ACTID: state.STOCKPRICETYPEID
         };
-      }
-      console.log(args)
+      } 
       return new Promise((resolve, reject) => {
         try {
           soap.createClient(url, function (err, client) {
-            client.B2B_LS_STOCK(args, function (err, result) {
-              let veriler = JSON.parse(result.B2B_LS_STOCKResult);
+            client.StockList(args, function (err, result) {
+              let veriler = JSON.parse(result.StockListResult);
               commit("STOCK_LIST", veriler);
               resolve(true);
 

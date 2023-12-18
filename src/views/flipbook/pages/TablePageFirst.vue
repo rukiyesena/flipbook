@@ -1,69 +1,78 @@
 <template>
-  <div>
-    <topleftbanner />
-    <div data-slug="portfolios">
-      <div class="  bb-custom-side" style="width: 100%;">
-        <div class="content-wrapper">
-          <b-row>
-            <b-col>
-              <div id="portfolio-container-oBTIBx9p91" class="portfolio-container" style="width: 100%;">
-                <div class="portfolio-item illustrator" style="height: 350px;" v-for="(value, index) in stockList"
-                  :key="index">
-                  <b-row>
-                    <b-col style="text-align: -webkit-center;">
-                      <img loading="lazy" decoding="async" style="width: auto; height: 350px;"
-                        :src="'data:image/png;base64,' + value.images"
-                        class="attachment-portfolio_thumbnail size-portfolio_thumbnail wp-post-image" alt="">
-                    </b-col>
-                  </b-row>
+  <div style="height: 100%;">
+    <b-row style="height: 100%;">
+      <topBanner2 :page="page" />
+
+      <div data-slug="portfolios">
+        <div class="  bb-custom-side" style="width: 100%;">
+          <div class="content-wrapper">
+            <b-row>
+              <b-col>
+                <div id="portfolio-container-oBTIBx9p91" class="portfolio-container" style="width: 100%;">
+                  <div class="portfolio-item illustrator"
+                    style="width: 9% !important; height: 350px; border: black 1px solid;"
+                    v-for="(value, index) in stockList" :key="index">
+                    <b-row>
+                      <b-col style="text-align: -webkit-center;">
+                        <img loading="lazy" decoding="async" style="width: auto; "
+                          :src="'data:image/png;base64,' + value.images"
+                          class="attachment-portfolio_thumbnail size-portfolio_thumbnail wp-post-image" alt="">
+                        <div class="mask">
+                          <a href="https://demo.focuxtheme.com/magicbook/portfolio/relaxing-with-coffee/" target="_blank"
+                            rel="portfolio" class="fancybox ajax">
+                            <h4>{{ value.stockCode }}</h4>
+                            <p>{{ value.stockName }}</p>
+                          </a>
+                          <a href="https://demo.focuxtheme.com/magicbook/portfolio/relaxing-with-coffee/" target="_blank"
+                            class="more ajax"><i class="fa fa-info-circle"></i><span>Read
+                              more</span></a>
+                        </div>
+                      </b-col>
+                    </b-row>
+
+                  </div>
 
                 </div>
-
-              </div>
-            </b-col>
-            <b-col>
-              <div id="portfolio-container-oBTIBx9p91" class="portfolio-container" style="width: 100%;">
-                <div class="portfolio-item illustrator" style="height: 350px;" v-for="(value, index) in stockList"
-                  :key="index">
-                  <b-row>
-                    <b-col style="text-align: -webkit-center;">
-                      <img loading="lazy" decoding="async" style="width: auto; height: 350px;"
-                        :src="'data:image/png;base64,' + value.images"
-                        class="attachment-portfolio_thumbnail size-portfolio_thumbnail wp-post-image" alt="">
-                    </b-col>
-                  </b-row>
-
-                </div>
-
-              </div>
-            </b-col>
-
-          </b-row>
+              </b-col>
 
 
+            </b-row>
+
+
+          </div>
         </div>
       </div>
-    </div>
+      <b-col cols="12" align-self="end">
+        <bottomrightBanner :page="page" />
+
+      </b-col>
+    </b-row>
+
+
+
   </div>
 </template>
 <script>
-import topBanner2 from '../components/topBanner2.vue';
 import topleftbanner from '../components/topleftbanner.vue';
+import topBanner2 from '../components/topBanner2.vue';
+import rightBanner from '../components/rightBanner.vue';
+import bottomrightBanner from '../components/bottomrightBanner.vue';
 
 export default {
   props: ["page"],
 
-  components: { topleftbanner, topBanner2 },
+  components: { topBanner2, topleftbanner, rightBanner, bottomrightBanner },
   methods: {
     toggleBrowsingContent() {
       this.$refs.heroImage.classList.toggle("browsing-content");
     },
   },
   computed: {
-    stockList() { 
+    stockList() {
       return this.$store.state.StockList
     }
   },
+
 };
 </script>
 

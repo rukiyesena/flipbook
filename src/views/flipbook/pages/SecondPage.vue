@@ -75,8 +75,7 @@
           
         </div>
         <div class="video-section">
-          <iframe id="video" src="https://player.vimeo.com/video/323262733" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-        </div>
+          </div>
       </section>
       
       

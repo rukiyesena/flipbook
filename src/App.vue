@@ -130,8 +130,7 @@ export default {
 		localStorage.setItem("ROL", localStorage.getItem("ROL"));
 		localStorage.setItem("imgurl", localStorage.getItem("imgurl"));
 		localStorage.setItem("STOCKPRICETYPEID", localStorage.getItem("STOCKPRICETYPEID"));
-		console.log(localStorage.getItem("tokenId"))
-		console.log(this.$store.state.tokenId)
+ 
 
 		this.$store.commit("setToken", data);
 /*
