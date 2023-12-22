@@ -51,40 +51,24 @@ const actions = {
   // User/Account
   // /////////////////////////////////////////////
 
-  getDataStock({ commit, dispatch }, isAct) { 
+  getDataStock({ commit, dispatch }, arg) {
     commit("PAGES", userJson.pages)
- 
+    let pageAct = arg.page == "" ? 1 : arg.page
+
     const soap = require("soap");
     const url = userJson.userService;
     try {
       let args = {
         token: state.tokenId,
-        KATEGORI: "",
-        ARANAN: "",
-        ILKKAYIT: "0",
-        SONKAYIT: "5",
-        EKSORGU: "",
-        ACTID: ""
+        page: pageAct
       };
-      if (isAct == true) {
-        args = {
-          token: state.tokenId,
-          KATEGORI: "",
-          ARANAN: "",
-          ILKKAYIT: "0",
-          SONKAYIT: "5",
-          EKSORGU: "",
-          ACTID: state.STOCKPRICETYPEID
-        };
-      } 
       return new Promise((resolve, reject) => {
         try {
           soap.createClient(url, function (err, client) {
             client.StockList(args, function (err, result) {
               let veriler = JSON.parse(result.StockListResult);
-              commit("STOCK_LIST", veriler);
-              resolve(true);
-
+              commit("STOCK_LIST_RIGHT", veriler);
+              resolve(veriler)
             });
           });
         } catch (error) {

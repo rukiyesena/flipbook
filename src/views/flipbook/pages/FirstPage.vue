@@ -2,7 +2,7 @@
   <div style="height: 100%;">
     <b-row style="height: 100%;">
 
-      <topleftbanner :page="page" />
+      <topleftbanner :page="index" />
 
       <div class="page">
 
@@ -13,24 +13,30 @@
 
           <div class='scroll-content'>
             <div class='sc-row'>
-              <div class='content-article' v-for="(value, index) in stockList" :key="index">
-
-                <div class='article-number'>{{ index }}</div>
+              <div class='content-article' v-for="(value, indexItem) in stockList" :key="indexItem"
+                :id="'tooltip-target-' + index + '-' + indexItem" v-b-tooltip.hover>
+                <AddtoCard :data="value" :indexItem="'tooltip-target-' + index + '-' + indexItem" />
+                <div class='article-number'>{{ indexItem }}</div>
                 <div class='article-info'>
                   <div class='ai-label ' style="color: black">{{ value.stockCode }}</div>
                   <div class='ai-desc ' style="color: black">{{ value.stockName }}</div>
                   <div class='ai-footer '>
-                    <div class='aif-comments' style="color: black"><span class='amount'>{{ value.attr1_cins }} - </span>{{
-                      value.attr2_en }}</div>
-                    <div class='aif-divider'></div>
+                    <div class='aif-comments' style="color: black"><span class='amount'>
+                        {{ value.attr1_cins }} - </span>{{ value.attr2_en }}
+                    </div>
+                    <div class='aif-divider'>
+
+                    </div>
                     <div class='aif-shares' style="color: black"><span class='amount'>{{
-                      parseFloat(value.stockPrice).toFixed(2) }}</span></div>
+                      parseFloat(value.stockPrice).toFixed(2) }}</span>
+                    </div>
                   </div>
                 </div>
                 <b-row>
 
-                  <b-col style="text-align: center;"><img :src="'data:image/png;base64,' + value.images"
-                      style="height: 100%;" /></b-col>
+                  <b-col style="text-align: center;" v-on:click="imageShowBtn">
+                    <img :src="'data:image/png;base64,' + value.images" style="max-height: 200px;" />
+                  </b-col>
 
 
                 </b-row>
@@ -43,11 +49,11 @@
         </div>
       </div>
       <b-col cols="12" align-self="end">
-        <bottomBanner2 :page="page" />
+        <bottomBanner2 :page="index" />
 
       </b-col>
     </b-row>
-
+    <imageShow :popupResimSw="imagePopup" />
   </div>
 </template>
 <script>
@@ -56,21 +62,48 @@ import topleftbanner from '../components/topleftbanner.vue';
 
 import bottomBanner2 from '../components/bottomBanner2.vue';
 import leftBanner from '../components/leftBanner.vue';
-
-
+import AddtoCard from './components/AddtoCard.vue';
+import imageShow from './components/imageShow.vue';
 export default {
-  props: ["page"],
-  components: { topleftbanner, topBanner2, bottomBanner2, leftBanner },
+  props: ["page", "position", "index"],
+  data() { return { stockList: [], imagePopup: false } },
+  components: { AddtoCard, imageShow, topleftbanner, topBanner2, bottomBanner2, leftBanner },
   methods: {
+    imageShowBtn() {
+      console.log("this.imagePopup")
+      console.log(this.imagePopup)
+
+      this.imagePopup = true
+    },
+
     toggleBrowsingContent() {
       this.$refs.heroImage.classList.toggle("browsing-content");
     },
   },
-  computed: {
-    stockList() {
-      return this.$store.state.StockList
+
+  watch: {
+    page(val) {
+      if (this.index == val - 2 || this.index == val - 1) {
+        console.log("First " + this.index)
+
+        try {
+          let args = {
+            page: this.index
+          }
+          this.$store
+            .dispatch("getDataStock", args)
+            .then(response => {
+              this.stockList = response
+
+            });
+        } catch (error) {
+          console.log(error)
+        }
+      }
+
+
     }
-  },
+  }
 
 };
 </script>

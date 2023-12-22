@@ -15,5 +15,10 @@ export default {
 
     },
   },
+  watch: {
+    page(val) {
+      console.log(val)
+    }
+  }
 };
 </script>

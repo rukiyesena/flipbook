@@ -2861,9 +2861,9 @@ var Navigation_v5 = {
     
 		$('.fb5-menu li').filter(':not(.fb5-goto)').each(function() {
 			var description = $('a', this).attr('title');
-			var tooltip = '<span class="fb5-tooltip">'+description+'<b></b></span>';
+		/*	var tooltip = '<span class="fb5-tooltip">'+typeof description== 'undefined' ? '' : description +'<b></b></span>';
 			$('a', this).removeAttr("title");
-			$(this).append(tooltip);
+			$(this).append(tooltip);*/
 		});
 		
 		$('.fb5-menu li').mousemove(function(e) {

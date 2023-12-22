@@ -17,12 +17,20 @@ const mutations = {
 
   // Vertical NavMenu
   STOCK_LIST(state, item) {
-		state.StockList = item
+    state.StockList = item
 
-	}, 
+  },
+  STOCK_LIST_LEFT(state, item) {
+    state.StockListLeft = item
+
+  },
+  STOCK_LIST_RIGHT(state, item) {
+    state.StockListRight = item
+
+  },
   PAGES(state, item) {
-		state.Pages = item 
-	},
+    state.Pages = item
+  },
   TOGGLE_IS_VERTICAL_NAV_MENU_ACTIVE(state, value) {
     state.isVerticalNavMenuActive = value
   },
@@ -122,7 +130,7 @@ const mutations = {
     // localStorage.setItem("userInfo", JSON.stringify(userInfo))
   },
   setToken(state, data) {
- 
+
     state.isCurrActive = false;
     state.tokenId = data.tokenId
     state.AppActiveUser.displayName = data.B2BfirmaAdi //+' ( '+data.adSoyad+' )'
@@ -158,7 +166,7 @@ const mutations = {
     state.plasiyer = ''
     state.servisAdresi = ''
     state.printAddress = ''
-    state.STOCKPRICETYPEID=''
+    state.STOCKPRICETYPEID = ''
     state.grupKod = ''
     state.AppActiveUser.displayName = ''
     state.AppActiveUser.photoURL = ''

@@ -1,6 +1,6 @@
 <template>
   <b-row style="height: 100%;">
-    <topleftbanner :page="page" />
+    <topleftbanner :page="index" />
     <b-col cols="6">
       <div id="big_image" style="border: black 1px solid; text-align: center;">
         <img :src="selectedImage" alt="test" style="max-height: 500px; width: auto;" />
@@ -22,7 +22,7 @@
       </div>
     </b-col>
     <b-col cols="12" align-self="end">
-      <bottomBanner2 :page="page" />
+      <bottomBanner2 :page="index" />
 
     </b-col>
   </b-row>
@@ -33,8 +33,8 @@ import topleftbanner from '../components/topleftbanner.vue';
 import bottomBanner2 from '../components/bottomBanner2.vue';
 
 export default {
-  props: ["page"],
-
+  props: ["page", "position", "index"],
+  data() { return { stockList: [] } },
   components: { topleftbanner, bottomBanner2 },
   data() {
     return {
@@ -57,31 +57,34 @@ export default {
     });
   },
   watch: {
-    stockList() {
-      console.log("st list")
-      console.log(this.stockList)
-      this.selectedImage = 'data:image/png;base64,' + this.stockList[0].images
+    page(val) {
+      if (this.index == val - 2 || this.index == val - 1) {
+        try {
+          let args = {
+            page: this.index
+          }
+          this.$store
+            .dispatch("getDataStock", args)
+            .then(response => {
+              this.stockList = response
+            });
+        } catch (error) {
+          console.log(error)
+        }
+      }
+
+
     }
+
   },
   computed: {
-    stockList() {
 
-      return this.$store.state.StockList
-    }
   },
 };
 </script>
 
 
-<style>
-* {
-  padding: 0;
-  margin: 0;
-  border: none;
-}
-
-
-
+<style scoped lang="scss">
 #big_image img {
   border-radius: 10px;
   width: 1300px;

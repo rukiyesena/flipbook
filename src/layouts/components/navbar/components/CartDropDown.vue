@@ -26,17 +26,17 @@
                   items-center
                   justify-center
                 ">
-								<img :src="sistemurl + item.images" alt="item" class="cart-dropdown-item-img p-4"
-									@click="navigate_to_detail_view(item)" />
+								<img :src="'data:image/png;base64,' + item.images" alt="item" class="cart-dropdown-item-img p-4"
+									style="max-height: 75px;" @click="navigate_to_detail_view(item)" />
 							</div>
 
 							<!-- INFO COL -->
 							<div class="vx-col w-4/5 pr-4 pl-2 py-4 flex flex-col justify-center">
 								<span class="font-medium block cart-item-title truncate" @click="navigate_to_detail_view(item)">{{
-									item.STOCKNAME }}</span>
+									item.stockName }}</span>
 								<small class="truncate mb-2">{{ item.description }}</small>
 								<div class="flex items-center justify-between">
-									<span class="text-sm font-medium">{{ item.ADET }} <small>x</small> {{ item.FIYAT }} TL</span>
+									<span class="text-sm font-medium">{{ item.quantity }} <small>x</small> {{ item.stockPrice }} TL</span>
 									<feather-icon icon="XIcon" svgClasses="h-4 w-4 cursor-pointer text-danger" class="hover:text-danger"
 										@click.stop="removeItemFromCart(item)" />
 								</div>
@@ -60,7 +60,7 @@
           " @click="$router.push('/products/checkout').catch(() => { })">
 					<span class="flex items-center justify-center">
 						<feather-icon icon="ShoppingCartIcon" svgClasses="h-4 w-4" />
-						<span class="ml-2">Sepete Git</span>
+						<span class="ml-2">Teklif oluştur</span>
 					</span>
 				</div>
 			</template>
@@ -70,18 +70,18 @@
 				<p class="p-4">Sepetiniz boş.</p>
 			</template>
 		</vs-dropdown-menu>
-	<!-- <ListCard ref="cardList" /> -->	
+		<!-- <ListCard ref="cardList" /> -->
 	</vs-dropdown>
 </template>
 
 <script>
-import VuePerfectScrollbar from "vue-perfect-scrollbar"; 
+import VuePerfectScrollbar from "vue-perfect-scrollbar";
 import Store from "../../../../store/store";
 import state from "../../../../store/state";
 import userJson from "../../../../../public/user.json";
 export default {
 	components: {
-		VuePerfectScrollbar,                 
+		VuePerfectScrollbar,
 	},
 	data() {
 		return {

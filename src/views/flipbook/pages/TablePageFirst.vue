@@ -1,7 +1,7 @@
 <template>
   <div style="height: 100%;">
     <b-row style="height: 100%;">
-      <topBanner2 :page="page" />
+      <topleftbanner :page="index" />
 
       <div data-slug="portfolios">
         <div class="  bb-custom-side" style="width: 100%;">
@@ -10,22 +10,39 @@
               <b-col>
                 <div id="portfolio-container-oBTIBx9p91" class="portfolio-container" style="width: 100%;">
                   <div class="portfolio-item illustrator"
-                    style="width: 9% !important; height: 350px; border: black 1px solid;"
-                    v-for="(value, index) in stockList" :key="index">
-                    <b-row>
-                      <b-col style="text-align: -webkit-center;">
-                        <img loading="lazy" decoding="async" style="width: auto; "
+                    style="width: 24% !important; height: 350px; border: black 0.1px solid;"
+                    v-for="(value, indexItem) in stockList" :key="indexItem">
+                    <b-row v-on:click="imgSrc = 'data:image/png;base64,' + value.images; imageShowBtn();">
+
+                      <b-col style="text-align: -webkit-center;" :id="'tooltip-target-' + index + '-' + indexItem"
+                        v-b-tooltip.hover>
+
+                        <AddtoCard :data="value" :indexItem="'tooltip-target-' + index + '-' + indexItem" />
+                        <img loading="lazy" decoding="async" style="width: auto; max-height: 200px; padding-top: 30px;"
                           :src="'data:image/png;base64,' + value.images"
                           class="attachment-portfolio_thumbnail size-portfolio_thumbnail wp-post-image" alt="">
-                        <div class="mask">
-                          <a href="https://demo.focuxtheme.com/magicbook/portfolio/relaxing-with-coffee/" target="_blank"
-                            rel="portfolio" class="fancybox ajax">
-                            <h4>{{ value.stockCode }}</h4>
-                            <p>{{ value.stockName }}</p>
-                          </a>
-                          <a href="https://demo.focuxtheme.com/magicbook/portfolio/relaxing-with-coffee/" target="_blank"
-                            class="more ajax"><i class="fa fa-info-circle"></i><span>Read
-                              more</span></a>
+                        <div style="    position: relative; height: 50px; ">
+
+                          <h4 style=" color: black">{{ value.stockCode }}</h4>
+                          <p style=" color: black; margin:0px" v-if="value.stockName">{{ value.stockName }}</p>
+                          <span style=" color: black; margin:0px" v-if="value.attr1_cins">cins: {{ value.attr1_cins }} -
+                          </span>
+                          <span style=" color: black; margin:0px" v-if="value.attr2_en">en: {{ value.attr2_en }} - </span>
+                          <span style=" color: black; margin:0px" v-if="value.attr3_boy">boy: {{ value.attr3_boy }} -
+                          </span>
+                          <span style=" color: black; margin:0px" v-if="value.attr4_motif">motif: {{ value.attr4_motif }}
+                            - </span>
+                          <span style=" color: black; margin:0px" v-if="value.attr5_derinlik">derinlik: {{
+                            value.attr5_derinlik }} - </span>
+                          <span style=" color: black; margin:0px" v-if="value.attr6_taban">taban: {{ value.attr6_taban }}
+                            - </span>
+                          <span style=" color: black; margin:0px" v-if="value.attr7_delik">delik: {{ value.attr7_delik }}
+                            - </span>
+                          <span style=" color: black; margin:0px" v-if="value.attr8_kalinlik">kalinlik: {{
+                            value.attr8_kalinlik }} - </span>
+                          <span style=" color: black; margin:0px" v-if="value.attr9_yukseklik">yükseklik: {{
+                            value.attr9_yukseklik }} </span>
+
                         </div>
                       </b-col>
                     </b-row>
@@ -43,12 +60,12 @@
         </div>
       </div>
       <b-col cols="12" align-self="end">
-        <bottomrightBanner :page="page" />
+        <bottomBanner2 :page="index" />
 
       </b-col>
     </b-row>
 
-
+    <imageShow :popupResimSw="imagePopup" @closeSidebar="closeSidebar" :imgSrc="imgSrc" />
 
   </div>
 </template>
@@ -56,76 +73,58 @@
 import topleftbanner from '../components/topleftbanner.vue';
 import topBanner2 from '../components/topBanner2.vue';
 import rightBanner from '../components/rightBanner.vue';
-import bottomrightBanner from '../components/bottomrightBanner.vue';
+import bottomBanner2 from '../components/bottomBanner2.vue';
+import imageShow from './components/imageShow.vue';
+import AddtoCard from './components/AddtoCard.vue';
 
 export default {
-  props: ["page"],
-
-  components: { topBanner2, topleftbanner, rightBanner, bottomrightBanner },
+  props: ["page", "position", "index"],
+  data() { return { imgSrc: "", stockList: [], imagePopup: false } },
+  components: { AddtoCard, imageShow, topBanner2, topleftbanner, rightBanner, bottomBanner2 },
   methods: {
     toggleBrowsingContent() {
       this.$refs.heroImage.classList.toggle("browsing-content");
     },
-  },
-  computed: {
-    stockList() {
-      return this.$store.state.StockList
+    imageShowBtn() {
+
+      this.imagePopup = true
+    },
+    closeSidebar() {
+      this.imagePopup = false
+
     }
   },
+  watch: {
+    page(val) {
+      console.log(val)
+      if (this.index == val - 2 || this.index == val - 1 || this.index == val) {
+        console.log("Sec " + this.index)
+
+        try {
+          let args = {
+            page: this.index
+          }
+          this.$store
+            .dispatch("getDataStock", args)
+            .then(response => {
+              this.stockList = response
+              console.log(this.stockList)
+            });
+        } catch (error) {
+          console.log(error)
+        }
+      }
+
+
+    }
+
+  }
 
 };
 </script>
 
 
 <style scoped lang="scss">
-@import url(https://fonts.googleapis.com/css?family=Oxygen:400,300,700);
-
-.ca-1 {
-  background: url("https://farm1.staticflickr.com/571/21101592188_f5da31c3f5_o.jpg") no-repeat center center;
-}
-
-.ca-2 {
-  background: url("https://watermark.lovepik.com/photo/20211210/large/lovepik-summer-watermelon-picture_501768510.jpg") no-repeat center center;
-}
-
-.ca-3 {
-  background: url("https://watermark.lovepik.com/photo/20211210/large/lovepik-summer-watermelon-picture_501768510.jpg") no-repeat center center;
-}
-
-.ca-4 {
-  background: url("https://watermark.lovepik.com/photo/20211210/large/lovepik-summer-watermelon-picture_501768510.jpg") no-repeat center center;
-}
-
-.ca-5 {
-  background: url("https://farm6.staticflickr.com/5692/21342201074_aef835df8d_k.jpg") no-repeat center center;
-}
-
-.ca-6 {
-  background: url("https://watermark.lovepik.com/photo/20211210/large/lovepik-summer-watermelon-picture_501768510.jpg") no-repeat center center;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-.clear-after:after,
-.main-wrapper .scroll-content .sc-row .content-article .article-info .ai-footer:after,
-.main-wrapper .scroll-content .sc-row:after,
-.main-wrapper .hero-image .hero-content .hc-footer:after {
-  content: "";
-  display: block;
-  clear: both;
-}
-
-body {
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  font-family: Oxygen;
-  color: white;
-}
-
 .main-wrapper {
   position: relative;
   width: 100vw;
@@ -367,5 +366,4 @@ body {
   margin: 3px 10px;
   width: 1px;
   background-color: white;
-}
-</style>
+}</style>

@@ -1,6 +1,6 @@
 /*=========================================================================================
-  File Name: store.js
-  Description: Vuex store
+  File Name: moduleecommerce.js
+  Description: ecommerce Module
   ----------------------------------------------------------------------------------------
   Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
   Author: Pixinvent
@@ -8,25 +8,15 @@
 ==========================================================================================*/
 
 
-import Vue from 'vue'
-import Vuex from 'vuex'
+import state from './moduleECommerceState.js'
+import mutations from './moduleECommerceMutations.js'
+import actions from './moduleECommerceActions.js'
+import getters from './moduleECommerceGetters.js'
 
-import state from "./state"
-import getters from "./getters"
-import mutations from "./mutations"
-import actions from "./actions"
-import eCommerce from "./eCommerce/moduleECommerce"
-
-
-Vue.use(Vuex)
-
-export default new Vuex.Store({
-  getters,
-  mutations,
+export default {
+  namespaced: true,
   state,
+  mutations,
   actions,
-  modules: {
-    eCommerce: eCommerce
-  },
-  strict: process.env.NODE_ENV !== 'production'
-})
+  getters
+}

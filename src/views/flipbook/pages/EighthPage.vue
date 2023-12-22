@@ -3,7 +3,7 @@
   </template>
 
   <script>
-window.addEventListener('load', function () {
+/*window.addEventListener('load', function () {
 
 (function initHeight() {
   $("section#section__example .description-container").css(
@@ -67,7 +67,7 @@ document.querySelector('.btn-restart').addEventListener('click',function(){
   }, 20);
 });
 
-});
+});*/
   </script>
   
 

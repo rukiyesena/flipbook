@@ -122,7 +122,7 @@
 
 </template>
   
-<style>
+<style scoped lang="scss">
 @import url('https://fonts.googleapis.com/css?family=Lora');
 
 * {

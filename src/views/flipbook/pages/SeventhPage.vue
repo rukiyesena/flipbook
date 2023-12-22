@@ -1,58 +1,51 @@
 <template>
-  <div id="center">
-    <section id="section__example">
-      <div class="container">
-        <div class="images-container">
-          <div id="image-wrapper-0">
-            <div id="image-0-shadow"></div>
-            <img alt="Title1" src="https://b2bservis.buldans.com.tr/Uploads/8681653121414.jpg">
+  <b-row>
+    <topleftbanner :page="index" />
+    <div id="center">
+      <section id="section__example">
+        <div class="container">
+          <!--   <div class="images-container" v-for="(value, index) in stockList" :key="index">
+            <div :id="'image-wrapper-' + index">
+              <div :id="'image-' + 0 + '-shadow'"></div>
+              <img style="max-height: 200px; width: auto;" :src="'data:image/png;base64,' + value.images" alt="test" />
+            </div>
+
           </div>
-          <div id="image-wrapper-1">
-            <div id="image-1-shadow"></div>
-            <img alt="Title2" src="https://b2bservis.buldans.com.tr/Uploads/8681653117127.jpg">
+          <div class="description-container">
+            <div class="description active">
+              <h3>Title 1</h3>
+              <span>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
+                labore et dolore magna aliquyam.</span>
+            </div>
+            <div class="description">
+              <h3>Title 2</h3>
+              <span>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
+                invidunt.</span>
+            </div>
+            <div class="description">
+              <h3>Title 3</h3>
+              <span>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
+                labore et dolore magna aliquyam.</span>
+            </div>
+            <div class="description">
+              <h3>Title 4</h3>
+              <span>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
+                labore.</span>
+            </div>
+            <div class="description">
+              <h3>Title 5</h3>
+              <span>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor.</span>
+            </div>
           </div>
-          <div id="image-wrapper-2">
-            <div id="image-2-shadow"></div>
-            <img alt="Title3" src="https://b2bservis.buldans.com.tr/Uploads/8681653116793.jpg">
-          </div>
-          <div id="image-wrapper-3">
-            <div id="image-3-shadow"></div>
-            <img alt="Title4" src="https://b2bservis.buldans.com.tr/Uploads/8681653113105.jpg">
-          </div>
-          <div id="image-wrapper-4">
-            <div id="image-4-shadow"></div>
-            <img alt="Title5" src="https://b2bservis.buldans.com.tr/Uploads/8681653113556.jpg">
-          </div>
+          <div class="btn-restart">Restart</div>-->
         </div>
-        <div class="description-container">
-          <div class="description active">
-            <h3>Title 1</h3>
-            <span>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
-              labore et dolore magna aliquyam.</span>
-          </div>
-          <div class="description">
-            <h3>Title 2</h3>
-            <span>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt.</span>
-          </div>
-          <div class="description">
-            <h3>Title 3</h3>
-            <span>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
-              labore et dolore magna aliquyam.</span>
-          </div>
-          <div class="description">
-            <h3>Title 4</h3>
-            <span>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
-              labore.</span>
-          </div>
-          <div class="description">
-            <h3>Title 5</h3>
-            <span>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor.</span>
-          </div>
-        </div>
-        <div class="btn-restart">Restart</div>
-      </div>
-    </section>
-  </div>
+      </section>
+    </div>
+    <b-col cols="12" align-self="end">
+      <bottomBanner2 :page="index" />
+
+    </b-col>
+  </b-row>
 </template>
 
 <script>
@@ -122,7 +115,40 @@ window.addEventListener('load', function () {
 
 });
 </script>
-  
+<script>
+import topleftbanner from '../components/topleftbanner.vue';
+import bottomBanner2 from '../components/bottomBanner2.vue';
+  export default {
+    props: ["page", "position", "index"],
+  data() { return { stockList: [] } },
+  components: { topleftbanner, bottomBanner2 },
+    watch: {
+    page(val) {
+      if (this.index == val - 2 || this.index == val - 1) {
+        console.log("thrd " + this.index)
+
+        try {
+          let args = {
+            page: this.index
+          }
+          this.$store
+            .dispatch("getDataStock", args)
+            .then(response => {
+              this.stockList = response
+              console.log(this.stockList)
+            });
+        } catch (error) {
+          console.log(error)
+        }
+      }
+
+
+    }
+
+  },
+}
+</script>
+
 
 <style scoped lang="scss">
 html {
@@ -299,4 +325,5 @@ body {
     }
   }
 }
-}</style>
+}
+</style>

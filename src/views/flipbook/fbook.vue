@@ -1,10 +1,9 @@
 <template>
-  <div id="fb5-ajax" data-cat="your_book_name" data-template="true">
+  <div id="fb5-ajax" data-cat="katalog" data-template="true">
     <!-- BACKGROUND FLIPBOOK -->
     <div class="fb5-bcg-book"></div>
     <!-- BEGIN STRUCTURE HTML FLIPBOOK -->
     <div class="fb5" id="fb5">
-
       <!-- CONFIGURATION BOOK -->
       <section id="config">
         <ul>
@@ -53,7 +52,8 @@
               <div class="fb5-gradient-page"></div>
               <canvas id="canv1"></canvas>
               <div class="fb5-page-book">
-                <component :is="item.component" :key="item.ind" :page="currentValue - 1" />
+                <component :is="item.component" :key="item.ind" :index="item.ind" :page="currentValue - 1"
+                  :position="item.position" />
               </div>
             </div>
           </div>
@@ -106,23 +106,27 @@
             <li>
               <a title="full/normal screen" class="fb5-fullscreen"><i class="fa fa-expand"></i></a>
             </li>
-          </ul>
-        </div>
-
-        <div class="fb5-menu" id="fb5-right">
-          <ul>
-            <!-- icon page manager -->
-            <li class="fb5-goto">
-              <label for="fb5-page-number" id="fb5-label-page-number"></label>
-              <input type="text" id="fb5-page-number" style="width: 25px;">
-              <span id="fb5-page-number-two"></span>
-
+            <li>
+              <cart-drop-down />
             </li>
           </ul>
+        </div>  
+        <div class="fb5-menu" id="fb5-right" style="width: 200px">
+          <b-row> 
+            <b-col>
+              <ul>
+                <!-- icon page manager -->
+                <li class="fb5-goto">
+                  <label for="fb5-page-number" id="fb5-label-page-number"></label>
+                  <input type="text" id="fb5-page-number" style="width: 25px;">
+                  <span id="fb5-page-number-two"></span> 
+                </li>
+              </ul>
+            </b-col> 
+          </b-row> 
         </div>
       </div>
-      <!-- END FOOTER -->
-
+      <!-- END FOOTER --> 
       <!-- BEGIN ALL PAGES -->
       <div id="fb5-all-pages" class="fb5-overlay">
         <section class="fb5-container-pages">
@@ -217,7 +221,8 @@ import EighthPage from './pages/EighthPage.vue';
 import NinthPage from './pages/NinthPage.vue';
 import TablePageFirst from './pages/TablePageFirst.vue';
 import TablePageSecond from './pages/TablePageSecond.vue';
-
+import CartDropDown from '../../layouts/components/navbar/components/CartDropDown.vue'
+import { Icon } from "@iconify/vue2";
 export default {
   mounted() {
     setInterval(() => {
@@ -232,9 +237,9 @@ export default {
     }, 500); // Örneğin, her 1 saniyede bir kontrol edebilirsiniz
     const plugin = document.createElement("script");
 
-    plugin.setAttribute("src", "http://sistem.uzum.com.tr/flipbook-js/js/onload.js"); 
+    plugin.setAttribute("src", "http://sistem.uzum.com.tr/flipbook-js/js/onload.js");
 
- 
+
     document.head.appendChild(plugin);
   },
   data() {
@@ -252,6 +257,8 @@ export default {
 
   },
   components: {
+    CartDropDown,
+    Icon,
     TablePageSecond,
     EntryPage,
     FirstPage,
@@ -269,11 +276,12 @@ export default {
 
   },
   created() {
-
-
     try {
+      let args = {
+        page: 0
+      }
       this.$store
-        .dispatch("getDataStock")
+        .dispatch("getDataStock", args)
         .then(response => {
           if (response == true) {
             this.stockList = this.$store.state.StockList;

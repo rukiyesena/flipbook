@@ -6,34 +6,33 @@
   "title": "Buldan's Bayi Satış Ekranı",
   "pages": [
     {
-      "ind": "0",
+      "ind": "-1",
       "component": "EntryPage",
-      "title": "Giriş Sayfa"
+      "title": "Giriş Sayfa",
+      "position": "right"
     },
+     
     {
       "ind": "1",
       "component": "FirstPage",
-      "title": "İlk Sayfa"
+      "title": "İlk Sayfa",
+      "position": "left"
     },
     {
       "ind": "2",
       "component": "TablePageFirst",
-      "title": "Table Sayfa"
+      "title": "Table Sayfa",
+      "position": "right"
     },
     {
-      "ind": "6",
-      "component": "SixthPage",
-      "title": "altıncı Sayfa"
-    },
-    {
-      "ind": "7",
+      "ind": "3",
       "component": "SeventhPage",
       "title": "Yedinci Sayfa"
     },
     {
-      "ind": "9",
-      "component": "NinthPage",
-      "title": "Dokuzuncu Sayfa"
+      "ind": "4",
+      "component": "SeventhPage",
+      "title": "Yedinci Sayfa"
     }
   ]
 }

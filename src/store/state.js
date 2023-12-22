@@ -53,6 +53,8 @@ const state = {
   PageSize: "",
   Pages: "",
   StockList: [],
+  StockListLeft: [],
+  StockListRight: [],
   AppActiveUser: userDefaults,
   email: '',
   B2BfirmaAdi: '',
