@@ -8,53 +8,27 @@
           <div class="content-wrapper">
             <b-row>
               <b-col>
-                <div id="portfolio-container-oBTIBx9p91" class="portfolio-container" style="width: 100%;">
+                <div id="portfolio-container-oBTIBx9p91" class="portfolio-container" style="width: 90%;">
                   <div class="portfolio-item illustrator"
-                    style="width: 24% !important; height: 350px; border: black 0.1px solid;"
-                    v-for="(value, indexItem) in stockList" :key="indexItem">
-                    <b-row v-on:click="imgSrc = 'data:image/png;base64,' + value.images; imageShowBtn();">
-
-                      <b-col style="text-align: -webkit-center;" :id="'tooltip-target-' + index + '-' + indexItem"
-                        v-b-tooltip.hover>
-
-                        <AddtoCard :data="value" :indexItem="'tooltip-target-' + index + '-' + indexItem" />
-                        <img loading="lazy" decoding="async" style="width: auto; max-height: 200px; padding-top: 30px;"
-                          :src="'data:image/png;base64,' + value.images"
-                          class="attachment-portfolio_thumbnail size-portfolio_thumbnail wp-post-image" alt="">
-                        <div style="    position: relative; height: 50px; ">
-
-                          <h4 style=" color: black">{{ value.stockCode }}</h4>
-                          <p style=" color: black; margin:0px" v-if="value.stockName">{{ value.stockName }}</p>
-                          <span style=" color: black; margin:0px" v-if="value.attr1_cins">cins: {{ value.attr1_cins }} -
-                          </span>
-                          <span style=" color: black; margin:0px" v-if="value.attr2_en">en: {{ value.attr2_en }} - </span>
-                          <span style=" color: black; margin:0px" v-if="value.attr3_boy">boy: {{ value.attr3_boy }} -
-                          </span>
-                          <span style=" color: black; margin:0px" v-if="value.attr4_motif">motif: {{ value.attr4_motif }}
-                            - </span>
-                          <span style=" color: black; margin:0px" v-if="value.attr5_derinlik">derinlik: {{
-                            value.attr5_derinlik }} - </span>
-                          <span style=" color: black; margin:0px" v-if="value.attr6_taban">taban: {{ value.attr6_taban }}
-                            - </span>
-                          <span style=" color: black; margin:0px" v-if="value.attr7_delik">delik: {{ value.attr7_delik }}
-                            - </span>
-                          <span style=" color: black; margin:0px" v-if="value.attr8_kalinlik">kalinlik: {{
-                            value.attr8_kalinlik }} - </span>
-                          <span style=" color: black; margin:0px" v-if="value.attr9_yukseklik">yükseklik: {{
-                            value.attr9_yukseklik }} </span>
-
-                        </div>
-                      </b-col>
-                    </b-row>
-
+                    style="width: 34% !important; height: 504px; border: black 0.1px solid;"
+                    v-for="(category, index) in CategoryList" :key="index">
+                    
+                    <b-col style="text-align: -webkit-center;">
+                      <AddtoCard :data="category" :indexItem="'tooltip-target-' + index" />
+                      <div style="position: relative; height: 50px;">
+                        <h3 style="color: black">Kategori Adı: {{ category.categoryName }}</h3>
+                        <h3 style="color: black">Kategori Kodu: {{ category.categoryCode }}</h3>
+                        <img :src="category.image" alt="Category Image" style="width: 100%; height: 700%;" />
+                    
+                        <!-- Kategoriye Git Butonu -->
+                        <button @click="redirectToSeventhPage" style="position: absolute; bottom: 10px; right: 10px;">Kategoriye Git</button>
+                      </div>
+                    </b-col>
                   </div>
-
                 </div>
               </b-col>
-
-
+              
             </b-row>
-
 
           </div>
         </div>
@@ -79,9 +53,14 @@ import AddtoCard from './components/AddtoCard.vue';
 
 export default {
   props: ["page", "position", "index"],
-  data() { return { imgSrc: "", stockList: [], imagePopup: false } },
+  data() { return { imgSrc: "",  CategoryList: [], imagePopup: false } },
   components: { AddtoCard, imageShow, topBanner2, topleftbanner, rightBanner, bottomBanner2 },
   methods: {
+    redirectToSeventhPage() {
+      // Burada "SeventhPage" adlı bir sayfaya yönlendirme yapabilirsiniz.
+      // Aşağıda bu sayfanın adını ve yönlendirme işlemini gerçekleştiren bir örnek gösterilmiştir.
+      this.$router.push({ name: 'SeventhPage' });
+    },
     toggleBrowsingContent() {
       this.$refs.heroImage.classList.toggle("browsing-content");
     },
@@ -94,32 +73,27 @@ export default {
 
     }
   },
-  watch: {
-    page(val) {
-      console.log(val)
-      if (this.index == val - 2 || this.index == val - 1 || this.index == val) {
-        console.log("Sec " + this.index)
 
-        try {
-          let args = {
-            page: this.index
-          }
-          this.$store
-            .dispatch("getDataStock", args)
-            .then(response => {
-              this.stockList = response
-              console.log(this.stockList)
-            });
-        } catch (error) {
-          console.log(error)
+  created() {
+  try {
+    let args = {
+      page: 0
+    };
+
+    this.$store.dispatch("getDataCategoryList", args)
+      .then(response => {
+        if (response === true) {
+          this.CategoryList = this.$store.state.CategoryList;
+          console.log("CategoryList:", this.$store.state.CategoryList);
         }
-      }
-
-
-    }
-
+      })
+      .catch(error => {
+        console.error("Error fetching category list:", error);
+      });
+  } catch (error) {
+    console.log(error);
   }
-
+}
 };
 </script>
 

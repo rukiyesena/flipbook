@@ -1,289 +1,235 @@
 <template>
-  <div class="">
-    <topBanner class="top-banner" />
-    <header class="header"></header>
+  <div style="height: 80%;">
+    <b-row style="height: 70%;">
+      <topleftbanner :page="index" />
 
-    <div class="main-wrapper">
-      <div class="hero-image" @click="toggleBrowsingContent" ref="heroImage">
-        <div class="hero-content">
-          <div class="hc-label">The Italian Dolomites</div>
-          <div class="hc-desc">Interview with Andy Free about his trip to the Dolomites in Italy</div>
-          <div class="hc-footer">
-            <div class="hcf-comments"><span class="amount">168</span>Comments</div>
-            <div class="hcf-divider"></div>
-            <div class="hcf-shares"><span class="amount">26.842</span>Shares</div>
-            <div class="hcf-toggle">
-              <p class="hcft-label">More Articles</p>
-              <div class="hcft-icon-holder">
-                <i class="hcft-icon closed fa fa-chevron-down"></i>
-                <i class="hcft-icon opened fa fa-times"></i>
-              </div>
-            </div>
+     
+      <div data-slug="portfolios">
+        <div class="bb-custom-side" style="width: 99%;">
+          <div class="content-wrapper">
+            <b-row v-for="(row, rowIndex) in stockListChunks" :key="rowIndex">
+              <b-col v-for="(value, columnIndex) in row" :key="columnIndex" :cols="columnWidth(value)">
+                <div
+                  id="portfolio-container-oBTIBx9p91"
+                  class="portfolio-container"
+                  :style="getPortfolioContainerStyle(value)"
+                >
+                  <b-row v-on:click="imgSrc = value.url_image; imageShowBtn();">
+                    <b-col style="text-align: -webkit-center;" :id="'tooltip-target-' + index + '-' + (rowIndex * 4 + columnIndex)" v-b-tooltip.hover>
+                      <AddtoCard :data="value" :indexItem="'tooltip-target-' + index + '-' + (rowIndex * 4 + columnIndex)" />
+                      <img
+                        loading="lazy"
+                        decoding="async"
+                        style="
+                          width: 83%;
+                          height: auto;
+                          object-fit: cover;
+                          object-position: center;
+                        "
+                        :src="value.url_image"
+                        class="attachment-portfolio_thumbnail size-portfolio_thumbnail wp-post-image"
+                        alt=""
+                      />
+                      <div style="position: relative; height: 50px;">
+                        <h4 style="color: black">{{ value.stockCode }}</h4>
+                        <p style="color: black; margin: 0px" v-if="value.stockName">{{ value.stockName }}</p>
+                        <!-- Add other information here -->
+                      </div>
+                    </b-col>
+                  </b-row>
+                </div>
+              </b-col>
+            </b-row>
           </div>
         </div>
       </div>
 
-      <div class='scroll-content'>
-        <div class='sc-row'>
-          <div class='content-article'>
-            <div class='article-number'>01</div>
-            <div class='article-info'>
-              <div class='ai-label'>Visiting Vester Peak</div>
-              <div class='ai-desc'>Everything you should know about hiking in the mountains</div>
-              <div class='ai-footer'>
-                <div class='aif-comments'><span class='amount'>24</span>Comments</div>
-                <div class='aif-divider'></div>
-                <div class='aif-shares'><span class='amount'>128</span>Shares</div>
-              </div>
-            </div>
-            <div data-v-13e7dbd6="" class="article-image ca-1" style="
-          background: url(https://www.yurukhome.com/image/cache/catalog/salonhalisi/mirpes-jel-taban-hali-modelleri-1000x1000.jpg);
-      "></div>
-          </div>
-          <div class='content-article'>
-            <div class='article-number'>02</div>
-            <div class='article-info'>
-              <div class='ai-label'>Trailing Together</div>
-              <div class='ai-desc'>Walking among the nayture in the Rocky Mountain National Park, Colorado</div>
-              <div class='ai-footer'>
-                <div class='aif-comments'><span class='amount'>458</span>Comments</div>
-                <div class='aif-divider'></div>
-                <div class='aif-shares'><span class='amount'>110</span>Shares</div>
-              </div>
-            </div>
-            <div data-v-13e7dbd6="" class="article-image ca-2" style="
-          background: urlhttps://images.halistores.com/apex-cosy-9905-kahve-shaggy-tuylu-hali-590833-15-O.jpg);
-      "></div>
-          </div>
-        </div>
-        <div class='sc-row'>
-          <div class='content-article'>
-            <div class='article-number'>03</div>
-            <div class='article-info'>
-              <div class='ai-label'>The Magic Pond</div>
-              <div class='ai-desc'>The scenery is set like a Monet painting</div>
-              <div class='ai-footer'>
-                <div class='aif-comments'><span class='amount'>1640</span>Comments</div>
-                <div class='aif-divider'></div>
-                <div class='aif-shares'><span class='amount'>86.451</span>Shares</div>
-              </div>
-            </div>
-            <div data-v-13e7dbd6="" class="article-image ca-3" style="
-          background: url(https://www.bahariyehali.com/images/kategoriler/kategori_logolar/scandi.jpg);
-      "></div>
-          </div>
-          <div class='content-article'>
-            <div class='article-number'>04</div>
-            <div class='article-info'>
-              <div class='ai-label'>Beach Essentials</div>
-              <div class='ai-desc'>What should you bring to the beach, and what beaches should you visit?</div>
-              <div class='ai-footer'>
-                <div class='aif-comments'><span class='amount'>58</span>Comments</div>
-                <div class='aif-divider'></div>
-                <div class='aif-shares'><span class='amount'>1.359</span>Shares</div>
-              </div>
-            </div>
-            <div class='article-image ca-4'></div>
-          </div>
-        </div>
-        <div class='sc-row'>
-          <div class='content-article'>
-            <div class='article-number'>05</div>
-            <div class='article-info'>
-              <div class='ai-label'>Romantic Camping</div>
-              <div class='ai-desc'>We went to Norway to find out just how romantic it can be sleeping under the stars
-              </div>
-              <div class='ai-footer'>
-                <div class='aif-comments'><span class='amount'>14</span>Comments</div>
-                <div class='aif-divider'></div>
-                <div class='aif-shares'><span class='amount'>36</span>Shares</div>
-              </div>
-            </div>
-            <div data-v-13e7dbd6="" class="article-image ca-5" style="
-          background: url(https://www.merinos.com.tr/uploads/category/medium/1656336523.jpg);
-      "></div>
-          </div>
-          <div class='content-article'>
-            <div class='article-number'>06</div>
-            <div class='article-info'>
-              <div class='ai-label'>Cave Explorers</div>
-              <div class='ai-desc'>In USA there's over a thousand caves. We list everyone that you should visit.</div>
-              <div class='ai-footer'>
-                <div class='aif-comments'><span class='amount'>3590</span>Comments</div>
-                <div class='aif-divider'></div>
-                <div class='aif-shares'><span class='amount'>129.547</span>Shares</div>
-              </div>
-            </div>
-            <div class='article-image ca-6'></div>
-          </div>
-        </div>
-      </div>
-    </div>
+      <b-col cols="12" align-self="end">
+        <bottomBanner2 :page="index" />
+      </b-col>
+    </b-row>
+
+    <imageShow :popupResimSw="imagePopup" @closeSidebar="closeSidebar" :imgSrc="imgSrc" />
   </div>
 </template>
 
 <script>
-import topBanner from "../components/topBanner";
+import topleftbanner from '../components/topleftbanner.vue';
+import topBanner2 from '../components/topBanner2.vue';
+import rightBanner from '../components/rightBanner.vue';
+import bottomBanner2 from '../components/bottomBanner2.vue';
+import imageShow from './components/imageShow.vue';
+import AddtoCard from './components/AddtoCard.vue';
 
 export default {
-  components: {
-    topBanner,
-  },
-  mounted() {
-  },
+  props: ["page", "position", "index"],
+  data() { return { url_image: "", imgSrc: "", stockList: [], imagePopup: false } },
+  components: { AddtoCard, imageShow, topBanner2, topleftbanner, rightBanner, bottomBanner2 },
   methods: {
+    columnWidth(value) {
+    const totalItems = this.stockList.length;
+    const itemsPerRow = 3;
+
+    // Eğer resim sayısı 9 ise, sütunları eşit genişlet
+    if (totalItems === 9) {
+      return '4'; // 3 sütunu da eşit genişlet
+    }
+  // Eğer resim sayısı 8 ise ve bu resimlerden biri ikinci sıradaysa,
+    // sütunları genişlet
+    if (totalItems === 8) {
+      const columnIndex = this.stockList.indexOf(value);
+      const lastRowStart = totalItems - itemsPerRow;
+
+      if (columnIndex >= lastRowStart) {
+        return '6'; // Son iki sütunu genişlet
+      }
+    }
+
+    // Eğer resim sayısı 9 ise, sütunları eşit genişlet
+    if (totalItems === 9) {
+      return '4'; // 3 sütunu da eşit genişlet
+    }
+
+    // Eğer resim sayısı 11 ise ve bu resimlerden biri bu sıradaysa,
+    // son sütunu genişlet
+    if (totalItems === 11) {
+      const columnIndex = this.stockList.indexOf(value);
+      const lastRowStart = totalItems - itemsPerRow;
+
+      if (columnIndex >= lastRowStart) {
+        return '4';
+      }
+    }
+
+    return '3'; // Normal durumda sütun genişliği 3
+  },
+  
+  getPortfolioContainerStyle(value) {
+  const totalItems = this.stockList.length;
+
+  if (totalItems === 9) {
+    // Check if the current value is in the last row
+    const columnIndex = this.stockList.indexOf(value);
+    const lastRowStart = totalItems - 3;
+
+    if (columnIndex >= lastRowStart) {
+      // Apply different style for the last row
+      return {
+        width: '100%', 
+        height: '344px', 
+        border: 'blue 0.1px solid',  
+      };
+    }
+  }
+
+ 
+  if (totalItems === 10) {
+      const columnIndex = this.stockList.indexOf(value);
+      const lastRowStart = totalItems - 3;
+
+      if (columnIndex >= lastRowStart) {
+        if (columnIndex === lastRowStart || columnIndex === lastRowStart + 1) {
+          return {
+            width: '100%', 
+            height: '344px', 
+            border: 'green 0.1px solid',  
+          };
+        } else if (columnIndex === lastRowStart + 2) {
+          return {
+            width: '200%', 
+            height: '644px', 
+          };
+        }
+      }
+    }
+
+  if (totalItems === 11) {
+    const columnIndex = this.stockList.indexOf(value);
+    const lastRowStart = totalItems - 3;
+
+    if (columnIndex >= lastRowStart) {
+      return {
+        width: '100%', 
+        height: '344px', 
+        border: 'red 0.1px solid',  
+      };
+    }
+  }
+
+  // Default style
+  return {
+    width: '100%', 
+    height: '344px', 
+    border: 'black 0.1px solid',
+  };
+},
+
+
 
     toggleBrowsingContent() {
       this.$refs.heroImage.classList.toggle("browsing-content");
     },
+    imageShowBtn() {
+      this.imagePopup = true;
+    },
+    closeSidebar() {
+      this.imagePopup = false;
+    }
   },
+  computed: {
+    stockListChunks() {
+      const chunkSize = 4;
+      const totalItems = this.stockList.length;
+      const remainder = totalItems % chunkSize;
+
+      const chunks = [];
+      let start = 0;
+
+      // Add rows with full chunkSize items
+      for (let i = 0; i < totalItems - remainder; i += chunkSize) {
+        chunks.push(this.stockList.slice(i, i + chunkSize));
+        start = i + chunkSize;
+      }
+
+      // Add the remaining items in a separate row if there is a remainder
+      if (remainder > 0) {
+        chunks.push(this.stockList.slice(start, totalItems));
+      }
+
+      return chunks;
+    },
+  },
+
+  watch: {
+    page(val) {
+      console.log(val)
+      if (this.index == val - 2 || this.index == val - 1 || this.index == val) {
+        console.log("Sec " + this.index)
+        try {
+          let args = {
+            page: this.index
+          }
+          this.$store
+            .dispatch("getDataStock", args)
+            .then(response => {
+              this.stockList = response
+              console.log(this.stockList)
+            });
+        } catch (error) {
+          console.log(error)
+        }
+      }
+    }
+  }
 };
 </script>
 
 
 <style scoped lang="scss">
-@import url(https://fonts.googleapis.com/css?family=Oxygen:400,300,700);
-@import url(https://fonts.googleapis.com/css?family=Cormorant+Garamond);
-@import 'https://fonts.googleapis.com/css?family=Lato:300,400,700';
-
-html {
-  font: 400 1em/1.4 'Lato', sans-serif;
-  color: #333;
-  -webkit-font-smoothing: antialiased;
-}
-
-h1 {
-  margin: 0 0 16rem;
-  text-transform: uppercase;
-  text-align: center;
-  font-size: calc(55vh + 55vw);
-}
-
-.jumbo {
-  display: block;
-  margin: -0.25em 0 0;
-  line-height: 0.875;
-  font-weight: 300;
-  background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/5175/photo-1452117774045-dfd7a5e9718c.jpeg");
-  background-repeat: no-repeat;
-  background-size: 0.39em auto;
-  background-position: 53% 87.5%;
-}
-
-.sign {
-  display: block;
-  font-size: 0.125em;
-  margin: -3.2em 0 0;
-}
-
-.sign__text {
-  background-color: #333;
-  color: #fff;
-  display: inline-block;
-  padding: 0 0.3em 0.1em;
-  line-height: 1;
-  position: relative;
-  margin: 0 0 0.45em;
-}
-
-.sign__text::before {
-  content: '';
-  position: absolute;
-  bottom: 0.08em;
-  border-top: 0.04em solid;
-  left: 0.2em;
-  right: 0.2em;
-}
-
-.subjumbo {
-  display: block;
-  text-decoration: underline;
-  font-size: 0.03em;
-  text-shadow: 0.07em 0.05em 0 #fff;
-}
-
-.section p {
-  line-height: 1.5;
-}
-
-@media (min-width: 48em) {
-  .section p {
-    column-count: 2;
-    column-gap: 1em;
-    line-height: 1.33;
-  }
-}
-
-.section__title {
-  text-align: center;
-  font-size: 1.15em;
-}
-
-.section__innertitle {
-  text-transform: uppercase;
-  font-weight: 400;
-  border-bottom: 0.15em solid;
-}
-
-a {
-  color: tomato;
-}
-
-html {
-  background: #fff;
-}
-
-body {
-  margin: 0;
-}
-
-@media (min-width: 48em) {
-  body {
-    padding: 1em;
-  }
-}
-
-.page {
-  padding: 1em;
-  margin: 1em;
-  border: 1px solid;
-  max-width: 44em;
-}
-
-@media (min-width: 48em) {
-  .page {
-    padding: 3em 5em;
-    margin-right: auto;
-    margin-left: auto;
-  }
-}
-
-.footer {
-  margin-top: 3em;
-  text-align: center;
-}
-
-
-.clear-after:after,
-.main-wrapper .scroll-content .sc-row .content-article .article-info .ai-footer:after,
-.main-wrapper .scroll-content .sc-row:after,
-.main-wrapper .hero-image .hero-content .hc-footer:after {
-  content: "";
-  display: block;
-  clear: both;
-}
-
-body {
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  font-family: Oxygen;
-  color: white;
-}
-
 .main-wrapper {
   position: relative;
-  width: 5000vw;
-  height: 100vh;
+  width: 200vw;
+  height: 200vh;
   overflow: hidden;
 }
 
@@ -292,7 +238,7 @@ body {
   position: relative;
   width: 100%;
   height: 100%;
-  background: url(https://c1.staticflickr.com/1/632/211https://akn-ayb.a-cdn.akinoncdn.com/products/2023/06/12/76139/762f8709-82a6-4e88-9649-36f66eab486d_size780x780_quality60_cropCenter.jpg36101110_1dde1c1a7e_o.jpg) no-repeat center center fixed;
+  background: url("https://c1.staticflickr.com/1/632/21136101110_1dde1c1a7e_o.jpg");
   background-size: cover;
   box-shadow: 0 5px 60px 10px rgba(0, 0, 0, 0.75);
   transition: all 0.5s ease;
@@ -422,7 +368,7 @@ body {
   position: absolute;
   top: 40%;
   left: 0;
-  width: 100%;
+  width: 53%;
   overflow: auto;
   height: calc(100% - 40%);
 }
@@ -438,10 +384,6 @@ body {
   height: 360px;
   overflow: hidden;
   position: relative;
-  margin: 0;
-  /* Remove any default margin */
-  padding: 0;
-  /* Remove any default padding */
 }
 
 .main-wrapper .scroll-content .sc-row .content-article:after {
@@ -450,50 +392,37 @@ body {
   position: absolute;
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.1));
   height: 100%;
-  width: 100%;
+  width: 53%;
   bottom: 0;
   left: 0;
   opacity: 1;
   transition: opacity 0.25s ease;
 }
 
-.main-wrapper .scroll-content {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  /* Make sure it covers the entire width of the page */
-  height: 100%;
-  /* Make sure it covers the entire height of the page */
-  overflow: auto;
+.main-wrapper .scroll-content .sc-row .content-article:hover:after {
+  opacity: 0;
 }
 
-.main-wrapper .scroll-content .sc-row {
-  z-index: 1;
-}
-
-.main-wrapper .scroll-content .sc-row .content-article {
-  float: left;
-  cursor: pointer;
-  width: 50%;
-  height: 100vh;
-  /* Adjust the height as needed */
-  overflow: hidden;
-  position: relative;
-  margin: 0;
-  padding: 0;
+.main-wrapper .scroll-content .sc-row .content-article:hover .article-image {
+  transform: scale(1.1) !important;
 }
 
 .main-wrapper .scroll-content .sc-row .content-article .article-image {
-  width: 100%;
+  width: 53%;
   height: 100%;
   background-size: cover;
   transform: scale(1);
   transition: all 0.25s ease;
 }
 
-.main-wrapper .scroll-content .sc-row .content-article:hover .article-image {
-  transform: scale(1.1) !important;
+.main-wrapper .scroll-content .sc-row .content-article .article-number {
+  z-index: 2;
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 2px;
 }
 
 .main-wrapper .scroll-content .sc-row .content-article .article-info {
@@ -536,15 +465,18 @@ body {
   float: left;
   height: 14px;
   margin: 3px 10px;
-  width: 1px;
+  width: 53%;
   background-color: white;
+tion: all 0.25s ease;
+  
+.main-wrapper .scroll-content .sc-row .content-article .article-image {
+  width: 53%;
+  max-width: 88%; /* Ya da istediğiniz genişlik değeri */
+  height: auto; /* Otomatik yükseklik ayarı */
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1);
+  transition: all 0.25s ease;
 }
 
-.top-banner {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
-  /* Adjust the z-index as needed to ensure it appears above other elements */
 }</style>

@@ -1,286 +1,275 @@
 <template>
-  <div style="height: 100%;">
-    <b-row style="height: 100%;">
-
+  <div style="height: 90%;">
+    <b-row style="height: 90%;">
       <topleftbanner :page="index" />
 
-      <div class="page">
+     
+      <div data-slug="portfolios">
+        <div class="bb-custom-side" style="width: 99%;">
+          <div class="content-wrapper">
+            <b-row v-for="(row, rowIndex) in stockListChunks" :key="rowIndex">
+              <b-col v-for="(value, columnIndex) in row" :key="columnIndex" :cols="columnWidth(value)">
+                <div
+                  id="portfolio-container-oBTIBx9p91"
+                  class="portfolio-container"
+                  :style="getPortfolioContainerStyle(value)"
+                >
+                <b-row v-on:click="showImageDetails(value)">
+                  <b-col style="text-align: -webkit-center;" :id="'tooltip-target-' + index + '-' + (rowIndex * 4 + columnIndex)" v-b-tooltip.hover>
+                      <AddtoCard :data="value" :indexItem="'tooltip-target-' + index + '-' + (rowIndex * 4 + columnIndex)" />
+                      <img
+                        loading="lazy"
+                        decoding="async"
+                        style="
+                          width: 63%;
+                          height: auto;
+                          object-fit: cover;
+                          object-position: center;
+                        "
+                        :src="value.url_image"
+                        class="attachment-portfolio_thumbnail size-portfolio_thumbnail wp-post-image"
+                        alt=""
+                      />
+                      <div style="position: relative; height: 95px;">
+                        <b-row>
+                          <b-col>
+                            <h4 style="color: black">{{ value.stockCode }}</h4>
+                          
+                            <span style=" font-size: 27px; color: black; margin:0px" v-if="value.attr2_en"> {{ value.attr2_en.replace('cm','') }} x </span>
+                            <span style="font-size: 27px; color: black; margin:0px" v-if="value.attr3_boy"> {{ value.attr3_boy.replace('cm','') }} 
+                            </span>
+                            <span style=" font-size: 27px; color: black; margin:0px" v-if="value.attr4_motif">motif: {{ value.attr4_motif }}
+                              
+                              - </span>    
+                          </b-col>
+                          <b-col>
+                            <h4 style=" font-size: 27px; color: rgb(201, 0, 0);">{{ value.stockPrice }} TL</h4>
+                            <h4 style="color: black">{{ value.stockPrice }} TL</h4>
 
-        <header class="header"></header>
-
-        <div class="main-wrapper">
-
-
-          <div class='scroll-content'>
-            <div class='sc-row'>
-              <div class='content-article' v-for="(value, indexItem) in stockList" :key="indexItem"
-                :id="'tooltip-target-' + index + '-' + indexItem" v-b-tooltip.hover>
-                <AddtoCard :data="value" :indexItem="'tooltip-target-' + index + '-' + indexItem" />
-                <div class='article-number'>{{ indexItem }}</div>
-                <div class='article-info'>
-                  <div class='ai-label ' style="color: black">{{ value.stockCode }}</div>
-                  <div class='ai-desc ' style="color: black">{{ value.stockName }}</div>
-                  <div class='ai-footer '>
-                    <div class='aif-comments' style="color: black"><span class='amount'>
-                        {{ value.attr1_cins }} - </span>{{ value.attr2_en }}
-                    </div>
-                    <div class='aif-divider'>
-
-                    </div>
-                    <div class='aif-shares' style="color: black"><span class='amount'>{{
-                      parseFloat(value.stockPrice).toFixed(2) }}</span>
-                    </div>
-                  </div>
+                          </b-col>
+                        </b-row>
+                         
+                        </div>
+                    </b-col>
+                  </b-row>
                 </div>
-                <b-row>
-
-                  <b-col style="text-align: center;" v-on:click="imageShowBtn">
-                    <img :src="'data:image/png;base64,' + value.images" style="max-height: 200px;" />
-                  </b-col>
-
-
-                </b-row>
-
-              </div>
-
-            </div>
-
+              </b-col>
+            </b-row>
           </div>
         </div>
       </div>
+
       <b-col cols="12" align-self="end">
         <bottomBanner2 :page="index" />
-
       </b-col>
     </b-row>
-    <imageShow :popupResimSw="imagePopup" />
+
+    <imageShow :popupResimSw="imagePopup" @closeSidebar="closeSidebar" :imgSrc="imgSrc" :stockCode="stockCode" :stockName="stockName"  />
   </div>
 </template>
-<script>
-import topBanner2 from '../components/topBanner2.vue';
-import topleftbanner from '../components/topleftbanner.vue';
 
+<script>
+import topleftbanner from '../components/topleftbanner.vue';
+import topBanner2 from '../components/topBanner2.vue';
+import rightBanner from '../components/rightBanner.vue';
 import bottomBanner2 from '../components/bottomBanner2.vue';
-import leftBanner from '../components/leftBanner.vue';
-import AddtoCard from './components/AddtoCard.vue';
 import imageShow from './components/imageShow.vue';
+import AddtoCard from './components/AddtoCard.vue';
+
 export default {
   props: ["page", "position", "index"],
-  data() { return { stockList: [], imagePopup: false } },
-  components: { AddtoCard, imageShow, topleftbanner, topBanner2, bottomBanner2, leftBanner },
+  data() {
+  return {
+    url_image: "",
+    imgSrc: "",
+    stockList: [],
+    imagePopup: false,
+    stockCode: "", // Add this line
+    stockName: "", // Add this line
+  };
+},
+  components: { AddtoCard, imageShow, topBanner2, topleftbanner, rightBanner, bottomBanner2 },
   methods: {
-    imageShowBtn() {
-      console.log("this.imagePopup")
-      console.log(this.imagePopup)
+    showImageDetails(value) {
+    this.imgSrc = value.url_image;
+    this.stockCode = value.stockCode;
+    this.stockName = value.stockName;
+    this.imageShowBtn();
+  },
+  imageShowBtn() {
+    this.imagePopup = true;
+  },
+  closeSidebar() {
+    this.imagePopup = false;
+  },
 
-      this.imagePopup = true
-    },
+    columnWidth(value) {
+    const totalItems = this.stockList.length;
+    const itemsPerRow = 3;
+
+    // Eğer resim sayısı 9 ise, sütunları eşit genişlet
+    if (totalItems === 9) {
+      return '4'; // 3 sütunu da eşit genişlet
+    }
+  // Eğer resim sayısı 8 ise ve bu resimlerden biri ikinci sıradaysa,
+    // sütunları genişlet
+    if (totalItems === 8) {
+      const columnIndex = this.stockList.indexOf(value);
+      const lastRowStart = totalItems - itemsPerRow;
+
+      if (columnIndex >= lastRowStart) {
+        return '6'; // Son iki sütunu genişlet
+      }
+    }
+
+    // Eğer resim sayısı 9 ise, sütunları eşit genişlet
+    if (totalItems === 9) {
+      return '4'; // 3 sütunu da eşit genişlet
+    }
+
+    // Eğer resim sayısı 11 ise ve bu resimlerden biri bu sıradaysa,
+    // son sütunu genişlet
+    if (totalItems === 11) {
+      const columnIndex = this.stockList.indexOf(value);
+      const lastRowStart = totalItems - itemsPerRow;
+
+      if (columnIndex >= lastRowStart) {
+        return '4';
+      }
+    }
+
+    return '3'; // Normal durumda sütun genişliği 3
+  },
+  
+  getPortfolioContainerStyle(value) {
+  const totalItems = this.stockList.length;
+
+  if (totalItems === 9) {
+    // Check if the current value is in the last row
+    const columnIndex = this.stockList.indexOf(value);
+    const lastRowStart = totalItems - 3;
+
+    if (columnIndex >= lastRowStart) {
+      // Apply different style for the last row
+      return {
+        width: '100%', 
+        height: '344px', 
+        border: 'blue 0.1px solid',  
+      };
+    }
+  }
+
+ 
+  if (totalItems === 10) {
+      const columnIndex = this.stockList.indexOf(value);
+      const lastRowStart = totalItems - 3;
+
+      if (columnIndex >= lastRowStart) {
+        if (columnIndex === lastRowStart || columnIndex === lastRowStart + 1) {
+          return {
+            width: '100%', 
+            height: '344px', 
+            border: 'green 0.1px solid',  
+          };
+        } else if (columnIndex === lastRowStart + 2) {
+          return {
+            width: '200%', 
+            height: '644px', 
+          };
+        }
+      }
+    }
+
+  if (totalItems === 11) {
+    const columnIndex = this.stockList.indexOf(value);
+    const lastRowStart = totalItems - 3;
+
+    if (columnIndex >= lastRowStart) {
+      return {
+        width: '100%', 
+        height: '344px', 
+        border: 'red 0.1px solid',  
+      };
+    }
+  }
+
+  // Default style
+  return {
+    width: '100%', 
+    height: '344px', 
+    border: 'black 0.1px solid',
+  };
+},
+
+
 
     toggleBrowsingContent() {
       this.$refs.heroImage.classList.toggle("browsing-content");
+    },
+    imageShowBtn() {
+      this.imagePopup = true;
+    },
+    closeSidebar() {
+      this.imagePopup = false;
+    }
+  },
+  computed: {
+    stockListChunks() {
+      const chunkSize = 4;
+      const totalItems = this.stockList.length;
+      const remainder = totalItems % chunkSize;
+
+      const chunks = [];
+      let start = 0;
+
+      // Add rows with full chunkSize items
+      for (let i = 0; i < totalItems - remainder; i += chunkSize) {
+        chunks.push(this.stockList.slice(i, i + chunkSize));
+        start = i + chunkSize;
+      }
+
+      // Add the remaining items in a separate row if there is a remainder
+      if (remainder > 0) {
+        chunks.push(this.stockList.slice(start, totalItems));
+      }
+
+      return chunks;
     },
   },
 
   watch: {
     page(val) {
-      if (this.index == val - 2 || this.index == val - 1) {
-        console.log("First " + this.index)
-
+      console.log(val)
+      if (this.index == val - 2 || this.index == val - 1 || this.index == val) {
+        console.log("Sec " + this.index)
         try {
           let args = {
-            page: this.index
+            page: this.index,
+            kategori: "50",
+            pageCounts: "12",
+            ilkKayit: "0"
           }
           this.$store
             .dispatch("getDataStock", args)
             .then(response => {
               this.stockList = response
-
+              console.log(this.stockList)
             });
         } catch (error) {
           console.log(error)
         }
       }
-
-
     }
   }
-
 };
 </script>
 
 
 <style scoped lang="scss">
-@import url(https://fonts.googleapis.com/css?family=Oxygen:400,300,700);
-@import url(https://fonts.googleapis.com/css?family=Cormorant+Garamond);
-@import 'https://fonts.googleapis.com/css?family=Lato:300,400,700';
-
-html {
-  font: 400 1em/1.4 'Lato', sans-serif;
-  color: #333;
-  -webkit-font-smoothing: antialiased;
-}
-
-h1 {
-  margin: 0 0 16rem;
-  text-transform: uppercase;
-  text-align: center;
-  font-size: calc(55vh + 55vw);
-}
-
-.jumbo {
-  display: block;
-  margin: -0.25em 0 0;
-  line-height: 0.875;
-  font-weight: 300;
-  background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/5175/photo-1452117774045-dfd7a5e9718c.jpeg");
-  background-repeat: no-repeat;
-  background-size: 0.39em auto;
-  background-position: 53% 87.5%;
-}
-
-.sign {
-  display: block;
-  font-size: 0.125em;
-  margin: -3.2em 0 0;
-}
-
-.sign__text {
-  background-color: #333;
-  color: #fff;
-  display: inline-block;
-  padding: 0 0.3em 0.1em;
-  line-height: 1;
-  position: relative;
-  margin: 0 0 0.45em;
-}
-
-.sign__text::before {
-  content: '';
-  position: absolute;
-  bottom: 0.08em;
-  border-top: 0.04em solid;
-  left: 0.2em;
-  right: 0.2em;
-}
-
-.subjumbo {
-  display: block;
-  text-decoration: underline;
-  font-size: 0.03em;
-  text-shadow: 0.07em 0.05em 0 #fff;
-}
-
-.section p {
-  line-height: 1.5;
-}
-
-@media (min-width: 48em) {
-  .section p {
-    column-count: 2;
-    column-gap: 1em;
-    line-height: 1.33;
-  }
-}
-
-.section__title {
-  text-align: center;
-  font-size: 1.15em;
-}
-
-.section__innertitle {
-  text-transform: uppercase;
-  font-weight: 400;
-  border-bottom: 0.15em solid;
-}
-
-a {
-  color: tomato;
-}
-
-html {
-  background: #fff;
-}
-
-body {
-  margin: 0;
-}
-
-@media (min-width: 48em) {
-  body {
-    padding: 1em;
-  }
-}
-
-.page {
-  padding: 1em;
-  margin: 1em;
-  border: 1px solid;
-  /* max-width: 44em;*/
-}
-
-@media (min-width: 48em) {
-  .page {
-    padding: 3em 5em;
-    margin-right: auto;
-    margin-left: auto;
-  }
-}
-
-.footer {
-  margin-top: 3em;
-  text-align: center;
-}
-
-.ca-1 {
-  background: url(https://farm1.staticflickr.com/571/21101592188_f5da31c3f5_o.jpg) no-repeat center center;
-}
-
-.ca-2 {
-  background: url("https://watermark.lovepik.com/photo/20211210/large/lovepik-summer-watermelon-picture_501768510.jpg") no-repeat center center;
-}
-
-.ca-3 {
-  background: url("https://watermark.lovepik.com/photo/20211210/large/lovepik-summer-watermelon-picture_501768510.jpg") no-repeat center center;
-}
-
-.ca-4 {
-  background: url("https://watermark.lovepik.com/photo/20211210/large/lovepik-summer-watermelon-picture_501768510.jpg") no-repeat center center;
-}
-
-.ca-5 {
-  background: url("https://farm6.staticflickr.com/5692/21342201074_aef835df8d_k.jpg") no-repeat center center;
-}
-
-.ca-6 {
-  background: url("https://watermark.lovepik.com/photo/20211210/large/lovepik-summer-watermelon-picture_501768510.jpg") no-repeat center center;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-.clear-after:after,
-.main-wrapper .scroll-content .sc-row .content-article .article-info .ai-footer:after,
-.main-wrapper .scroll-content .sc-row:after,
-.main-wrapper .hero-image .hero-content .hc-footer:after {
-  content: "";
-  display: block;
-  clear: both;
-}
-
-body {
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  font-family: Oxygen;
-  color: white;
-}
-
 .main-wrapper {
   position: relative;
-  /* width: 100vw;
-  height: 100vh;*/
+  width: 200vw;
+  height: 200vh;
   overflow: hidden;
 }
 
@@ -289,7 +278,7 @@ body {
   position: relative;
   width: 100%;
   height: 100%;
-  background: url(https://c1.staticflickr.com/1/632/211https://akn-ayb.a-cdn.akinoncdn.com/products/2023/06/12/76139/762f8709-82a6-4e88-9649-36f66eab486d_size780x780_quality60_cropCenter.jpg36101110_1dde1c1a7e_o.jpg) no-repeat center center fixed;
+  background: url("https://c1.staticflickr.com/1/632/21136101110_1dde1c1a7e_o.jpg");
   background-size: cover;
   box-shadow: 0 5px 60px 10px rgba(0, 0, 0, 0.75);
   transition: all 0.5s ease;
@@ -416,10 +405,10 @@ body {
 }
 
 .main-wrapper .scroll-content {
-  // position: absolute;
-  // top: 40%;
+  position: absolute;
+  top: 40%;
   left: 0;
-  width: 100%;
+  width: 53%;
   overflow: auto;
   height: calc(100% - 40%);
 }
@@ -431,7 +420,7 @@ body {
 .main-wrapper .scroll-content .sc-row .content-article {
   float: left;
   cursor: pointer;
-  width: 10%;
+  width: 50%;
   height: 360px;
   overflow: hidden;
   position: relative;
@@ -441,9 +430,9 @@ body {
   content: "";
   display: block;
   position: absolute;
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.1));
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.1));
   height: 100%;
-  width: 100%;
+  width: 53%;
   bottom: 0;
   left: 0;
   opacity: 1;
@@ -459,7 +448,7 @@ body {
 }
 
 .main-wrapper .scroll-content .sc-row .content-article .article-image {
-  width: 100%;
+  width: 53%;
   height: 100%;
   background-size: cover;
   transform: scale(1);
@@ -471,7 +460,7 @@ body {
   position: absolute;
   top: 40px;
   left: 40px;
-  font-size: 20px !important;
+  font-size: 20px;
   font-weight: 700;
   letter-spacing: 2px;
 }
@@ -516,7 +505,18 @@ body {
   float: left;
   height: 14px;
   margin: 3px 10px;
-  width: 1px;
+  width: 53%;
   background-color: white;
+tion: all 0.25s ease;
+  
+.main-wrapper .scroll-content .sc-row .content-article .article-image {
+  width: 53%;
+  max-width: 88%; /* Ya da istediğiniz genişlik değeri */
+  height: auto; /* Otomatik yükseklik ayarı */
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1);
+  transition: all 0.25s ease;
 }
-</style>
+
+}</style>

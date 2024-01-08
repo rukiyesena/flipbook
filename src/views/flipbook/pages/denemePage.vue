@@ -28,7 +28,7 @@
           <div class="body">
             <div class="location">Mong Kok, Hong Kong</div>
             <div class="headline">Photo by Ryan Tang</div><a href="https://unsplash.com/photos/ANJHXftvvJ8" target="_blank">
-              <div class="link">View on Unsplash</div></a>
+              <div class="addItemstoCard">Ekle</div></a>
           </div>
         </div>
         <div class="slide" style="background-image: url(https://alca.tv/static/u/9b5f71cb-34a3-4fb4-a3a6-0ce9557c0acd_opt.png)">
@@ -170,6 +170,15 @@
   $accent-color: hsl(204, 90%, 50%);
   $curve: cubic-bezier(0.7, 0, 0.3, 1);
   
+  /* Your existing styles */
+#hero-slides {
+  --page: 0;
+  height: 100vh;
+  background: hsl(210, 23%, 19%);
+  background: linear-gradient(90deg, hsl(210, 13%, 28%) 0%, hsl(210, 23%, 19%) 100%);
+}
+
+
   body {
     --slides-per-page: 2;
     margin: 0;

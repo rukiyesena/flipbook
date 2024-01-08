@@ -49,18 +49,56 @@ const actions = {
 
   // /////////////////////////////////////////////
   // User/Account
-  // /////////////////////////////////////////////
+getDataCategoryList({ commit, dispatch, state }, arg) {
+
+
+  commit("PAGES", userJson.pages);
+  let pageAct = arg.page == "" ? 1 : arg.page;
+
+  const soap = require("soap");
+  const url = userJson.userService;
+
+  return new Promise((resolve, reject) => {
+      try {
+          let args = {
+              token: state.tokenId,
+              page: pageAct
+          };
+
+          soap.createClient(url, function (err, client) {
+              client.CategoryList(args, function (err, result) {
+                  let veriler = JSON.parse(result.CategoryListResult);
+                  commit("CATEGORY_LIST", veriler);
+
+                  // Log the retrieved data
+                  console.log('Retrieved Data:', veriler);
+
+                  resolve(true);
+              });
+          });
+      } catch (error) {
+          resolve(false);
+          console.log(error);
+      }
+  });
+},
+
 
   getDataStock({ commit, dispatch }, arg) {
     commit("PAGES", userJson.pages)
     let pageAct = arg.page == "" ? 1 : arg.page
+    let categoryAct = arg.category == "" ? 1 : arg.category
+
 
     const soap = require("soap");
     const url = userJson.userService;
     try {
       let args = {
         token: state.tokenId,
-        page: pageAct
+        page: pageAct,  
+        kategori: "10",
+        pageCounts: "12",
+        ilkKayit: "0"
       };
       return new Promise((resolve, reject) => {
         try {

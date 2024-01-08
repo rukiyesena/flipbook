@@ -1,18 +1,11 @@
 <template>
   <div>
-    <b-tooltip :target="indexItem" triggers="hover" placement="bottom">
       {{ data.stockCode }}
-      <b-row style="margin-top: 15px">
-        <b-col>Adet: </b-col>
-        <b-col>
-          <b-form-input v-model="addQty" id="smallInput" @keyup.enter="addItemstoCard" size="sm" />
-        </b-col>
-      </b-row>
-      <b-button class="bg-danger" style=" border-color:white;margin-top: 15px" size="sm" @click="addItemstoCard">
-        Ekle
-        <Icon icon="iconamoon:shopping-card-add" width="20" height="20" />
+  
+      <b-button class="bg-danger" style=" border-color:rgb(0, 0, 0);margin-top: 15px" size="sm" @click="addItemstoCard">
+        
+        <Icon icon="iconamoon:shopping-card-add" width="40" height="30" />
       </b-button>
-    </b-tooltip>
 
   </div>
 </template>
@@ -51,6 +44,6 @@ export default {
 </script>
 <style lang="scss" >
 .tooltip-inner {
-  background-color: #888 !important;
+  background-color: #000000 !important;
 }
 </style>

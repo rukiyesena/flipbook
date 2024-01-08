@@ -16,6 +16,10 @@ const mutations = {
   // /////////////////////////////////////////////
 
   // Vertical NavMenu
+  CATEGORY_LIST(state, item) {
+    state.CategoryList = item
+
+  },
   STOCK_LIST(state, item) {
     state.StockList = item
 

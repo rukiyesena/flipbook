@@ -53,6 +53,7 @@ const state = {
   PageSize: "",
   Pages: "",
   StockList: [],
+  CategoryList: [],
   StockListLeft: [],
   StockListRight: [],
   AppActiveUser: userDefaults,

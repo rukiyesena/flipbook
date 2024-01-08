@@ -64,18 +64,31 @@
       </div>
 
       <!-- BEGIN FOOTER -->
+      
       <div id="fb5-footer">
 
         <div class="fb5-bcg-tools"></div>
-        <a id="fb5-logo" target="_blank" href="user/flashmaniac.html?ref=flashmaniac">
+        <a id="fb5-logo" target="_blank" href="#/seventh">
           <img alt="" src="img/logo.png">
-
+          <div>
+            <b-button v-b-toggle.sidebar-1>Toggle Sidebar</b-button>
+            <b-sidebar id="sidebar-1" title="Sidebar" shadow style="width: 30%;">
+             
+            </b-sidebar>
+          </div>
         </a>
 
         <div class="fb5-menu" id="fb5-center">
           <ul>
 
             <!-- icon_home -->
+            <li>
+              <vs-button id="button-with-loading" class="vs-con-loading__container" color="danger" gradient @click="openKatalogPopup">
+                Kategori
+              </vs-button>
+            </li>
+            
+             <!-- icon download -->
             <li>
               <a title="show home page" class="fb5-home"><i class="fa fa-home"></i></a>
             </li> <!-- icon download -->
@@ -204,9 +217,44 @@
       </div>
       <!-- END CLOSE LIGHTBOX -->
     </div>
-    <!-- END STRUCTURE HTML FLIPBOOK -->
-  </div>
+    <vs-popup class="holamundo" title="Kategori Seç" :active.sync="popupActivo">
+      <div class="px-3 py-2">
+       
+      <div data-slug="portfolios">
+        <div class="  bb-custom-side" style="width: 100%;">
+          <div class="content-wrapper">
+            <b-row>
+              <b-col>
+                <div id="portfolio-container-oBTIBx9p91" class="portfolio-container" style="width: 100%;">
+                  <div class="portfolio-item illustrator"
+                    style="width: 54% !important; height: 344px; border: black 0.1px solid;"
+                    v-for="(category, index) in CategoryList" :key="index">
+                    
+                    <b-col style="text-align: -webkit-center;">
+                      <AddtoCard :data="category" :indexItem="'tooltip-target-' + index" />
+                      <div style="position: relative; height: 50px;">
+                        
+                        <p style="color: black">Kategori Adı: {{ category.categoryName }}</p>
+                        <p style="color: black">Kategori Kodu: {{ category.categoryCode }}</p>
+                        <img :src="category.image" alt="Category Image" style="width: 200%; height: 200%;" />
+        
+                      </div>
+                    </b-col>
+                  </div>
+                </div>
+              </b-col>
+              
+            </b-row>
+
+          </div>
+        </div>
+      </div>
+      </div>
+    </vs-popup>
+    
+     </div>
   <!-- end flipbook -->
+
 </template>
 <script>
 import FirstPage from './pages/FirstPage.vue';
@@ -247,7 +295,8 @@ export default {
       previousValue: null,
       currentValue: null,
       selectedPage: "",
-      stockList: [],
+      CategoryList: [],
+      popupActivo: false, 
     }
   },
   computed: {
@@ -270,28 +319,45 @@ export default {
     SeventhPage,
     EighthPage,
     NinthPage,
-    TablePageFirst
+    TablePageFirst,
   },
   methods: {
-
+  Katalog() {
+    this.popupActivo = true;
   },
-  created() {
-    try {
-      let args = {
-        page: 0
-      }
-      this.$store
-        .dispatch("getDataStock", args)
-        .then(response => {
-          if (response == true) {
-            this.stockList = this.$store.state.StockList;
-          }
-        });
-    } catch (error) {
-      console.log(error)
-    }
 
+  openKatalogPopup() {
+    console.log('openKatalogPopup method called');
+    this.Katalog();
+  },
+
+  popupClose() {
+    this.popupActivo = false;
+  },
+},
+
+created() {
+  try {
+    let args = {
+      page: 0
+    };
+
+    this.$store.dispatch("getDataCategoryList", args)
+      .then(response => {
+        if (response === true) {
+          this.CategoryList = this.$store.state.CategoryList;
+          console.log("CategoryList:", this.$store.state.CategoryList);
+        }
+      })
+      .catch(error => {
+        console.error("Error fetching category list:", error);
+      });
+  } catch (error) {
+    console.log(error);
   }
+}
+
+
 };
 </script>
 <style>
