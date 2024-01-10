@@ -20,6 +20,13 @@ const mutations = {
     state.CategoryList = item
 
   },
+  PAGES(state, pages) {
+      state.Pages = pages;
+
+
+  },
+
+  
   STOCK_LIST(state, item) {
     state.StockList = item
 

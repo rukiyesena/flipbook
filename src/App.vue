@@ -104,6 +104,24 @@ export default {
 
 		window.addEventListener("resize", this.handleWindowResize);
 		window.addEventListener("scroll", this.handleScroll);
+		try {
+    let args = {
+      page: 0
+    };
+
+			this.$store.dispatch("getDataCategoryList", args)
+				.then(response => {
+					if (response === true) { 
+						 
+					}
+				})
+				.catch(error => {
+					console.error("Error fetching category list:", error);
+				});
+		} catch (error) {
+			console.log(error);
+		}
+
 		const data = [];
 		data["servisAdresi"] = userJson.userService;
 

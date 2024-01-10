@@ -44,7 +44,7 @@
                           </b-col>
                           <b-col>
                             <h4 style=" font-size: 27px; color: rgb(201, 0, 0);">{{ value.stockPrice }} TL</h4>
-                            <h4 style="color: black">{{ value.stockPrice }} TL</h4>
+                            <h4 style="color: black">{{ value.stockCount }} </h4>
 
                           </b-col>
                         </b-row>

@@ -10,29 +10,7 @@
       "component": "EntryPage",
       "title": "Giriş Sayfa",
       "position": "right"
-    },
-     
-    {
-      "ind": "1",
-      "component": "FirstPage",
-      "title": "İlk Sayfa",
-      "position": "left"
-    },
-    {
-      "ind": "2",
-      "component": "TablePageFirst",
-      "title": "Table Sayfa",
-      "position": "right"
-    },
-    {
-      "ind": "3",
-      "component": "SeventhPage",
-      "title": "Yedinci Sayfa"
-    },
-    {
-      "ind": "4",
-      "component": "SeventhPage",
-      "title": "Yedinci Sayfa"
     }
+     
   ]
 }

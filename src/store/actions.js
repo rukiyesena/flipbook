@@ -49,41 +49,104 @@ const actions = {
 
   // /////////////////////////////////////////////
   // User/Account
-getDataCategoryList({ commit, dispatch, state }, arg) {
-
-
-  commit("PAGES", userJson.pages);
-  let pageAct = arg.page == "" ? 1 : arg.page;
-
-  const soap = require("soap");
-  const url = userJson.userService;
-
-  return new Promise((resolve, reject) => {
+  getDataCategoryList({ commit, dispatch, state }, arg) { 
+    let pageAct = arg.page == "" ? 1 : arg.page;
+  
+    const soap = require("soap");
+    const url = userJson.userService;
+  
+    return new Promise((resolve, reject) => {
       try {
-          let args = {
-              token: state.tokenId,
-              page: pageAct
-          };
-
-          soap.createClient(url, function (err, client) {
-              client.CategoryList(args, function (err, result) {
-                  let veriler = JSON.parse(result.CategoryListResult);
-                  commit("CATEGORY_LIST", veriler);
-
-                  // Log the retrieved data
-                  console.log('Retrieved Data:', veriler);
-
-                  resolve(true);
-              });
+        let args = {
+          token: state.tokenId,
+          page: pageAct
+        };
+        soap.createClient(url, function (err, client) {
+          client.CategoryList(args, function (err, result) {
+            let veriler = JSON.parse(result.CategoryListResult);
+  
+            // Log the retrieved data 
+  
+            // Commit CATEGORY_LIST
+            commit("CATEGORY_LIST", veriler);
+  
+            // Create pages
+            let pages = [{
+              "ind": "-1",
+              "component": "EntryPage",
+              "title": "Giriş Sayfa",
+              "position": "right",
+            },
+            {
+              "ind": "-1",
+              "component": "EntryPage",
+              "title": "Giriş Sayfa",
+              "position": "right",
+            },{
+              "ind": "-1",
+              "component": "EntryPage",
+              "title": "Giriş Sayfa",
+              "position": "right",
+            },{
+              "ind": "-1",
+              "component": "EntryPage",
+              "title": "Giriş Sayfa",
+              "position": "right",
+            },
+             
+          ];
+  
+            let subPageIndex = 0;
+  /*
+            veriler.forEach((category, categoryIndex) => {
+              const satirSayisi = category.satirSayisi;
+              const sayfaSayisi = category.sayfaSayisi;
+              const items = category.items || [];
+  
+              for (let i = 0; i < sayfaSayisi; i++) {
+                const startIndex = i * 12;
+                const endIndex = Math.min((i + 1) * 12, satirSayisi);
+  
+                const pageItems = items.slice(startIndex, endIndex);
+  
+                // Create subpages for each page
+                pageItems.forEach((val, index) => {
+                  pages.push({
+                    "ind": subPageIndex++,
+                    "component": "FirstPage",
+                    "title": "Giriş Sayfa",
+                    "position": index % 2 === 0 ? "left" : "right"
+                  });
+                });
+  
+                // Add main page
+                pages.push({
+                  "ind": pages.length,
+                  "component": "FirstPage",
+                  "title": "Kategori Sayfa",
+                  "position": i % 2 === 0 ? "left" : "right"
+                });
+              }
+            });*/
+   
+  console.log(pages)
+            // Commit PAGES
+            commit("PAGES", pages);
+            
+   
+  
+            resolve(true);
           });
+        });
       } catch (error) {
-          resolve(false);
-          console.log(error);
+        resolve(false);
+        console.log(error);
       }
-  });
-},
-
-
+    });
+  },
+  
+  
+  
   getDataStock({ commit, dispatch }, arg) {
     commit("PAGES", userJson.pages)
     let pageAct = arg.page == "" ? 1 : arg.page
@@ -106,7 +169,7 @@ getDataCategoryList({ commit, dispatch, state }, arg) {
             client.StockList(args, function (err, result) {
               let veriler = JSON.parse(result.StockListResult);
               commit("STOCK_LIST_RIGHT", veriler);
-              resolve(veriler)
+              resolve(veriler) 
             });
           });
         } catch (error) {

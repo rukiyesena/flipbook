@@ -75,24 +75,7 @@ export default {
   },
 
   created() {
-  try {
-    let args = {
-      page: 0
-    };
-
-    this.$store.dispatch("getDataCategoryList", args)
-      .then(response => {
-        if (response === true) {
-          this.CategoryList = this.$store.state.CategoryList;
-          console.log("CategoryList:", this.$store.state.CategoryList);
-        }
-      })
-      .catch(error => {
-        console.error("Error fetching category list:", error);
-      });
-  } catch (error) {
-    console.log(error);
-  }
+   
 }
 };
 </script>
