@@ -59,7 +59,7 @@
                   <canvas id="canv1"></canvas>
                   <div class="fb5-page-book">
                     <component :is="item.component" :key="item.ind" :index="item.ind" :page="currentValue - 1"
-                      :position="item.position" />
+                      :position="item.position" :item="item"/>
                   </div>
                 </div>
               </div>

@@ -1,46 +1,42 @@
 <template>
   <div style="height: 90%;">
     <b-row style="height: 90%;">
-      <topleftbanner :page="index" />
+      <topleftbanner :page="index" :header="item.categoryName"/>
 
-     
+
       <div data-slug="portfolios">
         <div class="bb-custom-side" style="width: 99%;">
           <div class="content-wrapper">
             <b-row v-for="(row, rowIndex) in stockListChunks" :key="rowIndex">
               <b-col v-for="(value, columnIndex) in row" :key="columnIndex" :cols="columnWidth(value)">
-                <div
-                  id="portfolio-container-oBTIBx9p91"
-                  class="portfolio-container"
-                  :style="getPortfolioContainerStyle(value)"
-                >
-                <b-row v-on:click="showImageDetails(value)">
-                  <b-col style="text-align: -webkit-center;" :id="'tooltip-target-' + index + '-' + (rowIndex * 4 + columnIndex)" v-b-tooltip.hover>
-                      <AddtoCard :data="value" :indexItem="'tooltip-target-' + index + '-' + (rowIndex * 4 + columnIndex)" />
-                      <img
-                        loading="lazy"
-                        decoding="async"
-                        style="
+                <div id="portfolio-container-oBTIBx9p91" class="portfolio-container"
+                  :style="getPortfolioContainerStyle(value)">
+                  <b-row v-on:click="showImageDetails(value)">
+                    <b-col style="text-align: -webkit-center;"
+                      :id="'tooltip-target-' + index + '-' + (rowIndex * 4 + columnIndex)" v-b-tooltip.hover>
+                      <AddtoCard :data="value"
+                        :indexItem="'tooltip-target-' + index + '-' + (rowIndex * 4 + columnIndex)" />
+                      <img loading="lazy" decoding="async" style="
                           width: 63%;
                           height: auto;
                           object-fit: cover;
                           object-position: center;
-                        "
-                        :src="value.url_image"
-                        class="attachment-portfolio_thumbnail size-portfolio_thumbnail wp-post-image"
-                        alt=""
-                      />
+                        " :src="value.url_image"
+                        class="attachment-portfolio_thumbnail size-portfolio_thumbnail wp-post-image" alt="" />
                       <div style="position: relative; height: 95px;">
                         <b-row>
                           <b-col>
                             <h4 style="color: black">{{ value.stockCode }}</h4>
-                          
-                            <span style=" font-size: 27px; color: black; margin:0px" v-if="value.attr2_en"> {{ value.attr2_en.replace('cm','') }} x </span>
-                            <span style="font-size: 27px; color: black; margin:0px" v-if="value.attr3_boy"> {{ value.attr3_boy.replace('cm','') }} 
+
+                            <span style=" font-size: 27px; color: black; margin:0px" v-if="value.attr2_en"> {{
+                              value.attr2_en.replace('cm', '') }} x </span>
+                            <span style="font-size: 27px; color: black; margin:0px" v-if="value.attr3_boy"> {{
+                              value.attr3_boy.replace('cm', '') }}
                             </span>
-                            <span style=" font-size: 27px; color: black; margin:0px" v-if="value.attr4_motif">motif: {{ value.attr4_motif }}
-                              
-                              - </span>    
+                            <span style=" font-size: 27px; color: black; margin:0px" v-if="value.attr4_motif">motif: {{
+                              value.attr4_motif }}
+
+                              - </span>
                           </b-col>
                           <b-col>
                             <h4 style=" font-size: 27px; color: rgb(201, 0, 0);">{{ value.stockPrice }} TL</h4>
@@ -48,8 +44,8 @@
 
                           </b-col>
                         </b-row>
-                         
-                        </div>
+
+                      </div>
                     </b-col>
                   </b-row>
                 </div>
@@ -64,7 +60,8 @@
       </b-col>
     </b-row>
 
-    <imageShow :popupResimSw="imagePopup" @closeSidebar="closeSidebar" :imgSrc="imgSrc" :stockCode="stockCode" :stockName="stockName"  />
+    <imageShow :popupResimSw="imagePopup" @closeSidebar="closeSidebar" :imgSrc="imgSrc" :stockCode="stockCode"
+      :stockName="stockName" />
   </div>
 </template>
 
@@ -77,129 +74,131 @@ import imageShow from './components/imageShow.vue';
 import AddtoCard from './components/AddtoCard.vue';
 
 export default {
-  props: ["page", "position", "index"],
+  props: {
+    page: "", position: "", index: "", item: {  },
+  },
   data() {
-  return {
-    url_image: "",
-    imgSrc: "",
-    stockList: [],
-    imagePopup: false,
-    stockCode: "", // Add this line
-    stockName: "", // Add this line
-  };
-},
+    return {
+      url_image: "",
+      imgSrc: "",
+      stockList: [],
+      imagePopup: false,
+      stockCode: "", // Add this line
+      stockName: "", // Add this line
+    };
+  },
   components: { AddtoCard, imageShow, topBanner2, topleftbanner, rightBanner, bottomBanner2 },
   methods: {
     showImageDetails(value) {
-    this.imgSrc = value.url_image;
-    this.stockCode = value.stockCode;
-    this.stockName = value.stockName;
-    this.imageShowBtn();
-  },
-  imageShowBtn() {
-    this.imagePopup = true;
-  },
-  closeSidebar() {
-    this.imagePopup = false;
-  },
+      this.imgSrc = value.url_image;
+      this.stockCode = value.stockCode;
+      this.stockName = value.stockName;
+      this.imageShowBtn();
+    },
+    imageShowBtn() {
+      this.imagePopup = true;
+    },
+    closeSidebar() {
+      this.imagePopup = false;
+    },
 
     columnWidth(value) {
-    const totalItems = this.stockList.length;
-    const itemsPerRow = 3;
+      const totalItems = this.stockList.length;
+      const itemsPerRow = 3;
 
-    // Eğer resim sayısı 9 ise, sütunları eşit genişlet
-    if (totalItems === 9) {
-      return '4'; // 3 sütunu da eşit genişlet
-    }
-  // Eğer resim sayısı 8 ise ve bu resimlerden biri ikinci sıradaysa,
-    // sütunları genişlet
-    if (totalItems === 8) {
-      const columnIndex = this.stockList.indexOf(value);
-      const lastRowStart = totalItems - itemsPerRow;
-
-      if (columnIndex >= lastRowStart) {
-        return '6'; // Son iki sütunu genişlet
+      // Eğer resim sayısı 9 ise, sütunları eşit genişlet
+      if (totalItems === 9) {
+        return '4'; // 3 sütunu da eşit genişlet
       }
-    }
+      // Eğer resim sayısı 8 ise ve bu resimlerden biri ikinci sıradaysa,
+      // sütunları genişlet
+      if (totalItems === 8) {
+        const columnIndex = this.stockList.indexOf(value);
+        const lastRowStart = totalItems - itemsPerRow;
 
-    // Eğer resim sayısı 9 ise, sütunları eşit genişlet
-    if (totalItems === 9) {
-      return '4'; // 3 sütunu da eşit genişlet
-    }
-
-    // Eğer resim sayısı 11 ise ve bu resimlerden biri bu sıradaysa,
-    // son sütunu genişlet
-    if (totalItems === 11) {
-      const columnIndex = this.stockList.indexOf(value);
-      const lastRowStart = totalItems - itemsPerRow;
-
-      if (columnIndex >= lastRowStart) {
-        return '4';
+        if (columnIndex >= lastRowStart) {
+          return '6'; // Son iki sütunu genişlet
+        }
       }
-    }
 
-    return '3'; // Normal durumda sütun genişliği 3
-  },
-  
-  getPortfolioContainerStyle(value) {
-  const totalItems = this.stockList.length;
+      // Eğer resim sayısı 9 ise, sütunları eşit genişlet
+      if (totalItems === 9) {
+        return '4'; // 3 sütunu da eşit genişlet
+      }
 
-  if (totalItems === 9) {
-    // Check if the current value is in the last row
-    const columnIndex = this.stockList.indexOf(value);
-    const lastRowStart = totalItems - 3;
+      // Eğer resim sayısı 11 ise ve bu resimlerden biri bu sıradaysa,
+      // son sütunu genişlet
+      if (totalItems === 11) {
+        const columnIndex = this.stockList.indexOf(value);
+        const lastRowStart = totalItems - itemsPerRow;
 
-    if (columnIndex >= lastRowStart) {
-      // Apply different style for the last row
-      return {
-        width: '100%', 
-        height: '344px', 
-        border: 'blue 0.1px solid',  
-      };
-    }
-  }
+        if (columnIndex >= lastRowStart) {
+          return '4';
+        }
+      }
 
- 
-  if (totalItems === 10) {
-      const columnIndex = this.stockList.indexOf(value);
-      const lastRowStart = totalItems - 3;
+      return '3'; // Normal durumda sütun genişliği 3
+    },
 
-      if (columnIndex >= lastRowStart) {
-        if (columnIndex === lastRowStart || columnIndex === lastRowStart + 1) {
+    getPortfolioContainerStyle(value) {
+      const totalItems = this.stockList.length;
+
+      if (totalItems === 9) {
+        // Check if the current value is in the last row
+        const columnIndex = this.stockList.indexOf(value);
+        const lastRowStart = totalItems - 3;
+
+        if (columnIndex >= lastRowStart) {
+          // Apply different style for the last row
           return {
-            width: '100%', 
-            height: '344px', 
-            border: 'green 0.1px solid',  
-          };
-        } else if (columnIndex === lastRowStart + 2) {
-          return {
-            width: '200%', 
-            height: '644px', 
+            width: '100%',
+            height: '344px',
+            border: 'blue 0.1px solid',
           };
         }
       }
-    }
 
-  if (totalItems === 11) {
-    const columnIndex = this.stockList.indexOf(value);
-    const lastRowStart = totalItems - 3;
 
-    if (columnIndex >= lastRowStart) {
+      if (totalItems === 10) {
+        const columnIndex = this.stockList.indexOf(value);
+        const lastRowStart = totalItems - 3;
+
+        if (columnIndex >= lastRowStart) {
+          if (columnIndex === lastRowStart || columnIndex === lastRowStart + 1) {
+            return {
+              width: '100%',
+              height: '344px',
+              border: 'green 0.1px solid',
+            };
+          } else if (columnIndex === lastRowStart + 2) {
+            return {
+              width: '200%',
+              height: '644px',
+            };
+          }
+        }
+      }
+
+      if (totalItems === 11) {
+        const columnIndex = this.stockList.indexOf(value);
+        const lastRowStart = totalItems - 3;
+
+        if (columnIndex >= lastRowStart) {
+          return {
+            width: '100%',
+            height: '344px',
+            border: 'red 0.1px solid',
+          };
+        }
+      }
+
+      // Default style
       return {
-        width: '100%', 
-        height: '344px', 
-        border: 'red 0.1px solid',  
+        width: '100%',
+        height: '344px',
+        border: 'black 0.1px solid',
       };
-    }
-  }
-
-  // Default style
-  return {
-    width: '100%', 
-    height: '344px', 
-    border: 'black 0.1px solid',
-  };
-},
+    },
 
 
 
@@ -238,20 +237,20 @@ export default {
   },
 
   watch: {
-    page(val) { 
+    page(val) {
       if (this.index == val - 2 || this.index == val - 1 || this.index == val) {
-   
+
         try {
           let args = {
             page: this.index,
-            kategori: "50",
+            kategori: this.item.category,
             pageCounts: "12",
-            ilkKayit: "0"
-          }
+            ilkKayit: this.item.ilkSayfa
+          } 
           this.$store
             .dispatch("getDataStock", args)
             .then(response => {
-              this.stockList = response 
+              this.stockList = response
             });
         } catch (error) {
           console.log(error)
@@ -505,16 +504,19 @@ export default {
   margin: 3px 10px;
   width: 53%;
   background-color: white;
-tion: all 0.25s ease;
-  
-.main-wrapper .scroll-content .sc-row .content-article .article-image {
-  width: 53%;
-  max-width: 88%; /* Ya da istediğiniz genişlik değeri */
-  height: auto; /* Otomatik yükseklik ayarı */
-  object-fit: cover;
-  object-position: center;
-  transform: scale(1);
-  transition: all 0.25s ease;
-}
+  tion: all 0.25s ease;
 
-}</style>
+  .main-wrapper .scroll-content .sc-row .content-article .article-image {
+    width: 53%;
+    max-width: 88%;
+    /* Ya da istediğiniz genişlik değeri */
+    height: auto;
+    /* Otomatik yükseklik ayarı */
+    object-fit: cover;
+    object-position: center;
+    transform: scale(1);
+    transition: all 0.25s ease;
+  }
+
+}
+</style>

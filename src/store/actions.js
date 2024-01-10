@@ -79,11 +79,13 @@ const actions = {
               "component": "EntryPage",
               "title": "Giriş Sayfa",
               "position": "right",
-            },{
+
+            }, {
               "ind": "0",
               "component": "TablePageFirst",
               "title": "Giriş Sayfa",
               "position": "right",
+              "categoryName": "Kategoriler"
             }
             ];
 
@@ -93,34 +95,23 @@ const actions = {
             veriler.forEach((category, categoryIndex) => {
               const satirSayisi = category.satirSayisi;
               const sayfaSayisi = category.sayfaSayisi;
-              const items = category.items || [];
-
+              const items = category.items || []; 
               for (let i = 0; i < sayfaSayisi; i++) {
                 const startIndex = i * 12;
-                const endIndex = Math.min((i + 1) * 12, satirSayisi);
 
-                const pageItems = items.slice(startIndex, endIndex);
-
-                // Create subpages for each page
-                pageItems.forEach((val, index) => {
-                  pages.push({
-                    "ind": subPageIndex++,
-                    "component": "FirstPage",
-                    "title": "Giriş Sayfa",
-                    "position": index % 2 === 0 ? "left" : "right"
-                  });
-                });
-
-                // Add main page
                 pages.push({
                   "ind": pages.length,
                   "component": "FirstPage",
                   "title": "Kategori Sayfa",
-                  "position": i % 2 === 0 ? "left" : "right"
+                  "position": i % 2 === 0 ? "left" : "right",
+                  "ilkSayfa": startIndex,
+                  "category": category.categoryCode,
+                  "categoryName": category.categoryName
+
                 });
               }
             });
-
+            
             localStorage.setItem("pages", JSON.stringify(pages));
             commit("PAGES", pages);
 
@@ -137,27 +128,23 @@ const actions = {
 
 
 
-  getDataStock({ commit, dispatch }, arg) {
-    commit("PAGES", userJson.pages)
-    let pageAct = arg.page == "" ? 1 : arg.page
-    let categoryAct = arg.category == "" ? 1 : arg.category
-
-
+  getDataStock({ commit, dispatch }, arg) {  
+    let pageAct = arg.page == "" ? 1 : arg.page  
     const soap = require("soap");
     const url = userJson.userService;
     try {
       let args = {
         token: state.tokenId,
         page: pageAct,
-        kategori: "10",
+        kategori: arg.kategori,
         pageCounts: "12",
-        ilkKayit: "0"
-      };
+        ilkKayit: arg.ilkKayit
+      }; 
       return new Promise((resolve, reject) => {
         try {
           soap.createClient(url, function (err, client) {
             client.StockList(args, function (err, result) {
-              let veriler = JSON.parse(result.StockListResult);
+              let veriler = JSON.parse(result.StockListResult); 
               commit("STOCK_LIST_RIGHT", veriler);
               resolve(veriler)
             });
