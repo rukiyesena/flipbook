@@ -12,22 +12,23 @@
                   <div class="portfolio-item illustrator"
                     style="width: 34% !important; height: 504px; border: black 0.1px solid;"
                     v-for="(category, index) in CategoryList" :key="index">
-                    
+
                     <b-col style="text-align: -webkit-center;">
                       <AddtoCard :data="category" :indexItem="'tooltip-target-' + index" />
                       <div style="position: relative; height: 50px;">
                         <h3 style="color: black">Kategori Adı: {{ category.categoryName }}</h3>
                         <h3 style="color: black">Kategori Kodu: {{ category.categoryCode }}</h3>
                         <img :src="category.image" alt="Category Image" style="width: 100%; height: 700%;" />
-                    
+
                         <!-- Kategoriye Git Butonu -->
-                        <button @click="redirectToSeventhPage" style="position: absolute; bottom: 10px; right: 10px;">Kategoriye Git</button>
+                        <button @click="redirectToSeventhPage"
+                          style="position: absolute; bottom: 10px; right: 10px;">Kategoriye Git</button>
                       </div>
                     </b-col>
                   </div>
                 </div>
               </b-col>
-              
+
             </b-row>
 
           </div>
@@ -52,8 +53,15 @@ import imageShow from './components/imageShow.vue';
 import AddtoCard from './components/AddtoCard.vue';
 
 export default {
+  mounted() {
+
+    if (this.CategoryList == "") {
+      this.CategoryList = localStorage.getItem("CategoryList")
+    }
+
+  },
   props: ["page", "position", "index"],
-  data() { return { imgSrc: "",  CategoryList: [], imagePopup: false } },
+  data() { return { imgSrc: "", imagePopup: false } },
   components: { AddtoCard, imageShow, topBanner2, topleftbanner, rightBanner, bottomBanner2 },
   methods: {
     redirectToSeventhPage() {
@@ -74,9 +82,22 @@ export default {
     }
   },
 
-  created() {
-   
-}
+  computed: {
+    CategoryList: {
+      get() {
+        return JSON.parse(localStorage.getItem("CategoryList"))
+      },
+      set(val) {
+        if (!val) {
+          this.$emit('closeSidebar')
+          // this.$validator.reset()
+          // this.initValues()
+        }
+      }
+
+    },
+
+  },
 };
 </script>
 
@@ -323,4 +344,5 @@ export default {
   margin: 3px 10px;
   width: 1px;
   background-color: white;
-}</style>
+}
+</style>

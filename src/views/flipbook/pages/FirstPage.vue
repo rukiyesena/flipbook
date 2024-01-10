@@ -238,10 +238,9 @@ export default {
   },
 
   watch: {
-    page(val) {
-      console.log(val)
+    page(val) { 
       if (this.index == val - 2 || this.index == val - 1 || this.index == val) {
-        console.log("Sec " + this.index)
+   
         try {
           let args = {
             page: this.index,
@@ -252,8 +251,7 @@ export default {
           this.$store
             .dispatch("getDataStock", args)
             .then(response => {
-              this.stockList = response
-              console.log(this.stockList)
+              this.stockList = response 
             });
         } catch (error) {
           console.log(error)

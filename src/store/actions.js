@@ -49,12 +49,14 @@ const actions = {
 
   // /////////////////////////////////////////////
   // User/Account
-  getDataCategoryList({ commit, dispatch, state }, arg) { 
+  getDataCategoryList({ commit, dispatch, state }, arg) {
+
+
     let pageAct = arg.page == "" ? 1 : arg.page;
-  
+
     const soap = require("soap");
     const url = userJson.userService;
-  
+
     return new Promise((resolve, reject) => {
       try {
         let args = {
@@ -64,51 +66,41 @@ const actions = {
         soap.createClient(url, function (err, client) {
           client.CategoryList(args, function (err, result) {
             let veriler = JSON.parse(result.CategoryListResult);
-  
+
             // Log the retrieved data 
-  
+
             // Commit CATEGORY_LIST
             commit("CATEGORY_LIST", veriler);
-  
+            localStorage.setItem("CategoryList", JSON.stringify(veriler));
+
             // Create pages
             let pages = [{
               "ind": "-1",
               "component": "EntryPage",
               "title": "Giriş Sayfa",
               "position": "right",
-            },
-            {
-              "ind": "-1",
-              "component": "EntryPage",
-              "title": "Giriş Sayfa",
-              "position": "right",
             },{
-              "ind": "-1",
-              "component": "EntryPage",
+              "ind": "0",
+              "component": "TablePageFirst",
               "title": "Giriş Sayfa",
               "position": "right",
-            },{
-              "ind": "-1",
-              "component": "EntryPage",
-              "title": "Giriş Sayfa",
-              "position": "right",
-            },
-             
-          ];
-  
+            }
+            ];
+
+
             let subPageIndex = 0;
-  /*
+
             veriler.forEach((category, categoryIndex) => {
               const satirSayisi = category.satirSayisi;
               const sayfaSayisi = category.sayfaSayisi;
               const items = category.items || [];
-  
+
               for (let i = 0; i < sayfaSayisi; i++) {
                 const startIndex = i * 12;
                 const endIndex = Math.min((i + 1) * 12, satirSayisi);
-  
+
                 const pageItems = items.slice(startIndex, endIndex);
-  
+
                 // Create subpages for each page
                 pageItems.forEach((val, index) => {
                   pages.push({
@@ -118,7 +110,7 @@ const actions = {
                     "position": index % 2 === 0 ? "left" : "right"
                   });
                 });
-  
+
                 // Add main page
                 pages.push({
                   "ind": pages.length,
@@ -127,14 +119,12 @@ const actions = {
                   "position": i % 2 === 0 ? "left" : "right"
                 });
               }
-            });*/
-   
-  console.log(pages)
-            // Commit PAGES
+            });
+
+            localStorage.setItem("pages", JSON.stringify(pages));
             commit("PAGES", pages);
-            
-   
-  
+
+
             resolve(true);
           });
         });
@@ -144,9 +134,9 @@ const actions = {
       }
     });
   },
-  
-  
-  
+
+
+
   getDataStock({ commit, dispatch }, arg) {
     commit("PAGES", userJson.pages)
     let pageAct = arg.page == "" ? 1 : arg.page
@@ -158,7 +148,7 @@ const actions = {
     try {
       let args = {
         token: state.tokenId,
-        page: pageAct,  
+        page: pageAct,
         kategori: "10",
         pageCounts: "12",
         ilkKayit: "0"
@@ -169,7 +159,7 @@ const actions = {
             client.StockList(args, function (err, result) {
               let veriler = JSON.parse(result.StockListResult);
               commit("STOCK_LIST_RIGHT", veriler);
-              resolve(veriler) 
+              resolve(veriler)
             });
           });
         } catch (error) {
