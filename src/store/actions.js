@@ -86,12 +86,17 @@ const actions = {
               "title": "Giriş Sayfa",
               "position": "right",
               "categoryName": "Kategoriler"
+            },
+            {
+              "ind": "1",
+              "component": "TablePageFirst",
+              "title": "Giriş Sayfa",
+              "position": "right",
+              "categoryName": "Kategoriler"
             }
             ];
 
-
-            let subPageIndex = 0;
-
+ 
             veriler.forEach((category, categoryIndex) => {
               const satirSayisi = category.satirSayisi;
               const sayfaSayisi = category.sayfaSayisi;
