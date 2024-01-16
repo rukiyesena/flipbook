@@ -5,7 +5,7 @@
     <b-row style="height: 90%;">
       <topleftbanner :page="index" :header="item.categoryName"/>
 
-
+   
       <div data-slug="portfolios">
         <div class="bb-custom-side" style="width: 99%;">
           <div class="content-wrapper">
@@ -13,11 +13,14 @@
               <b-col v-for="(value, columnIndex) in row" :key="columnIndex" :cols="columnWidth(value)">
                 <div id="portfolio-container-oBTIBx9p91" class="portfolio-container"
                   :style="getPortfolioContainerStyle(value)">
+                  
+                  <AddtoCard :data="value"
+                  
+                  :indexItem="'tooltip-target-' + index + '-' + (rowIndex * 4 + columnIndex)" />
                   <b-row v-on:click="showImageDetails(value)">
                     <b-col style="text-align: -webkit-center;"
                       :id="'tooltip-target-' + index + '-' + (rowIndex * 4 + columnIndex)" v-b-tooltip.hover>
-                      <AddtoCard :data="value"
-                        :indexItem="'tooltip-target-' + index + '-' + (rowIndex * 4 + columnIndex)" />
+                    
                       <img loading="lazy" decoding="async" style="
                           width: 63%;
                           height: auto;
@@ -42,7 +45,7 @@
                             <span style="font-size: 27px; color: black; margin:0px" v-if="value.attr3_boy"> {{
                               value.attr3_boy.replace('cm', '') }}
                             </span>
-                            <span style=" font-size: 27px; color: rgb(0, 0, 0); margin:0px" v-if="value.attr4_motif">motif: {{
+                            <span style=" font-size: 27px; color: rgb(206, 13, 13); margin:0px" v-if="value.attr4_motif">motif: {{
                               value.attr4_motif }}
 
                               - </span>
@@ -85,6 +88,7 @@ export default {
   },
   data() {
     return {
+      isCartOpen: false, // Sepetin açık veya kapalı olduğunu izleyen durum
       url_image: "",
       imgSrc: "",
       stockList: [],
@@ -95,6 +99,9 @@ export default {
   },
   components: { AddtoCard, imageShow, topBanner2, topleftbanner, rightBanner, bottomBanner2 },
   methods: {
+    openCart() {
+      this.isCartOpen = true;
+    },
     showImageDetails(value) {
       this.imgSrc = value.url_image;
       this.stockCode = value.stockCode;
