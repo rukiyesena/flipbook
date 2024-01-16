@@ -1,4 +1,6 @@
-<template>
+<template> 
+   <b-container fluid>
+
   <div style="height: 90%;">
     <b-row style="height: 90%;">
       <topleftbanner :page="index" :header="item.categoryName"/>
@@ -25,6 +27,13 @@
                         class="attachment-portfolio_thumbnail size-portfolio_thumbnail wp-post-image" alt="" />
                       <div style="position: relative; height: 95px;">
                         <b-row>
+                        
+                          <b-col>
+                            <h4 style="font-size: 24px; color: red !important;">{{ value.stockPrice }} TL</h4>
+                            <h4 style="color: red !important">{{ value.stockCount }} Adet </h4>
+                            
+
+                          </b-col>
                           <b-col>
                             <h4 style="color: black">{{ value.stockCode }}</h4>
 
@@ -33,15 +42,10 @@
                             <span style="font-size: 27px; color: black; margin:0px" v-if="value.attr3_boy"> {{
                               value.attr3_boy.replace('cm', '') }}
                             </span>
-                            <span style=" font-size: 27px; color: black; margin:0px" v-if="value.attr4_motif">motif: {{
+                            <span style=" font-size: 27px; color: rgb(0, 0, 0); margin:0px" v-if="value.attr4_motif">motif: {{
                               value.attr4_motif }}
 
                               - </span>
-                          </b-col>
-                          <b-col>
-                            <h4 style=" font-size: 27px; color: rgb(201, 0, 0);">{{ value.stockPrice }} TL</h4>
-                            <h4 style="color: black">{{ value.stockCount }} </h4>
-
                           </b-col>
                         </b-row>
 
@@ -63,6 +67,8 @@
     <imageShow :popupResimSw="imagePopup" @closeSidebar="closeSidebar" :imgSrc="imgSrc" :stockCode="stockCode"
       :stockName="stockName" />
   </div>
+</b-container>
+
 </template>
 
 <script>
@@ -101,6 +107,7 @@ export default {
     closeSidebar() {
       this.imagePopup = false;
     },
+   
 
     columnWidth(value) {
       const totalItems = this.stockList.length;
@@ -121,10 +128,7 @@ export default {
         }
       }
 
-      // Eğer resim sayısı 9 ise, sütunları eşit genişlet
-      if (totalItems === 9) {
-        return '4'; // 3 sütunu da eşit genişlet
-      }
+    
 
       // Eğer resim sayısı 11 ise ve bu resimlerden biri bu sıradaysa,
       // son sütunu genişlet
@@ -141,22 +145,26 @@ export default {
     },
 
     getPortfolioContainerStyle(value) {
-      const totalItems = this.stockList.length;
+  const totalItems = this.stockList.length;
 
-      if (totalItems === 9) {
-        // Check if the current value is in the last row
-        const columnIndex = this.stockList.indexOf(value);
-        const lastRowStart = totalItems - 3;
+  if (totalItems === 9) {
+    // Apply the common style for all rows
+    return {
+      width: '76%',
+      height: '205px',
+      border: 'black 0.1px solid',
+    };
+  }
 
-        if (columnIndex >= lastRowStart) {
-          // Apply different style for the last row
-          return {
-            width: '100%',
-            height: '344px',
-            border: 'blue 0.1px solid',
-          };
-        }
-      }
+
+  if (totalItems === 2) {
+    // Apply the common style for all rows
+    return {
+      width: '248%',
+      height: '427px',
+      border: 'black 0.1px solid',
+    };
+  }
 
 
       if (totalItems === 10) {
@@ -214,27 +222,53 @@ export default {
   },
   computed: {
     stockListChunks() {
-      const chunkSize = 4;
-      const totalItems = this.stockList.length;
-      const remainder = totalItems % chunkSize;
+    const totalItems = this.stockList.length;
+    let chunkSize = 4;
 
-      const chunks = [];
-      let start = 0;
+    if (totalItems === 9) {
+      chunkSize = 3;
+    } else if (totalItems === 6) {
+      chunkSize = 2; 
+    } else if (totalItems === 8) {
+      chunkSize = 2; 
+    } else if (totalItems === 7) {
+      chunkSize = 2; 
+    } else if (totalItems === 11) {
+      chunkSize = 4; 
+    } else if (totalItems === 10) {
+      chunkSize = 3; 
+    } else if (totalItems === 4) {
+      chunkSize = 3; // Adjust this value based on your layout
+    
+    } else if (totalItems === 5) {
+      chunkSize = 2; 
+    } else if (totalItems === 3) {
+      chunkSize = 3; 
+    } else if (totalItems === 2) {
+      
+      chunkSize = 1;
+    }
+    
 
-      // Add rows with full chunkSize items
-      for (let i = 0; i < totalItems - remainder; i += chunkSize) {
-        chunks.push(this.stockList.slice(i, i + chunkSize));
-        start = i + chunkSize;
-      }
+    const remainder = totalItems % chunkSize;
+    const chunks = [];
+    let start = 0;
 
-      // Add the remaining items in a separate row if there is a remainder
-      if (remainder > 0) {
-        chunks.push(this.stockList.slice(start, totalItems));
-      }
+    // Add rows with full chunkSize items
+    for (let i = 0; i < totalItems - remainder; i += chunkSize) {
+      chunks.push(this.stockList.slice(i, i + chunkSize));
+      start = i + chunkSize;
+    }
 
-      return chunks;
-    },
+    // Add the remaining items in a separate row if there is a remainder
+    if (remainder > 0) {
+      chunks.push(this.stockList.slice(start, totalItems));
+    }
+
+    return chunks;
   },
+},
+
 
   watch: {
     page(val) {

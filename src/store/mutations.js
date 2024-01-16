@@ -26,7 +26,10 @@ const mutations = {
 
   },
 
-  
+  updateSelectedPageIndex(state, newIndex) {
+    state.selectedPageIndex = newIndex;
+  },
+
   STOCK_LIST(state, item) {
     state.StockList = item
 

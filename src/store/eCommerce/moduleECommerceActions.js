@@ -8,6 +8,10 @@
 ==========================================================================================*/
 
 export default {
+  removeItemInCard({ commit }, item) {
+    // Your logic to remove the item from the cart
+    commit('REMOVE_ITEM_FROM_CART', item);
+  },
   toggleItemInWishList({ commit }, item) {
     commit('TOGGLE_ITEM_IN_WISH_LIST', item)
   },
@@ -24,6 +28,7 @@ export default {
     item['delivery_date'] = new Date(new Date().getTime() + (Math.random() * 10 * 24 * 60 * 60 * 1000)).toDateString().slice(0, -4)
 
     commit('ADD_ITEM_IN_CART', item)
+    console.log(item)
   },
   updateItemQuantity({ commit }, payload) {
     commit('UPDATE_ITEM_QUANTITY', payload)

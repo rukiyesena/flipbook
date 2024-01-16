@@ -58,7 +58,7 @@
                   <div class="fb5-gradient-page"></div>
                   <canvas id="canv1"></canvas>
                   <div class="fb5-page-book">
-                    <component :is="item.component" :key="item.ind" :index="item.ind" :page="currentValue - 1"
+                    <component :is="item.component" :key="item.ind" :index="item.ind" :page="currentValue "
                       :position="item.position" :item="item"/>
                   </div>
                 </div>
@@ -76,12 +76,7 @@
             <div class="fb5-bcg-tools"></div>
             <a id="fb5-logo" target="_blank" href="#/seventh">
               <img alt="" src="img/logo.png">
-              <div>
-                <b-button v-b-toggle.sidebar-1>Toggle Sidebar</b-button>
-                <b-sidebar id="sidebar-1" title="Sidebar" shadow style="width: 30%;">
-
-                </b-sidebar>
-              </div>
+          
             </a>
 
             <div class="fb5-menu" id="fb5-center">
@@ -89,10 +84,7 @@
 
                 <!-- icon_home -->
                 <li>
-                  <vs-button id="button-with-loading" class="vs-con-loading__container" color="danger" gradient
-                    @click="openKatalogPopup">
-                    Kategori
-                  </vs-button>
+           
                 </li>
 
                 <!-- icon download -->
@@ -138,7 +130,7 @@
                     <!-- icon page manager -->
                     <li class="fb5-goto">
                       <label for="fb5-page-number" id="fb5-label-page-number"></label>
-                      <input type="text" id="fb5-page-number" style="width: 25px;">
+                      <input type="text" id="fb5-page-number" style="width: 25px;" @input="handlePageInputChange">
                       <span id="fb5-page-number-two"></span>
                     </li>
                   </ul>
@@ -272,6 +264,8 @@ export default {
   },
   data() {
     return {
+      selectedPageIndex: 0,
+
       previousValue: null,
       currentValue: null,
       selectedPage: "", 
@@ -311,8 +305,22 @@ export default {
     TablePageFirst,
   },
   methods: {
-
-
+    updateSelectedPageIndex(newPageIndex) {
+      console.log("Received new page index:", newPageIndex);
+      this.selectedPageIndex = newPageIndex;
+    },
+    handlePageInputChange(inputValue) {
+      console.log ( "dsd" )
+      setPage( $('#fb5-page-number').val() );
+    const pageNumber = parseInt(inputValue);
+    if (!isNaN(pageNumber) && pageNumber >= 1 && pageNumber <= this.pages.length) {
+      this.selectedPageIndex = pageNumber - 1;
+      this.navigateToSelectedPage();
+    }
+  },
+navigateToSelectedPage() {
+  this.$emit('changePage', this.selectedPageIndex);
+},
     openKatalogPopup() {
       this.Katalog();
     },

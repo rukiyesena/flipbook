@@ -8,6 +8,10 @@
 ==========================================================================================*/
 
 export default {
+  REMOVE_ITEM_FROM_CART(state, item) {
+    // Your logic to remove the item from the state
+    // state.cartItems.splice(index, 1);
+  },
   TOGGLE_ITEM_IN_WISH_LIST (state, item) {
     const index = state.wishList.findIndex(i => i.objectID === item.objectID)
     if (index < 0) {

@@ -23,18 +23,17 @@
             <li v-for="(item, index) in cartItems" :key="index" class="vx-row no-gutter cart-item cursor-pointer">
               <!-- IMG COL -->
               <div class="
-                  vx-col
-                  w-1/5
-                  item-img-container
-                  bg-white
-                  flex
-                  items-center
-                  justify-center
-                ">
-                <img :src="'data:image/png;base64,' + item.images" alt="item" class="cart-dropdown-item-img p-4"
-                  style="max-height: 75px;" @click="navigate_to_detail_view(item)" />
-              </div>
-
+              vx-col
+              w-1/5
+              item-img-container
+              bg-white
+              flex
+              items-center
+              justify-center
+            ">
+              <img :src="item.url_image" alt="item" class="cart-dropdown-item-img p-4" style="max-height: 75px;" @click="navigate_to_detail_view(item)" />
+            </div>
+            
               <!-- INFO COL -->
               <div class="vx-col w-4/5 pr-4 pl-2 py-4 flex flex-col justify-center">
                 <span class="font-medium block cart-item-title truncate"
@@ -146,6 +145,7 @@ export default {
   
 	},
 	methods: {
+    
 		   // Example method to handle quantity changes
     updateItemQuantity(item, newQuantity) {
         // Perform any logic needed when the quantity changes
@@ -188,13 +188,24 @@ export default {
 		errorFind(err) {
 			console.log(err);
 		},
-		removeItemFromCart(item) {
-			this.$store
-				.dispatch("eCommerce/removeItemInCard", item)
-				.then((response) => {
-					if (response == "ok") this.$refs.cardList.listCardItems();
-				});
-		},
+    removeItemFromCart(item) {
+  // Find the index of the item in the cartItems array
+  const index = this.$store.state.eCommerce.cartItems.findIndex(cartItem => cartItem === item);
+
+  // If the item is found in the array, remove it
+  if (index !== -1) {
+    // Remove the item from the global state
+  this.$store.dispatch("eCommerce/removeItemInCard", item)
+  .then((response) => {
+    if (response === "ok") {
+      // If needed, perform additional actions after successful removal
+      // this.$refs.cardList.listCardItems();
+    }
+      });
+  }
+}
+
+
 	},
 	created() {
 		this.sistemurl = userJson.resimUrl;

@@ -66,6 +66,7 @@ const actions = {
         soap.createClient(url, function (err, client) {
           client.CategoryList(args, function (err, result) {
             let veriler = JSON.parse(result.CategoryListResult);
+            console.log('Category List:', veriler);
 
             // Log the retrieved data 
 
@@ -75,62 +76,70 @@ const actions = {
 
             // Create pages
             let pages = [{
-              "ind": "-1",
+              "ind": "1",
               "component": "EntryPage",
               "title": "Giriş Sayfa",
               "position": "right",
 
             }, {
-              "ind": "0",
+              "ind": "2",
               "component": "TablePageFirst",
               "title": "Giriş Sayfa",
               "position": "right",
               "categoryName": "Kategoriler"
             },
             {
-              "ind": "1",
+              "ind": "3",
               "component": "TablePageFirst",
               "title": "Giriş Sayfa",
               "position": "right",
               "categoryName": "Kategoriler"
             }
+         
             ];
 
- 
+ let pageInd=4
+ let currentPageIndex = 4;
+
             veriler.forEach((category, categoryIndex) => {
               const satirSayisi = category.satirSayisi;
               const sayfaSayisi = category.sayfaSayisi;
-              const items = category.items || []; 
+              const items = category.items || [];
+  
+              // Kategori değiştiğinde sayfa değişimi
+  
               for (let i = 0; i < sayfaSayisi; i++) {
                 const startIndex = i * 12;
-
+  
                 pages.push({
-                  "ind": pages.length,
+                  "ind": pageInd,
                   "component": "FirstPage",
                   "title": "Kategori Sayfa",
                   "position": i % 2 === 0 ? "left" : "right",
                   "ilkSayfa": startIndex,
                   "category": category.categoryCode,
-                  "categoryName": category.categoryName
-
+                  "categoryName": category.categoryName,
+                  "page": currentPageIndex
                 });
+  
+                pageInd++;
               }
+              currentPageIndex+=sayfaSayisi;
+
             });
-            
             localStorage.setItem("pages", JSON.stringify(pages));
             commit("PAGES", pages);
-
-
+  
             resolve(true);
           });
         });
       } catch (error) {
         resolve(false);
-        console.log(error);
+        console.log('Error:', error);
       }
     });
   },
-
+  
 
 
   getDataStock({ commit, dispatch }, arg) {  

@@ -4,71 +4,101 @@
       <topleftbanner :page="index" />
 
       <div data-slug="portfolios">
-        <div class="  bb-custom-side" style="width: 100%;">
+        <div class="bb-custom-side" style="width: 90%;">
           <div class="content-wrapper">
             <b-row>
-              <b-col>
-                <div id="portfolio-container-oBTIBx9p91" class="portfolio-container" style="width: 90%;">
-                  <div class="portfolio-item illustrator"
-                    style="width: 34% !important; height: 504px; border: black 0.1px solid;"
-                    v-for="(category, index) in CategoryList" :key="index">
-
-                    <b-col style="text-align: -webkit-center;">
-                      <AddtoCard :data="category" :indexItem="'tooltip-target-' + index" />
-                      <div style="position: relative; height: 50px;">
-                        <h3 style="color: black">Kategori Adı: {{ category.categoryName }}</h3>
-                        <h3 style="color: black">Kategori Kodu: {{ category.categoryCode }}</h3>
-                        <img :src="category.image" alt="Category Image" style="width: 100%; height: 700%;" />
-
-                        <!-- Kategoriye Git Butonu -->
-                        <button @click="redirectToSeventhPage"
-                          style="position: absolute; bottom: 10px; right: 10px;">Kategoriye Git</button>
-                      </div>
-                    </b-col>
-                  </div>
+              <b-col v-for="(category, index) in CategoryList" :key="index" cols="6" md="4" lg="3">
+                <div class="portfolio-item illustrator">
+                  <b-col style="text-align: -webkit-center;">
+                    <div style="position: relative; height: 120px; margin-bottom: 200px;">
+                      <h3 style="color: rgb(65, 47, 47)">{{ category.categoryName }}</h3>
+                      <h3 style="color: rgb(115, 115, 115)"> Kategori kodu: {{ category.categoryCode }}</h3>
+                      <img
+                        :src="category.image"
+                        alt="Category Image"
+                        style="width: 100%; height: 200%;"
+                        @click="handleClick(category)"
+                      />
+                    </div>
+                  </b-col>
                 </div>
               </b-col>
-
             </b-row>
-
           </div>
         </div>
       </div>
+
       <b-col cols="12" align-self="end">
         <bottomBanner2 :page="index" />
-
       </b-col>
     </b-row>
 
     <imageShow :popupResimSw="imagePopup" @closeSidebar="closeSidebar" :imgSrc="imgSrc" />
-
   </div>
 </template>
+
+<!-- ... rest of the script and style sections remain unchanged ... -->
+
 <script>
 import topleftbanner from '../components/topleftbanner.vue';
 import topBanner2 from '../components/topBanner2.vue';
 import rightBanner from '../components/rightBanner.vue';
 import bottomBanner2 from '../components/bottomBanner2.vue';
 import imageShow from './components/imageShow.vue';
-import AddtoCard from './components/AddtoCard.vue';
 
 export default {
   mounted() {
+    const storedPages = localStorage.getItem("pages");
+  if (storedPages) {
+    this.pages = JSON.parse(storedPages);
+  }
 
-    if (this.CategoryList == "") {
-      this.CategoryList = localStorage.getItem("CategoryList")
+    const storedCategoryList = localStorage.getItem("CategoryList");
+    if (storedCategoryList) {
+      this.CategoryList = JSON.parse(storedCategoryList);
     }
-
   },
   props: ["page", "position", "index"],
-  data() { return { imgSrc: "", imagePopup: false } },
-  components: { AddtoCard, imageShow, topBanner2, topleftbanner, rightBanner, bottomBanner2 },
+  data() { return {       selectedPageIndex: 0, // Eklenen değişken
+    
+ imgSrc: "", imagePopup: false } },
+  components: { imageShow, topBanner2, topleftbanner, rightBanner, bottomBanner2 },
   methods: {
-    redirectToSeventhPage() {
-      // Burada "SeventhPage" adlı bir sayfaya yönlendirme yapabilirsiniz.
-      // Aşağıda bu sayfanın adını ve yönlendirme işlemini gerçekleştiren bir örnek gösterilmiştir.
-      this.$router.push({ name: 'SeventhPage' });
-    },
+
+getCurrentPageIndex(category) {
+  const filteredPages = this.pages.filter(page => page.categoryName === category.categoryName);
+
+  if (filteredPages.length === 0) {
+    console.error("Error: Page not found for category:", category.categoryName);
+    return -1;
+  }
+
+  const pageIndex = filteredPages[0].page;
+  this.selectedPageIndex = pageIndex;
+  console.log("Found index:", this.selectedPageIndex);
+  return pageIndex;
+},
+
+handleClick(categoryItem) {
+  const categoryCode = categoryItem.categoryCode;
+  const categoryName = categoryItem.categoryName;
+  console.log("CategoryList:", this.CategoryList);
+  console.log("Clicked Category Code:", categoryCode);
+  console.log("Clicked Category Name:", categoryName);
+
+  this.currentPageIndex = this.getCurrentPageIndex(categoryItem);
+
+  // Otomatik olarak input alanına değeri yazdır
+  const inputElement = document.getElementById("fb5-page-number");
+  
+  if (inputElement) {
+    inputElement.value = this.selectedPageIndex;
+  } else {
+    console.error("Error: Input element with id 'fb5-page-number' not found.");
+  }
+},
+
+
     toggleBrowsingContent() {
       this.$refs.heroImage.classList.toggle("browsing-content");
     },

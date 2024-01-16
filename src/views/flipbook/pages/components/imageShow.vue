@@ -47,21 +47,26 @@ export default {
     },
   },
   methods: {
-    addItemstoCard() {
-  this.isInCart(this.stockCode)
-    ? this.$router.push("/apps/eCommerce/checkout").catch(() => {})
-    : this.additemInCart({
-        stockCode: this.stockCode,
-        stockName: this.stockName,
-        // Add other properties if needed
-      });
-},
+      addItemstoCard() {
+    this.isInCart(this.stockCode)
+      ? this.$router.push("/apps/eCommerce/checkout").catch(() => {})
+      : this.additemInCart({
+          stockCode: this.stockCode,
+          url_image: this.imgSrc,
+          stockName: this.stockName,
+        });
 
-    additemInCart(item) { 
-      item['quantity'] = this.addQty
+    // Close the popup after adding the item
+    this.isSidebarActiveLocal = false;
+
+    // Emit an event to notify the parent component
+    this.$emit("itemAddedToCard");
+  },
+    additemInCart(item) {
+      item["quantity"] = this.addQty;
       this.$store.dispatch("eCommerce/additemInCart", item);
     },
-  
+
     onResimGoster() {
       this.$emit("closeSidebar"); // Close any other sidebar if needed
       this.$emit("update:popupResimSw", true);
