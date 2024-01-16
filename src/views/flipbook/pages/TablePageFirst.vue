@@ -10,9 +10,8 @@
               <b-col v-for="(category, index) in CategoryList" :key="index" cols="6" md="4" lg="3">
                 <div class="portfolio-item illustrator">
                   <b-col style="text-align: -webkit-center;">
-                    <div style="position: relative; height: 120px; margin-bottom: 200px;">
+                    <div style="position: relative; height: 120px; margin-bottom: 160px;">
                       <h3 style="color: rgb(65, 47, 47)">{{ category.categoryName }}</h3>
-                      <h3 style="color: rgb(115, 115, 115)"> Kategori kodu: {{ category.categoryCode }}</h3>
                       <img
                         :src="category.image"
                         alt="Category Image"
@@ -90,13 +89,16 @@ handleClick(categoryItem) {
 
   // Otomatik olarak input alanına değeri yazdır
   const inputElement = document.getElementById("fb5-page-number");
-  
   if (inputElement) {
     inputElement.value = this.selectedPageIndex;
+
+    // Trigger the logic as if the "Enter" key was pressed
+    setPage(this.selectedPageIndex);
   } else {
     console.error("Error: Input element with id 'fb5-page-number' not found.");
   }
 },
+
 
 
     toggleBrowsingContent() {
