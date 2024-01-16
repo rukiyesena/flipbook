@@ -95,22 +95,22 @@ const actions = {
               "position": "right",
               "categoryName": "Kategoriler"
             }
-         
+
             ];
 
- let pageInd=4
- let currentPageIndex = 4;
+            let pageInd = 4
+            let currentPageIndex = 4;
 
             veriler.forEach((category, categoryIndex) => {
               const satirSayisi = category.satirSayisi;
               const sayfaSayisi = category.sayfaSayisi;
               const items = category.items || [];
-  
+
               // Kategori değiştiğinde sayfa değişimi
-  
+
               for (let i = 0; i < sayfaSayisi; i++) {
                 const startIndex = i * 12;
-  
+
                 pages.push({
                   "ind": pageInd,
                   "component": "FirstPage",
@@ -121,15 +121,15 @@ const actions = {
                   "categoryName": category.categoryName,
                   "page": currentPageIndex
                 });
-  
+
                 pageInd++;
               }
-              currentPageIndex+=sayfaSayisi;
+              currentPageIndex += sayfaSayisi;
 
             });
             localStorage.setItem("pages", JSON.stringify(pages));
             commit("PAGES", pages);
-  
+
             resolve(true);
           });
         });
@@ -139,11 +139,11 @@ const actions = {
       }
     });
   },
-  
 
 
-  getDataStock({ commit, dispatch }, arg) {  
-    let pageAct = arg.page == "" ? 1 : arg.page  
+
+  getDataStock({ commit, dispatch }, arg) {
+    let pageAct = arg.page == "" ? 1 : arg.page
     const soap = require("soap");
     const url = userJson.userService;
     try {
@@ -153,12 +153,12 @@ const actions = {
         kategori: arg.kategori,
         pageCounts: "12",
         ilkKayit: arg.ilkKayit
-      }; 
+      };
       return new Promise((resolve, reject) => {
         try {
           soap.createClient(url, function (err, client) {
             client.StockList(args, function (err, result) {
-              let veriler = JSON.parse(result.StockListResult); 
+              let veriler = JSON.parse(result.StockListResult);
               commit("STOCK_LIST_RIGHT", veriler);
               resolve(veriler)
             });

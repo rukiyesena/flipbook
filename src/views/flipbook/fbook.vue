@@ -1,13 +1,12 @@
 <template>
   <div>
-     
     <div v-if="pages.length > 0">
-      
+
       <div id="fb5-ajax" data-cat="katalog" data-template="true">
         <!-- BACKGROUND FLIPBOOK -->
         <div class="fb5-bcg-book"></div>
         <!-- BEGIN STRUCTURE HTML FLIPBOOK -->
-        
+
         <div class="fb5" id="fb5">
           <!-- CONFIGURATION BOOK -->
           <section id="config">
@@ -51,20 +50,17 @@
             <!--  PAGES -->
             <div id="fb5-book">
 
-
               <!--  page 1 -->
               <div v-for="(item, index) in pages" :key="index">
                 <div class="fb5-cont-page-book">
                   <div class="fb5-gradient-page"></div>
                   <canvas id="canv1"></canvas>
                   <div class="fb5-page-book">
-                    <component :is="item.component" :key="item.ind" :index="item.ind" :page="currentValue "
-                      :position="item.position" :item="item"/>
+                    <component :is="item.component" :key="item.ind" :index="item.ind" :page="currentValue"
+                      :position="item.position" :item="item" />
                   </div>
                 </div>
               </div>
-
-
             </div>
 
           </div>
@@ -76,7 +72,7 @@
             <div class="fb5-bcg-tools"></div>
             <a id="fb5-logo" target="_blank" href="#/seventh">
               <img alt="" src="img/logo.png">
-          
+
             </a>
 
             <div class="fb5-menu" id="fb5-center">
@@ -84,7 +80,7 @@
 
                 <!-- icon_home -->
                 <li>
-           
+
                 </li>
 
                 <!-- icon download -->
@@ -242,9 +238,10 @@ import CartDropDown from '../../layouts/components/navbar/components/CartDropDow
 import { Icon } from "@iconify/vue2";
 export default {
   mounted() {
-     
+
     if (this.pages == "") {
-      this.pages = localStorage.getItem("pages")
+      this.pages = JSON.parse(localStorage.getItem("pages"))
+      console.log(this.pages)
     }
     setInterval(() => {
       const el = document.getElementById('fb5-page-number');
@@ -268,7 +265,7 @@ export default {
 
       previousValue: null,
       currentValue: null,
-      selectedPage: "", 
+      selectedPage: "",
     }
   },
   computed: {
@@ -287,7 +284,7 @@ export default {
     },
 
   },
-  
+ 
   components: {
     CartDropDown,
     Icon,
@@ -310,17 +307,17 @@ export default {
       this.selectedPageIndex = newPageIndex;
     },
     handlePageInputChange(inputValue) {
-      console.log ( "dsd" )
-      setPage( $('#fb5-page-number').val() );
-    const pageNumber = parseInt(inputValue);
-    if (!isNaN(pageNumber) && pageNumber >= 1 && pageNumber <= this.pages.length) {
-      this.selectedPageIndex = pageNumber - 1;
-      this.navigateToSelectedPage();
-    }
-  },
-navigateToSelectedPage() {
-  this.$emit('changePage', this.selectedPageIndex);
-},
+      console.log("dsd")
+      setPage($('#fb5-page-number').val());
+      const pageNumber = parseInt(inputValue);
+      if (!isNaN(pageNumber) && pageNumber >= 1 && pageNumber <= this.pages.length) {
+        this.selectedPageIndex = pageNumber - 1;
+        this.navigateToSelectedPage();
+      }
+    },
+    navigateToSelectedPage() {
+      this.$emit('changePage', this.selectedPageIndex);
+    },
     openKatalogPopup() {
       this.Katalog();
     },
