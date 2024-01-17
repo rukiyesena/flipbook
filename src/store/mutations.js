@@ -20,12 +20,19 @@ const mutations = {
     state.CategoryList = item
 
   },
+  CrudTo_OfferList(state, item) {
+    state.CrudToOfferList = item
+
+  },
+ 
   PAGES(state, pages) {
       state.Pages = pages;
 
 
   },
-
+  updateCartItemDescription(state, { index, editedDescription }) {
+    state.eCommerce.cartItems[index].editedDescription = editedDescription;
+  },
   updateSelectedPageIndex(state, newIndex) {
     state.selectedPageIndex = newIndex;
   },

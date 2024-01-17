@@ -27,8 +27,12 @@ export default {
   ADD_ITEM_IN_CART (state, item) {
     state.cartItems.push(Object.assign({}, item))
   },
+  updateCartItemDescription(state, { index, editedDescription }) {
+    state.eCommerce.cartItems[index].editedDescription = editedDescription;
+  },
   UPDATE_ITEM_QUANTITY (state, payload) {
     state.cartItems[payload.index].quantity = payload.quantity
   }
+  
 }
 

@@ -66,7 +66,6 @@ const actions = {
         soap.createClient(url, function (err, client) {
           client.CategoryList(args, function (err, result) {
             let veriler = JSON.parse(result.CategoryListResult);
-            console.log('Category List:', veriler);
 
             // Log the retrieved data 
 
@@ -81,30 +80,35 @@ const actions = {
               "title": "Giriş Sayfa",
               "position": "right",
 
-            }, {
-              "ind": "2",
-              "component": "TablePageFirst",
-              "title": "Giriş Sayfa",
-              "position": "right",
-              "categoryName": "Kategoriler"
             },
-            {
-              "ind": "3",
-              "component": "TablePageFirst",
-              "title": "Giriş Sayfa",
-              "position": "right",
-              "categoryName": "Kategoriler"
-            }
 
             ];
 
-            let pageInd = 4
-            let currentPageIndex = 4;
+            let pageInd = 2
+            let currentPageIndex = 2;
+
+              const kategoriNo = veriler[0].categoryCountPage;
+
+              // Kategori değiştiğinde sayfa değişimi
+
+              for (let i = 0; i < kategoriNo; i++) {
+                const startIndex = i * 16;
+
+                pages.push({
+                  "ind": pageInd,
+                  "component": "TablePageFirst",
+                  "title": "Kategori Sayfa",
+                  "position": i % 2 === 0 ? "left" : "right",
+                  "ilkSayfa": startIndex, 
+                  "page": currentPageIndex
+                });
+
+              currentPageIndex += 1;
+              pageInd++;
+              }
 
             veriler.forEach((category, categoryIndex) => {
-              const satirSayisi = category.satirSayisi;
               const sayfaSayisi = category.sayfaSayisi;
-              const items = category.items || [];
 
               // Kategori değiştiğinde sayfa değişimi
 
@@ -114,7 +118,7 @@ const actions = {
                 pages.push({
                   "ind": pageInd,
                   "component": "FirstPage",
-                  "title": "Kategori Sayfa",
+                  "title": "stok Sayfa",
                   "position": i % 2 === 0 ? "left" : "right",
                   "ilkSayfa": startIndex,
                   "category": category.categoryCode,
@@ -139,8 +143,74 @@ const actions = {
       }
     });
   },
+  GetCrudToOfferList({ commit, dispatch }, arg) {
+  console.log(arg)
+    const soap = require("soap");
+    const url = userJson.userService;
+    try {
+      let args = {
+        token: state.tokenId,
+        offerNumber: "",
+        quantity: arg.quantity,
+        barcode: "",
+        isDue: "insert",
+        eMail: "",
+        phone: "",
+        name:"",
+        surname:"",
+        orderStatus:"",
+        address: "",
+      };
 
-
+      return new Promise((resolve, reject) => {
+        try {
+          soap.createClient(url, function (err, client) {
+            client.CrudToOfferList(args, function (err, result) {
+              let veriler = JSON.parse(result.CrudToOfferListResult);
+              commit("CrudTo_OfferList", veriler);
+              resolve(veriler)
+            });
+          });
+        } catch (error) {
+          resolve(false);
+          console.log(error);
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  },
+ 
+  getDataCategoryListPerPage({ commit, dispatch, state }, arg) {
+    let pageAct = arg.page == "" ? 1 : arg.page
+    const soap = require("soap");
+    const url = userJson.userService;
+    try {
+      let args = {
+        token: state.tokenId,
+        page: pageAct,
+        kategori: arg.kategori,
+        pageCounts: "16",
+        ilkKayit: arg.ilkKayit
+      };
+      return new Promise((resolve, reject) => {
+        try {
+          soap.createClient(url, function (err, client) {
+            client.CategoryList(args, function (err, result) {
+              let veriler = JSON.parse(result.CategoryListResult); 
+              console.log(veriler)
+              resolve(veriler)
+            });
+          });
+        } catch (error) {
+          resolve(false);
+          console.log(error);
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  },
 
   getDataStock({ commit, dispatch }, arg) {
     let pageAct = arg.page == "" ? 1 : arg.page

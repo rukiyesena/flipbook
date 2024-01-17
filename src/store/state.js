@@ -52,7 +52,7 @@ const is_touch_device = () => {
 const state = {
   PageSize: "",
   selectedPageIndex: 0,
-
+  CrudToOfferList: [], 
   Pages: "",
   StockList: [],
   CategoryList: [],

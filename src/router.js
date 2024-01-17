@@ -108,6 +108,12 @@ const router = new Router({
 
 				},
 				{
+					path: "/flipbook/Teklif/Onay/Musteri",
+					name: "FlipBookTeklif",
+					component: () => import("@/views/flipbook/FlipBookTeklifMusteri.vue"),
+
+				},
+				{
 					path: '/pages/error-404',
 					name: 'page-error-404',
 					component: () => import('@/views/pages/Error404.vue')

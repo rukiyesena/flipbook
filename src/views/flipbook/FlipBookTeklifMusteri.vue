@@ -51,11 +51,7 @@
             {{ data[indextr].attr3_boy ? data[indextr].attr3_boy.replace('cm', '') + ' x ' : '' }}
             {{ data[indextr].attr2_en ? data[indextr].attr2_en.replace('cm', '') : '' }}
           </vs-td>
-          <vs-td style="color: black; font-weight: bold;">
-            <div>
-              <input type="text" class="styled-input" style="color: black; font-weight: bold;" />
-            </div>
-          </vs-td>
+      
           <vs-td :data="data[indextr].quantity" style="color: black; font-weight: bold;">
             {{ data[indextr].quantity }}
           </vs-td>
@@ -70,11 +66,7 @@
           
           
        
-          <vs-td style="color: black; font-weight: bold;">
-            <div>
-              <input type="text" class="styled-input" style="color: black; font-weight: bold;" />
-            </div>
-          </vs-td>
+
 
                  
     

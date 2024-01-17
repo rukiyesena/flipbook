@@ -3,35 +3,26 @@
     <b-row style="height: 100%;">
       <topleftbanner :page="index" />
 
-      <div data-slug="portfolios">
-        <div class="bb-custom-side" style="width: 90%;">
-          <div class="content-wrapper">
-            <b-row>
-              <b-col v-for="(category, index) in CategoryList" :key="index" cols="6" md="4" lg="3">
-                <div class="portfolio-item illustrator">
-                  <b-col style="text-align: -webkit-center;">
-                    <div style="position: relative; height: 120px; margin-bottom: 160px;">
-                      <h3 style="color: rgb(65, 47, 47)">{{ category.categoryName }}</h3>
-                      <img
-                        :src="category.image"
-                        alt="Category Image"
-                        style="width: 100%; height: 200%;"
-                        @click="handleClick(category)"
-                      />
-                    </div>
-                  </b-col>
-                </div>
-              </b-col>
-            </b-row>
-          </div>
-        </div>
-      </div>
+      <VuePerfectScrollbar :settings="settings" class="scrollbar-container">
+        <b-col cols="12">
+          <b-row style="height: 100%;">
+            <b-col v-for="(category, index) in CategoryList" :key="index" cols="3" md="3" lg="3" style="text-align: center;">
+              <h3 style="color: rgb(73, 62, 144); text-align: center; position: absolute;">{{ category.categoryName }}</h3>
+              <img
+                :src="category.image"
+                alt="Category Image"
+                style="width: 100%;"
+                @click="handleClick(category)"
+              />
+            </b-col>
+          </b-row>
+        </b-col>
 
-      <b-col cols="12" align-self="end">
-        <bottomBanner2 :page="index" />
-      </b-col>
+        <b-col cols="12" align-self="end">
+          <bottomBanner2 :page="index" />
+        </b-col>
+      </VuePerfectScrollbar>
     </b-row>
-
     <imageShow :popupResimSw="imagePopup" @closeSidebar="closeSidebar" :imgSrc="imgSrc" />
   </div>
 </template>
@@ -44,6 +35,8 @@ import topBanner2 from '../components/topBanner2.vue';
 import rightBanner from '../components/rightBanner.vue';
 import bottomBanner2 from '../components/bottomBanner2.vue';
 import imageShow from './components/imageShow.vue';
+import VuePerfectScrollbar from "vue-perfect-scrollbar";
+
 
 export default {
   mounted() {
@@ -57,18 +50,22 @@ export default {
       this.CategoryList = JSON.parse(storedCategoryList);
     }
   },
-  props: ["page", "position", "index"],
-  data() { return {       selectedPageIndex: 0, // Eklenen değişken
+  props:{
+    page: "", position: "", index: "", item: {  },
+  },
+  data() { return {     settings: {
+        // perfectscrollbar settings
+        maxScrollbarLength: 5,
+      },   CategoryList:[],   selectedPageIndex: 0, // Eklenen değişken
     
  imgSrc: "", imagePopup: false } },
-  components: { imageShow, topBanner2, topleftbanner, rightBanner, bottomBanner2 },
+  components: { imageShow, topBanner2, topleftbanner, rightBanner, bottomBanner2,     VuePerfectScrollbar },
   methods: {
 
 getCurrentPageIndex(category) {
   const filteredPages = this.pages.filter(page => page.categoryName === category.categoryName);
 
-  if (filteredPages.length === 0) {
-    console.error("Error: Page not found for category:", category.categoryName);
+  if (filteredPages.length === 0) { 
     return -1;
   }
 
@@ -80,10 +77,7 @@ getCurrentPageIndex(category) {
 
 handleClick(categoryItem) {
   const categoryCode = categoryItem.categoryCode;
-  const categoryName = categoryItem.categoryName;
-  console.log("CategoryList:", this.CategoryList);
-  console.log("Clicked Category Code:", categoryCode);
-  console.log("Clicked Category Name:", categoryName);
+  const categoryName = categoryItem.categoryName; 
 
   this.currentPageIndex = this.getCurrentPageIndex(categoryItem);
 
@@ -113,7 +107,12 @@ handleClick(categoryItem) {
 
     }
   },
-
+  computed: {
+    scrollbarTag() {
+      return this.$store.getters.scrollbarTag;
+    },
+  },
+/*
   computed: {
     CategoryList: {
       get() {
@@ -129,7 +128,31 @@ handleClick(categoryItem) {
 
     },
 
-  },
+  },*/
+  watch: {
+    page(val) {
+      if (this.index == val - 2 || this.index == val - 1 || this.index == val) {
+
+        try {
+          let args = {
+            page: this.index,
+            kategori: this.item.category,
+            pageCounts: "16",
+            ilkKayit: this.item.ilkSayfa
+          } 
+          this.$store
+            .dispatch("getDataCategoryListPerPage", args)
+            .then(response => {
+              console.log(response)
+              this.CategoryList = response
+          //    this.stockList = response
+            });
+        } catch (error) {
+          console.log(error)
+        }
+      }
+    }
+  }
 };
 </script>
 
@@ -377,4 +400,10 @@ handleClick(categoryItem) {
   width: 1px;
   background-color: white;
 }
+.scrollbar-container {
+  max-height: 100%;
+  overflow-y: auto;
+  border: 1px solid red; /* Bu çizgiyi ekleyerek belirleyiciyi görebilirsiniz */
+}
+
 </style>

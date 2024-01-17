@@ -79,23 +79,8 @@
           </div>
           
         </div>
-        <vs-popup v-if="offerPopupVisible" :active.sync="offerPopupVisible" title="Teklif Gönder">
-      
-          <div>
-            <b-input-group prepend="Ad Soyad" class="mt-3">
-              <b-form-input> <b-avatar rounded="sm"></b-avatar>
-              </b-form-input>
-            </b-input-group>
-            <b-input-group prepend="Mail Adres" class="mt-3">
-              <b-form-input> <b-avatar rounded="sm"></b-avatar>
-              </b-form-input>
-            </b-input-group>
-          </div>
-          <br>
-          <div>
-            <vs-button @click="submitOffer">Teklif Gönder</vs-button>
-          </div>
-        </vs-popup>
+     
+  
       </template>
 
       <!-- IF CART IS EMPTY -->
@@ -104,6 +89,28 @@
       </template>
     </vs-dropdown-menu>
 		<!-- <ListCard ref="cardList" /> -->
+    <vs-popup :active.sync="offerPopupVisible" title="Teklif Gönder">
+
+      <b-input-group prepend="Ad Soyad" class="mt-3">
+        <b-form-input v-model="Mname">
+          <b-avatar rounded="sm"></b-avatar>
+        </b-form-input>
+      </b-input-group>
+      <b-input-group prepend="Mail Adres" class="mt-3">
+        <b-form-input v-model="Memail">
+          <b-avatar rounded="sm"></b-avatar>
+        </b-form-input>
+      </b-input-group>
+      <b-input-group prepend="Telefon" class="mt-3">
+        <b-form-input v-model="Mtelefon">
+          <b-avatar rounded="sm"></b-avatar>
+        </b-form-input>
+      </b-input-group>
+      <br>
+      <div>
+        <vs-button @click="submitOffer">Teklif Gönder</vs-button>
+      </div>
+    </vs-popup>
 	</vs-dropdown>
 </template>
 
@@ -112,6 +119,7 @@ import VuePerfectScrollbar from "vue-perfect-scrollbar";
 import Store from "../../../../store/store";
 import state from "../../../../store/state";
 import userJson from "../../../../../public/user.json";
+
 export default {
 	components: {
 		VuePerfectScrollbar,
@@ -120,7 +128,9 @@ export default {
 		return {
 			offerPopupVisible: false,
       offerPrice: 0,
-
+      Mname: "",
+      Mtelefon:"",
+      Memail: "",
 			cartList: [],
 			sistemurl: "",
 			productPrice: 0.0,
@@ -154,13 +164,27 @@ export default {
 		openOfferPopup() {
       this.offerPopupVisible = true;
     },
-
     submitOffer() {
-      // Handle offer submission logic here
-      // You can access input values like this: this.offerPrice
-      // Close the popup after submission
-      this.offerPopupVisible = false;
-    },
+  console.log('Ad Soyad:', this.Mname);
+  console.log('Mail Adres:', this.Memail);
+  console.log("submitOffer method called");
+
+  this.$store.dispatch('GetCrudToOfferList', { name: this.Mname, eMail: this.Memail, phone: this.Mtelefon})
+    .then((response) => {
+      console.log('Action', response);
+    })
+    .catch((error) => {
+      console.error('Error', error);
+    });
+
+  this.closeOfferPopup();
+  console.log("Teklif gönderildi");
+},
+
+
+  closeOfferPopup() {
+    this.offerPopupVisible = false;
+  },
 		navigate_to_detail_view(event) {
 
 			// alert(this.item);
