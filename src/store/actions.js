@@ -143,32 +143,82 @@ const actions = {
       }
     });
   },
-  GetCrudToOfferList({ commit, dispatch }, arg) {
-  console.log(arg)
+  GetOfferNumber({ commit, dispatch, state }, arg) {
+    const soap = require("soap");
+    const url = userJson.userService;
+    return new Promise((resolve, reject) => {
+      try {
+        soap.createClient(url, function (err, client) {
+          if (err) {
+            reject(err);
+            return;
+          }
+          
+          client.GetOfferNumber(function (err, result) {
+            if (err) {
+              reject(err);
+              return;
+            }
+          
+            try {
+              if (result === undefined || result.GetOfferNumberResult === undefined) {
+                reject(new Error("GetOfferNumber response or its property is undefined"));
+                return;
+              }
+          
+              // JSON.parse kullanmadan direkt olarak değeri kullanabilirsiniz
+              let offerNumber = result.GetOfferNumberResult;
+              commit("GetOfferNumber", { offerNumber });
+          
+              resolve({ offerNumber });
+            } catch (error) {
+              reject(error);
+              console.log(error);
+            }
+          });
+          
+          client.GetOfferNumber(function (err, result) {
+            console.log('SOAP Response:', result);
+          
+          });
+                    
+        });
+      } catch (error) {
+        reject(error);
+        console.log(error);
+      }
+    });
+  },  
+  
+  GetCrudToOfferList({ commit, dispatch, state }, arg) {
     const soap = require("soap");
     const url = userJson.userService;
     try {
       let args = {
         token: state.tokenId,
-        offerNumber: "",
+        offerNumber: arg.offerNumber, 
         quantity: arg.quantity,
-        barcode: "",
+        barcode: arg.stockCode,
         isDue: "insert",
-        eMail: "",
-        phone: "",
-        name:"",
-        surname:"",
-        orderStatus:"",
-        address: "",
+        eMail: arg.eMail,
+        phone: arg.phone,
+        name: arg.name,
+        surname: arg.surname,
+        orderStatus: arg.orderStatus,
+        address: arg.address,
       };
-
+  
+      console.log(args);
+  
       return new Promise((resolve, reject) => {
         try {
           soap.createClient(url, function (err, client) {
             client.CrudToOfferList(args, function (err, result) {
               let veriler = JSON.parse(result.CrudToOfferListResult);
-              commit("CrudTo_OfferList", veriler);
-              resolve(veriler)
+  
+              commit("CrudTo_OfferList", { veriler, offerNumber: veriler });
+  
+              resolve({ veriler, offerNumber: veriler });
             });
           });
         } catch (error) {
@@ -180,6 +230,7 @@ const actions = {
       console.log(error);
     }
   },
+  
  
   getDataCategoryListPerPage({ commit, dispatch, state }, arg) {
     let pageAct = arg.page == "" ? 1 : arg.page

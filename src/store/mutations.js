@@ -24,7 +24,10 @@ const mutations = {
     state.CrudToOfferList = item
 
   },
- 
+  updateName(state, newName) {
+    console.log('New Name:', newName);
+    state.name = newName;
+  },
   PAGES(state, pages) {
       state.Pages = pages;
 

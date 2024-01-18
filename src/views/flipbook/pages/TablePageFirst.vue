@@ -16,12 +16,12 @@
               />
             </b-col>
           </b-row>
-        </b-col>
+        </b-col>      </VuePerfectScrollbar>
+
 
         <b-col cols="12" align-self="end">
           <bottomBanner2 :page="index" />
         </b-col>
-      </VuePerfectScrollbar>
     </b-row>
     <imageShow :popupResimSw="imagePopup" @closeSidebar="closeSidebar" :imgSrc="imgSrc" />
   </div>

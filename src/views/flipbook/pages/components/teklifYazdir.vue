@@ -77,7 +77,14 @@
           <vs-td :data="data[indextr].descrpiton" style="color: black; font-weight: bold;">
             {{ data[indextr].attr3_boy }}
           </vs-td>
-                 
+                          
+       
+          <vs-td style="color: black; font-weight: bold;">
+            <div>
+              <input type="text" class="styled-input" style="color: black; font-weight: bold;" />
+            </div>
+          </vs-td>
+
     
         </vs-tr>
 

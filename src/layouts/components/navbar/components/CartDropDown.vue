@@ -92,17 +92,17 @@
     <vs-popup :active.sync="offerPopupVisible" title="Teklif Gönder">
 
       <b-input-group prepend="Ad Soyad" class="mt-3">
-        <b-form-input v-model="Mname">
+        <b-form-input v-model="name">
           <b-avatar rounded="sm"></b-avatar>
         </b-form-input>
       </b-input-group>
       <b-input-group prepend="Mail Adres" class="mt-3">
-        <b-form-input v-model="Memail">
+        <b-form-input v-model="eMail">
           <b-avatar rounded="sm"></b-avatar>
         </b-form-input>
       </b-input-group>
       <b-input-group prepend="Telefon" class="mt-3">
-        <b-form-input v-model="Mtelefon">
+        <b-form-input v-model="phone">
           <b-avatar rounded="sm"></b-avatar>
         </b-form-input>
       </b-input-group>
@@ -128,9 +128,9 @@ export default {
 		return {
 			offerPopupVisible: false,
       offerPrice: 0,
-      Mname: "",
-      Mtelefon:"",
-      Memail: "",
+      name: "",
+      phone:"",
+      eMail: "",
 			cartList: [],
 			sistemurl: "",
 			productPrice: 0.0,
@@ -141,6 +141,7 @@ export default {
 			},
 		};
 	},
+  
 	computed: {
 		// CART DROPDOWN
 		cartItems() {
@@ -165,23 +166,54 @@ export default {
       this.offerPopupVisible = true;
     },
     submitOffer() {
-  console.log('Ad Soyad:', this.Mname);
-  console.log('Mail Adres:', this.Memail);
+  // Konsol logları
+  console.log('Ad Soyad:', this.name);
+  console.log('Mail Adres:', this.eMail);
+  console.log('Telefon:', this.phone);
   console.log("submitOffer method called");
+  console.log("Cart Items:");
 
-  this.$store.dispatch('GetCrudToOfferList', { name: this.Mname, eMail: this.Memail, phone: this.Mtelefon})
-    .then((response) => {
-      console.log('Action', response);
+  // Sepet ürünleri logları
+  this.$store.state.eCommerce.cartItems.forEach(item => {
+    console.log("Stock Code:", item.stockCode);
+  });
+
+  // Sepet ürünlerinden sadece stockCode'ları al
+  const stockCodes = this.$store.state.eCommerce.cartItems.map(item => item.stockCode);
+
+  this.$store.dispatch('GetOfferNumber')
+    .then((offerNumberResponse) => {
+      const { offerNumber } = offerNumberResponse;
+      console.log('Offer Number Response', offerNumberResponse);
+
+      // For döngüsü ile her bir stockCode için ayrı GetCrudToOfferList action'ı çağır
+      const promises = stockCodes.map((stockCode) => {
+        return this.$store.dispatch('GetCrudToOfferList', {
+          name: this.name,
+          eMail: this.eMail,
+          phone: this.phone,
+          offerNumber: offerNumber.replace(/"/g, ""),  // Çift tırnakları kaldır
+          stockCode
+        });
+      });
+
+      // Tüm promiselerin tamamlanmasını bekleyin
+      return Promise.all(promises);
     })
+    .then((crudResponses) => {
+  console.log('All CRUD Responses', crudResponses);
+  const { offerNumber } = crudResponses[0];
+  this.$router.push(`/flipbook/Teklif/Onay/${offerNumber}`);
+})
+
     .catch((error) => {
       console.error('Error', error);
     });
 
+  // Teklif penceresini kapatma işlemi
   this.closeOfferPopup();
   console.log("Teklif gönderildi");
 },
-
-
   closeOfferPopup() {
     this.offerPopupVisible = false;
   },
