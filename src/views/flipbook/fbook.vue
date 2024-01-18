@@ -8,6 +8,7 @@
         <!-- BEGIN STRUCTURE HTML FLIPBOOK -->
 
         <div class="fb5" id="fb5">
+          
           <!-- CONFIGURATION BOOK -->
           <section id="config">
             <ul>
@@ -33,6 +34,7 @@
           <!-- BACK BUTTON -->
           <a href="https://www.uzum.com.tr/" id="fb5-button-back">&lt; Geri Dön </a>
           <div id="fb5-container-book">
+
             <!-- deep linking -->
             <section id="fb5-deeplinking">
               <ul>
@@ -49,7 +51,6 @@
             </section>
             <!--  PAGES -->
             <div id="fb5-book">
-
               <!--  page 1 -->
               <div v-for="(item, index) in pages" :key="index">
                 <div class="fb5-cont-page-book">
@@ -238,8 +239,9 @@ import CartDropDown from '../../layouts/components/navbar/components/CartDropDow
 import { Icon } from "@iconify/vue2";
 export default {
   mounted() {
-
+    console.log(this.pages)
     if (this.pages == "") {
+      location.reload();
       this.pages = JSON.parse(localStorage.getItem("pages"))
       console.log(this.pages)
     }
@@ -270,7 +272,7 @@ export default {
   },
   computed: {
     pages: {
-      get() { 
+      get() {
         return JSON.parse(localStorage.getItem("pages"))
       },
       set(val) {
@@ -284,7 +286,7 @@ export default {
     },
 
   },
- 
+
   components: {
     CartDropDown,
     Icon,
@@ -332,15 +334,6 @@ export default {
 @import './css/font-awesome.min.css';
 @import './css.css?family=Play:400,700';
 @import './content.css';
-@import './wp-content/plugins/magicbook-addon/assets/css/magicbook-addon.css';
-@import './wp-includes/css/dist/block-library/style.min.css?ver=6.4.1';
-@import './wp-content/plugins/contact-form-7/includes/css/styles.css?ver=5.8.1';
-@import './wp-content/themes/magicbook/style.css';
-@import './wp-content/themes/magicbook/css/magicbook.min.css';
-@import './wp-content/themes/magicbook/font-awesome/css/font-awesome.min.css';
-@import './wp-content/plugins/js_composer/assets/lib/flexslider/flexslider.min.css?ver=6.7.0';
-@import './wp-content/themes/magicbook/js/vendors/colorbox/colorbox.css?ver=1.2';
-@import './wp-content/plugins/js_composer/assets/css/js_composer.min.css?ver=6.7.0';
 
 
 html,
