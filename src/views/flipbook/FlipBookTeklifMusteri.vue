@@ -63,13 +63,6 @@
             {{ data[indextr].stockPrice }}
           </vs-td>
 
-          
-          
-       
-
-
-                 
-    
         </vs-tr>
 
         <b-col>

@@ -3,26 +3,30 @@
     <b-row style="height: 100%;">
       <topleftbanner :page="index" />
 
-      <VuePerfectScrollbar :settings="settings" class="scrollbar-container">
-        <b-col cols="12">
-          <b-row style="height: 100%;">
-            <b-col v-for="(category, index) in CategoryList" :key="index" cols="3" md="3" lg="3" style="text-align: center;">
-              <h3 style="color: rgb(73, 62, 144); text-align: center; position: absolute;">{{ category.categoryName }}</h3>
-              <img
-                :src="category.image"
-                alt="Category Image"
-                style="width: 100%;"
-                @click="handleClick(category)"
-              />
-            </b-col>
-          </b-row>
-        </b-col>      </VuePerfectScrollbar>
-
-
-        <b-col cols="12" align-self="end">
-          <bottomBanner2 :page="index" />
+     <b-col  cols="12">
+      <b-row style="height: 100%;">
+        <b-col v-for="(category, index) in CategoryList" :key="index" cols="3" md="3" lg="3">
+          
+                <h3 style="color: rgb(73, 62, 144);     position: absolute;">{{ category.categoryName }}</h3>
+                <img
+                  :src="category.image"
+                  alt="Category Image"
+                  style="    width: 65%;
+                  "
+                  @click="handleClick(category)"
+                />
+             
         </b-col>
+      </b-row>
+  
+     </b-col>
+           
+
+      <b-col cols="12" align-self="end">
+        <bottomBanner2 :page="index" />
+      </b-col>
     </b-row>
+
     <imageShow :popupResimSw="imagePopup" @closeSidebar="closeSidebar" :imgSrc="imgSrc" />
   </div>
 </template>
@@ -35,8 +39,6 @@ import topBanner2 from '../components/topBanner2.vue';
 import rightBanner from '../components/rightBanner.vue';
 import bottomBanner2 from '../components/bottomBanner2.vue';
 import imageShow from './components/imageShow.vue';
-import VuePerfectScrollbar from "vue-perfect-scrollbar";
-
 
 export default {
   mounted() {
@@ -53,13 +55,10 @@ export default {
   props:{
     page: "", position: "", index: "", item: {  },
   },
-  data() { return {     settings: {
-        // perfectscrollbar settings
-        maxScrollbarLength: 5,
-      },   CategoryList:[],   selectedPageIndex: 0, // Eklenen değişken
+  data() { return {    CategoryList:[],   selectedPageIndex: 0, // Eklenen değişken
     
  imgSrc: "", imagePopup: false } },
-  components: { imageShow, topBanner2, topleftbanner, rightBanner, bottomBanner2,     VuePerfectScrollbar },
+  components: { imageShow, topBanner2, topleftbanner, rightBanner, bottomBanner2 },
   methods: {
 
 getCurrentPageIndex(category) {
@@ -106,11 +105,6 @@ handleClick(categoryItem) {
       this.imagePopup = false
 
     }
-  },
-  computed: {
-    scrollbarTag() {
-      return this.$store.getters.scrollbarTag;
-    },
   },
 /*
   computed: {
@@ -400,10 +394,4 @@ handleClick(categoryItem) {
   width: 1px;
   background-color: white;
 }
-.scrollbar-container {
-  max-height: 100%;
-  overflow-y: auto;
-  border: 1px solid red; /* Bu çizgiyi ekleyerek belirleyiciyi görebilirsiniz */
-}
-
 </style>

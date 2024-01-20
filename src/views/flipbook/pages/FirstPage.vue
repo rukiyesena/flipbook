@@ -45,6 +45,9 @@
                             <span style="font-size: 27px; color: black; margin:0px" v-if="value.attr3_boy"> {{
                               value.attr3_boy.replace('cm', '') }}
                             </span>
+                            <span style="font-size: 27px; color: black; margin:0px" v-if="value.attr1_cins"> {{
+                              value.attr1_cins.replace('cm', '') }}
+                            </span>
                             <span style=" font-size: 27px; color: rgb(206, 13, 13); margin:0px" v-if="value.attr4_motif">motif: {{
                               value.attr4_motif }}
 

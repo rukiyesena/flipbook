@@ -166,7 +166,6 @@ const actions = {
                 return;
               }
           
-              // JSON.parse kullanmadan direkt olarak değeri kullanabilirsiniz
               let offerNumber = result.GetOfferNumberResult;
               commit("GetOfferNumber", { offerNumber });
           

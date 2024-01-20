@@ -1,7 +1,9 @@
 <template>
   <div id="printMeTeklif" class="printMeTeklif" style="display: none;">
     <vs-table stripe :data="cartItems">
+      
       <template slot="thead">
+        
         <vs-th style="color: black; font-weight: bold;">
           Stok Kodu
         </vs-th>
