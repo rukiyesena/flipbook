@@ -341,5 +341,15 @@ body {
   margin: 0;
   padding: 0;
   overflow: auto !important;
+  @import './wp-content/plugins/magicbook-addon/assets/css/magicbook-addon.css';
+@import './wp-includes/css/dist/block-library/style.min.css?ver=6.4.1';
+@import './wp-content/plugins/contact-form-7/includes/css/styles.css?ver=5.8.1';
+@import './wp-content/themes/magicbook/style.css';
+@import './wp-content/themes/magicbook/css/magicbook.min.css';
+@import './wp-content/themes/magicbook/font-awesome/css/font-awesome.min.css';
+@import './wp-content/plugins/js_composer/assets/lib/flexslider/flexslider.min.css?ver=6.7.0';
+@import './wp-content/themes/magicbook/js/vendors/colorbox/colorbox.css?ver=1.2';
+@import './wp-content/plugins/js_composer/assets/css/js_composer.min.css?ver=6.7.0';
+
 }
 </style>

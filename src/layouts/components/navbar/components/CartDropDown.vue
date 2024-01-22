@@ -157,47 +157,38 @@ export default {
 	},
 	methods: {
     
-		   // Example method to handle quantity changes
-    updateItemQuantity(item, newQuantity) {
-        // Perform any logic needed when the quantity changes
-        item.quantity = newQuantity;
-    },
 		openOfferPopup() {
       this.offerPopupVisible = true;
     },
     submitOffer() {
-  // Konsol logları
+
   console.log('Ad Soyad:', this.name);
   console.log('Mail Adres:', this.eMail);
   console.log('Telefon:', this.phone);
-  console.log("submitOffer method called");
-  console.log("Cart Items:");
 
-  // Sepet ürünleri logları
+
   this.$store.state.eCommerce.cartItems.forEach(item => {
-    console.log("Stock Code:", item.stockCode);
   });
 
-  // Sepet ürünlerinden sadece stockCode'ları al
+
   const stockCodes = this.$store.state.eCommerce.cartItems.map(item => item.stockCode);
 
   this.$store.dispatch('GetOfferNumber')
     .then((offerNumberResponse) => {
       const { offerNumber } = offerNumberResponse;
+
       console.log('Offer Number Response', offerNumberResponse);
 
-      // For döngüsü ile her bir stockCode için ayrı GetCrudToOfferList action'ı çağır
       const promises = stockCodes.map((stockCode) => {
         return this.$store.dispatch('GetCrudToOfferList', {
           name: this.name,
           eMail: this.eMail,
           phone: this.phone,
-          offerNumber: offerNumber.replace(/"/g, ""),  // Çift tırnakları kaldır
+          offerNumber: offerNumber.replace(/"/g, ""),  
           stockCode
         });
       });
 
-      // Tüm promiselerin tamamlanmasını bekleyin
       return Promise.all(promises);
     })
     .then((crudResponses) => {
@@ -210,7 +201,6 @@ export default {
       console.error('Error', error);
     });
 
-  // Teklif penceresini kapatma işlemi
   this.closeOfferPopup();
   console.log("Teklif gönderildi");
 },
@@ -218,9 +208,6 @@ export default {
     this.offerPopupVisible = false;
   },
 		navigate_to_detail_view(event) {
-
-			// alert(this.item);
-			//  alert(this.item.barcode);
 			if (userJson.varyant == "true") {
 
 
@@ -245,12 +232,9 @@ export default {
 			console.log(err);
 		},
     removeItemFromCart(item) {
-  // Find the index of the item in the cartItems array
   const index = this.$store.state.eCommerce.cartItems.findIndex(cartItem => cartItem === item);
 
-  // If the item is found in the array, remove it
   if (index !== -1) {
-    // Remove the item from the global state
   this.$store.dispatch("eCommerce/removeItemInCard", item)
   .then((response) => {
     if (response === "ok") {

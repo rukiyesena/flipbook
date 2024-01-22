@@ -28,6 +28,7 @@ const mutations = {
     console.log('New Name:', newName);
     state.name = newName;
   },
+  
   PAGES(state, pages) {
       state.Pages = pages;
 
