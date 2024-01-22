@@ -7,10 +7,13 @@
             <h3 style="color: rgb(202, 0, 0); font-weight: bold;">Teklif Formu</h3>
             <img :src="require('@/assets/images/logo/FFlogo.png')" alt="Logo" class="logoFirm" />
           </div>
-
           <div class="sender-address-container">
             <div class="sender-details">
-              <h3>FATİH PROFİL SANAYİ VE TİCARET A.Ş.</h3>
+              <h3 style="font-family: sans-serif;">
+                Türkiye'nin Ferforje Markası
+            </h3>
+            
+              <h3 style="color: rgb(202, 0, 0); font-weight: bold;"> FATİH PROFİL SANAYİ VE TİCARET A.Ş.</h3>
               <h6><strong>ADRES::</strong> Organize Sanayi 1. Kısım Turan Bahadır Cad. No:15 Honaz/DENİZLİ</h6>
               <h6><strong>TELEFON:</strong> +90 258 269 16 64 </h6>
               <h6><strong>FAKS:</strong> +90 258 269 11 41  </h6>
@@ -23,22 +26,25 @@
 
             <!-- Sağ taraftaki alan -->
             <div class="right-panel" style="margin-left: 854px; margin-top: -134px;">
-              <h6>Yetkili: <input type="text" class="styled-input" style="color: black; font-weight: bold; width: 300px;" /></h6>
+              <h6 style="margin-bottom: 5px; font-weight: bold;">YETKİLİ:
+                <input type="text" class="styled-input" style="color: black; font-weight: bold; width: 200px;" /></h6>
 
-              <h6>Adres: <input type="text" class="styled-input" style="color: black; font-weight: bold; width: 300px;" /></h6>
-                <h6> TELEFON: 
-                <input type="number" class="styled-input" style="color: black; font-weight: bold; width: 300px;" /></h6>
+                <h6 style="margin-bottom: 5px; font-weight: bold;">ADRES:
+                  <input type="text" class="styled-input" style="color: black; font-weight: bold; width: 150px;" /></h6>
+              <h6 style="margin-bottom: 5px; font-weight: bold;">TELEFON:
+                <input type="text" class="styled-input" style="color: black; font-weight: bold; width: 100px;" /></h6>
               
-                <h6>FAKS: <input type="number" class="styled-input" style="color: black; font-weight: bold; width: 300px;" /></h6>
+                <h6 style="margin-bottom: 5px; font-weight: bold;">FAKS:
+                  <input type="text" class="styled-input" style="color: black; font-weight: bold; width: 100px;" /></h6>
 
-                <h6>E-POSTA:
-                  <input type="text" class="styled-input" style="color: black; font-weight: bold; width: 300px;" /></h6>
+                  <h6 style="margin-bottom: 5px; font-weight: bold;">E-POSTA:
+                    <input type="text" class="styled-input" style="color: black; font-weight: bold; width: 200px;" /></h6>
 
-                <h6>VERGİ D.:
-                  <input type="text" class="styled-input" style="color: black; font-weight: bold; width: 300px;" /></h6>
+                    <h6 style="margin-bottom: 5px; font-weight: bold;">VERGİ-D.:
+                      <input type="text" class="styled-input" style="color: black; font-weight: bold; width: 150px;" /></h6>
               
-                <h6>VERGİ NO: 
-                <input type="text" class="styled-input" style="color: black; font-weight: bold; width: 300px;" /></h6>
+                      <h6 style="margin-bottom: 5px; font-weight: bold;">VERGİ NO:
+                        <input type="text" class="styled-input" style="color: black; font-weight: bold; width: 150px;" /></h6>
               </div>
           </div>
 
@@ -105,7 +111,7 @@
                   </div>
                 </vs-td>
                 <vs-td :data="data[indextr].quantity" style="color: black; font-weight: bold;">
-                  {{ data[indextr].quantity }}
+                  {{ data[indextr].quantity }}  <input type="number" class="styled-input" style="color: rgb(255, 0, 0); font-weight: bold; font-size: 12px; height: 30px; width: 40px;"/>
                 </vs-td>
          
                 <vs-td :data="data[indextr].stockPrice" style="color: black; font-weight: bold;">
@@ -123,15 +129,13 @@
                     <input type="text" class="styled-input" style="color: black; font-weight: bold; font-size: 12px; height: 30px; width: 40px;" :value="tutarForItem(indextr)" disabled />
                   </div>
                 </vs-td>
+                
               </vs-tr>
-      
+           
+         
               <b-col>
             
-                <vs-td>
-                  <div>
-                    <input type="date" class="styled-input" style="color: black; font-weight: bold; font-size: 12px; height: 30px; width: 40px;" :value="termin(indextr)"  />
-                  </div>
-                </vs-td>
+            
               </b-col>
               <b-col>
       
@@ -177,7 +181,7 @@
                   </div>
                 </vs-td>
               </div>
-             
+              
             </div>
             
           </div>
@@ -189,11 +193,6 @@
   <h6>Not4: <input type="text" class="styled-input" style="color: black; font-weight: bold; width: 500px;" /></h6>
   <h6>Not5: <input type="text" class="styled-input" style="color: black; font-weight: bold; width: 500px;" /></h6>
   </div>
-
-
-
- 
-            
 
 
 <br>
@@ -308,10 +307,10 @@ export default {
       }, 0);
     },
     kdvUygulanmisGenelToplam() {
-      const kdvOraniDecimal = this.kdvOrani / 100;
-      const kdvliToplam = this.calculatedToplam * (1 + kdvOraniDecimal);
-      return kdvliToplam.toFixed(2);
-    },
+    const kdvOraniDecimal = 20 / 100; // Use the fixed VAT rate of 20%
+    const kdvliToplam = this.calculatedToplam * ( kdvOraniDecimal);
+    return kdvliToplam.toFixed(2);
+  },
     
   
   
