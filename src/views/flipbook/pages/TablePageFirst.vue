@@ -15,13 +15,10 @@
                   "
                   @click="handleClick(category)"
                 />
-             
         </b-col>
       </b-row>
   
      </b-col>
-           
-
       <b-col cols="12" align-self="end">
         <bottomBanner2 :page="index" />
       </b-col>

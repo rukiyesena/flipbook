@@ -190,41 +190,68 @@ const actions = {
   },  
   
   GetCrudToOfferList({ commit, dispatch, state }, arg) {
+    console.log(arg)
     const soap = require("soap");
     const url = userJson.userService;
     try {
       let args = {
         token: state.tokenId,
-        offerNumber: arg.offerNumber, 
-        quantity: arg.quantity,
+        offerNumber: arg.offerNumber,  
         barcode: arg.stockCode,
+        description: arg.description,
         isDue: "insert",
         eMail: arg.eMail,
-        phone: arg.phone,
-        name: arg.name,
+        invoiceAddress: arg.invoiceAddress,
+        shipCityCode: arg.shipCityCode,
+        taxOffice: arg.taxOffice,
+        taxNumber: arg.taxNumber,
+        shipAddress: arg.shipAddress,
+        quantityLine: arg.quantityLine,
+        transportType: arg.transportType,
+        shipDate: arg.shipDate,
+        validityDuration: arg.validityDuration,
+        deadline: arg.deadline,
+        shipName: arg.shipName,
+        shipPhone: arg.shipPhone,
         surname: arg.surname,
+        priceLine: 0.0,
+        paymentType: arg.paymentType,
         orderStatus: arg.orderStatus,
         address: arg.address,
-      };
+        vatRateLine: arg.vatRateLine,
+        totalDiscountRate: 0.0,
+        discountRateLine: 0.0,
+        shipDistrictCode: arg.shipDistrictCode,
+        shipSurname: arg.shipSurname,
+    };
+  
+
   
       console.log(args);
   
       return new Promise((resolve, reject) => {
         try {
-          soap.createClient(url, function (err, client) {
-            client.CrudToOfferList(args, function (err, result) {
-              let veriler = JSON.parse(result.CrudToOfferListResult);
-  
-              commit("CrudTo_OfferList", { veriler, offerNumber: veriler });
-  
-              resolve({ veriler, offerNumber: veriler });
+            soap.createClient(url, function (err, client) {
+                client.CrudToOfferList(args, function (err, result) {
+                    console.log('SOAP Response:', result);  // Log the entire response
+    
+                    try {
+                        let veriler = JSON.parse(result.CrudToOfferListResult);
+                        commit("CrudTo_OfferList", { veriler, offerNumber: veriler });
+                        resolve({ veriler, offerNumber: veriler });
+                    } catch (error) {
+                        reject(error);
+                        console.log(error);
+                    }
+                });
             });
-          });
         } catch (error) {
-          resolve(false);
-          console.log(error);
+            resolve(false);
+            console.log(error);
         }
-      });
+    });
+    
+
     } catch (error) {
       console.log(error);
     }

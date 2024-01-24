@@ -91,8 +91,13 @@
 		<!-- <ListCard ref="cardList" /> -->
     <vs-popup :active.sync="offerPopupVisible" title="Teklif Gönder">
 
-      <b-input-group prepend="Ad Soyad" class="mt-3">
-        <b-form-input v-model="name">
+      <b-input-group prepend="Ad" class="mt-3">
+        <b-form-input v-model="shipName">
+          <b-avatar rounded="sm"></b-avatar>
+        </b-form-input>
+      </b-input-group>
+      <b-input-group prepend="Soyad" class="mt-3">
+        <b-form-input v-model="shipSurname">
           <b-avatar rounded="sm"></b-avatar>
         </b-form-input>
       </b-input-group>
@@ -102,7 +107,7 @@
         </b-form-input>
       </b-input-group>
       <b-input-group prepend="Telefon" class="mt-3">
-        <b-form-input v-model="phone">
+        <b-form-input v-model="shipPhone">
           <b-avatar rounded="sm"></b-avatar>
         </b-form-input>
       </b-input-group>
@@ -128,8 +133,9 @@ export default {
 		return {
 			offerPopupVisible: false,
       offerPrice: 0,
-      name: "",
-      phone:"",
+      shipName: "",
+      shipSurname: "",
+      shipPhone:"",
       eMail: "",
 			cartList: [],
 			sistemurl: "",
@@ -162,9 +168,11 @@ export default {
     },
     submitOffer() {
 
-  console.log('Ad Soyad:', this.name);
+  console.log('Ad Soyad:', this.shipName);
+  console.log('Ad Soyad:', this.shipSurname);
+
   console.log('Mail Adres:', this.eMail);
-  console.log('Telefon:', this.phone);
+  console.log('Telefon:', this.shipPhone);
 
 
   this.$store.state.eCommerce.cartItems.forEach(item => {
@@ -181,9 +189,10 @@ export default {
 
       const promises = stockCodes.map((stockCode) => {
         return this.$store.dispatch('GetCrudToOfferList', {
-          name: this.name,
+          shipName: this.shipName,
+          shipSurname: this.shipSurname,
           eMail: this.eMail,
-          phone: this.phone,
+          shipPhone: this.shipPhone,
           offerNumber: offerNumber.replace(/"/g, ""),  
           stockCode
         });
@@ -222,7 +231,7 @@ export default {
 			} else {
 				this.$router
 					.push({
-						name: "ecommerce-item-detail-view",
+						shipName: "ecommerce-item-detail-view",
 						params: { item_id: event.BARKOD },
 					})
 					.catch(() => { });

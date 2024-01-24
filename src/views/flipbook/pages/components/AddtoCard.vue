@@ -1,10 +1,9 @@
 <template>
   <div>
-      {{ data.stockCode }}
   
       <b-button class="bg-danger" style=" border-color:rgb(0, 0, 0);margin-top: 15px" size="sm" @click="addItemstoCard">
         
-        <Icon icon="iconamoon:shopping-card-add"  style="    background-color:rgba(234, 0, 47, 0.795)" width="62" height="42" />
+        <Icon icon="iconamoon:shopping-card-add"  style="    background-color:rgba(234, 0, 47, 0.795) " width="62" height="42" />
       </b-button>
 
   </div>
@@ -42,8 +41,10 @@ export default {
   }
 };
 </script>
-<style lang="scss" >
-.tooltip-inner {
-  background-color: #ffffff !important;
-}
+
+<style lang="scss">
+  .bg-danger {
+    background-color: #dc3545 !important;
+    border-color: #000 !important;
+  }
 </style>

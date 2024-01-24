@@ -13,10 +13,20 @@
               <b-col v-for="(value, columnIndex) in row" :key="columnIndex" :cols="columnWidth(value)">
                 <div id="portfolio-container-oBTIBx9p91" class="portfolio-container"
                   :style="getPortfolioContainerStyle(value)">
+                  <b-row>
+                    <b-col>
+                      <AddtoCard :data="value"
                   
-                  <AddtoCard :data="value"
-                  
-                  :indexItem="'tooltip-target-' + index + '-' + (rowIndex * 4 + columnIndex)" />
+                      :indexItem="'tooltip-target-' + index + '-' + (rowIndex * 4 + columnIndex)" />
+                    </b-col>
+                    <b-col cols="4">
+                             
+                      <h4 style=" font-weight: bold; color: rgb(3, 14, 215) !important">{{ value.stockCode }} </h4>
+                     
+                    </b-col>
+                  </b-row>
+                 
+
                   <b-row v-on:click="showImageDetails(value)">
                     <b-col style="text-align: -webkit-center;"
                       :id="'tooltip-target-' + index + '-' + (rowIndex * 4 + columnIndex)" v-b-tooltip.hover>
@@ -32,26 +42,29 @@
                         <b-row>
                         
                           <b-col>
-                            <h4 style="font-size: 24px; color: red !important;">{{ value.stockPrice }} TL</h4>
-                            <h4 style="color: red !important">{{ value.stockCount }} Adet </h4>
-                            
-
+                            <h4 style="color: red !important">
+                              {{ value.stockCount !== undefined && value.stockCount !== "" ? parseInt(value.stockCount) + ' Ad.' : '0 Ad.' }}
+                            </h4>
                           </b-col>
+                          
                           <b-col>
-                            <h4 style="color: black">{{ value.stockCode }}</h4>
+                            <h4 style="font-size: 24px; color: red !important;">{{ value.stockPrice }} TL</h4>
+                           
+                            
+                          </b-col>
+                        </b-row>
+                        <b-row>
 
-                            <span style=" font-size: 27px; color: black; margin:0px" v-if="value.attr2_en"> {{
-                              value.attr2_en.replace('cm', '') }} x </span>
-                            <span style="font-size: 27px; color: black; margin:0px" v-if="value.attr3_boy"> {{
-                              value.attr3_boy.replace('cm', '') }}
+                          <b-col align-h="end">
+                            
+                            <span style="font-size: 27px; color: black; margin:0px" v-if="value.attr1_cins"> 
+                              {{  value.attr1_cins.replace('cm', '') }} /
                             </span>
-                            <span style="font-size: 27px; color: black; margin:0px" v-if="value.attr1_cins"> {{
-                              value.attr1_cins.replace('cm', '') }}
+                            <span style="font-size: 27px; color: black; margin:0px" v-if="value.attr2_en"> 
+                              {{value.attr2_en.replace('cm', '') }} x {{value.attr3_boy}}
                             </span>
-                            <span style=" font-size: 27px; color: rgb(206, 13, 13); margin:0px" v-if="value.attr4_motif">motif: {{
-                              value.attr4_motif }}
-
-                              - </span>
+         
+                            
                           </b-col>
                         </b-row>
 
@@ -70,8 +83,8 @@
       </b-col>
     </b-row>
 
-    <imageShow :popupResimSw="imagePopup" @closeSidebar="closeSidebar" :imgSrc="imgSrc" :stockCode="stockCode"
-      :stockName="stockName" />
+    <imageShow :popupResimSw="imagePopup" @closeSidebar="closeSidebar" :imgSrc="imgSrc" :stockCode="stockCode" :selectedValue="selectedValue" :stockName="stockName" />
+
   </div>
 </b-container>
 
@@ -87,16 +100,22 @@ import AddtoCard from './components/AddtoCard.vue';
 
 export default {
   props: {
+    value: {
+      type: Object,
+      required: true
+    },
     page: "", position: "", index: "", item: {  },
   },
   data() {
     return {
+      selectedValue: "",
       isCartOpen: false, // Sepetin açık veya kapalı olduğunu izleyen durum
       url_image: "",
       imgSrc: "",
       stockList: [],
       imagePopup: false,
       stockCode: "", // Add this line
+      attr4_motif: "",
       stockName: "", // Add this line
     };
   },
@@ -108,6 +127,8 @@ export default {
     showImageDetails(value) {
       this.imgSrc = value.url_image;
       this.stockCode = value.stockCode;
+      this.selectedValue = value;
+    
       this.stockName = value.stockName;
       this.imageShowBtn();
     },
