@@ -106,7 +106,6 @@ export default {
   },
   watch: {
     cartItems: {
-      handler: "yazdir",
       deep: true,
     },
   },

@@ -33,7 +33,7 @@
                 </b-col>
                 <b-col>
                   <vs-input v-model="shipName" type="text" class="styled-input"
-                  style="color: black; font-weight: bold; width: 400px;" />
+                    style="color: black; font-weight: bold; width: 400px;" />
 
                 </b-col>
               </b-row>
@@ -170,10 +170,12 @@
                     style="color: rgb(255, 0, 0); font-weight: bold; font-size: 12px; height: 30px; width: 180px;" />
                 </vs-td>
                 <vs-td :data="data[indextr].quantity" style="color: black; font-weight: bold;">
-                  {{ data[indextr].quantity }} <vs-input v-model="quantity" :value="quantity" type="text" class="styled-input" style="color: black; font-weight: bold; width: 70px;" />
-
-
+                  {{ data[indextr].quantity }}
+                  <vs-input v-model="data[indextr].quantity" type="text" class="styled-input"
+                    style="color: black; font-weight: bold; width: 70px;" />
                 </vs-td>
+                
+
 
                 <vs-td :data="data[indextr].stockPrice" style="color: black; font-weight: bold;">
                   {{ data[indextr].stockPrice }}
@@ -234,7 +236,8 @@
                 <vs-td>
                   <div>
                     <vs-input type="text" class="styled-input"
-                      style="color: rgb(2, 2, 2); font-weight: bold; height: 30px; width: 120px;" :value="totalDiscountRate" />
+                      style="color: rgb(2, 2, 2); font-weight: bold; height: 30px; width: 120px;"
+                      :value="totalDiscountRate" />
                   </div>
                 </vs-td>
               </div>
@@ -316,8 +319,7 @@
               <vs-td>
                 <div>
                   <vs-input type="text" class="styled-input"
-                  style="color: black; font-weight: bold; height: 30px; width: 160px;"
-                  :value="paymentType" />
+                    style="color: black; font-weight: bold; height: 30px; width: 160px;" :value="paymentType" />
                 </div>
               </vs-td>
             </div>
@@ -351,13 +353,13 @@ export default {
     return {
       totalDiscountRate: 0,
       sevkTarihi: "",
-      quantity:0 ,
-      paymentType:"Peşin",
+      quantityLine: 0,  // This is what you have in your data
+      paymentType: "Peşin",
       shipName: "",
       shipAddress: "",
       shipPhone: "",
       taxNumber: "",
-      description:"",
+      description: "",
       taxOffice: "",
       gecerlilikSuresi: 1, // Default değeri burada 1 olarak ayarlanmıştır
       nakliye: "Nakliye DAHİL",
@@ -369,77 +371,89 @@ export default {
     };
   },
   methods: {
-    updateIskonto(indextr) {
-      // İskonto değeri yüzde olarak girildiği varsayılarak düzenlenir
-      this.$set(this.cartItems, indextr, {
-        ...this.cartItems[indextr],
-        discountRateLine: parseFloat(this.cartItems[indextr].discountRateLine.replace(',', '.')) || 0
-      });
+    updateIskonto(indextr, event) {
+      this.$store.commit('setDiscountRateLine', { index: indextr, value: parseFloat(event.target.value.replace(',', '.')) || 0 });
     },
     tutarForItem(index) {
-      const item = this.cartItems[index];
+  const item = this.cartItems[index];
+  console.log('Quantity for item', item.quantity); // Add th
       if (item && item.stockPrice && item.quantity) {
         const stockPrice = parseFloat(item.stockPrice);
         const quantity = parseInt(item.quantity);
-        if (!isNaN(stockPrice) && !isNaN(quantity)) {
-          // İskonto yüzdesini kullanarak fiyatı düzenle
-          const discountedPrice = stockPrice - (stockPrice * this.discountRateLine / 100);
-          return discountedPrice * quantity;
-        }
+        const discountRate = parseFloat(this.cartItems[index].discountRateLine) || 0;
+
+        // Calculate the discounted price
+        const discountedPrice = stockPrice - (stockPrice * discountRate / 100);
+
+        return discountedPrice * quantity;
       }
       return 0;
     },
+
     teklifYazdir() {
       this.$refs.teklifYazdir.yazdir();
     },
     teklifKaydet() {
-      console.log('Adres:', this.shipAddress);
-      console.log('Telefon:', this.shipPhone);
+  console.log('Adres:', this.shipAddress);
+  console.log('Telefon:', this.shipPhone);
 
-      this.$store.state.eCommerce.cartItems.forEach(item => {
-        // Your logic for each item in the cart
+  const arg = {
+    // Define the properties needed for GetCrudToOfferList
+    quantity: this.quantityLine,
+    // ... other properties ...
+  };
+
+  const stockCodes = this.$store.state.eCommerce.cartItems.map(item => item.stockCode);
+
+  this.$store.dispatch('GetOfferNumber')
+    .then((offerNumberResponse) => {
+      const { offerNumber } = offerNumberResponse;
+
+      console.log('Offer Number Response', offerNumberResponse);
+
+      const promises = stockCodes.map((stockCode) => {
+        return this.$store.dispatch('GetCrudToOfferList', {
+          shipName: this.shipName,
+          shipPhone: this.shipPhone,
+          offerNumber: offerNumber.replace(/"/g, ""),
+          stockCode,
+          shipAddress: this.shipAddress,
+          barcode: this.barcode,
+          deadline: this.deadline,
+          description: this.description,
+          taxNumber: this.taxNumber,
+          taxOffice: this.taxOffice,
+          discountRateLine: this.discountRateLine,
+          paymentType: this.paymentType,
+          quantityLine: arg.quantity,
+          isDue: this.isDue,
+        });
       });
 
-      const stockCodes = this.$store.state.eCommerce.cartItems.map(item => item.stockCode);
+      return Promise.all(promises);
+    })
+    .then((crudResponses) => {
+      console.log('All CRUD Responses', crudResponses);
+      const { offerNumber } = crudResponses[0];
+      this.$router.push(`/flipbook/Teklif/Onay/${offerNumber}`);
+    })
+    .catch((error) => {
+      console.error('Error', error);
+    });
+},
 
-      this.$store.dispatch('GetOfferNumber')
-        .then((offerNumberResponse) => {
-          const { offerNumber } = offerNumberResponse;
-
-          console.log('Offer Number Response', offerNumberResponse);
-
-          const promises = stockCodes.map((stockCode) => {
-            return this.$store.dispatch('GetCrudToOfferList', {
-              shipName: this.shipName, // Assuming shipName is part of your form
-              shipPhone: this.shipPhone,
-              offerNumber: offerNumber.replace(/"/g, ""),
-              stockCode,
-              shipAddress: this.shipAddress,
-              barcode: this.barcode,
-              deadline: this.deadline,
-              description: this.description,
-              taxNumber: this.taxNumber,
-              taxOffice: this.taxOffice,
-              discountRateLine: this.discountRateLine,
-              paymentType: this.paymentType,
-              quantity: this.quantity,
-            });
-          });
-
-          return Promise.all(promises);
-        })
-        .then((crudResponses) => {
-          console.log('All CRUD Responses', crudResponses);
-          const { offerNumber } = crudResponses[0];
-          this.$router.push(`/flipbook/Teklif/Onay/${offerNumber}`);
-        })
-        .catch((error) => {
-          console.error('Error', error);
-        });
-    },
 
   },
+  created() {
+    this.isDue = "list"; // or true, false, or any value you prefer
+  },
+
   computed: {
+    quantityLine() {
+    const totalQuantity = this.cartItems.reduce((total, item) => total + parseInt(item.quantity), 0);
+    console.log('Total Quantity', totalQuantity); // Add this line
+    return totalQuantity;
+  },
     cartItems() {
       return this.$store.state.eCommerce.cartItems;
     },
@@ -454,12 +468,12 @@ export default {
       return kdvliToplam.toFixed(2);
     },
     totalGenelToplam() {
-  // Calculate totalGenelToplam by summing kdvUygulanmisGenelToplam and calculatedToplam
-  const totalAfterDiscount = parseFloat(this.kdvUygulanmisGenelToplam) + parseFloat(this.calculatedToplam);
-  return totalAfterDiscount.toFixed(2);
-},
+      // Calculate totalGenelToplam by summing kdvUygulanmisGenelToplam and calculatedToplam
+      const totalAfterDiscount = parseFloat(this.kdvUygulanmisGenelToplam) + parseFloat(this.calculatedToplam);
+      return totalAfterDiscount.toFixed(2);
+    },
 
-  
+
 
   },
 };
@@ -480,4 +494,5 @@ body {
   .teklifYazdir {
     display: block !important;
   }
-}</style>
+}
+</style>

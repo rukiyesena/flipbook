@@ -19,7 +19,7 @@
                   
                       :indexItem="'tooltip-target-' + index + '-' + (rowIndex * 4 + columnIndex)" />
                     </b-col>
-                    <b-col cols="4">
+                    <b-col cols="6">
                              
                       <h4 style=" font-weight: bold; color: rgb(3, 14, 215) !important">{{ value.stockCode }} </h4>
                      
@@ -100,15 +100,11 @@ import AddtoCard from './components/AddtoCard.vue';
 
 export default {
   props: {
-    value: {
-      type: Object,
-      required: true
-    },
+  
     page: "", position: "", index: "", item: {  },
   },
   data() {
     return {
-      selectedValue: "",
       isCartOpen: false, // Sepetin açık veya kapalı olduğunu izleyen durum
       url_image: "",
       imgSrc: "",
@@ -155,7 +151,7 @@ export default {
         const lastRowStart = totalItems - itemsPerRow;
 
         if (columnIndex >= lastRowStart) {
-          return '6'; // Son iki sütunu genişlet
+          return '3'; // Son iki sütunu genişlet
         }
       }
 
@@ -163,14 +159,7 @@ export default {
 
       // Eğer resim sayısı 11 ise ve bu resimlerden biri bu sıradaysa,
       // son sütunu genişlet
-      if (totalItems === 11) {
-        const columnIndex = this.stockList.indexOf(value);
-        const lastRowStart = totalItems - itemsPerRow;
-
-        if (columnIndex >= lastRowStart) {
-          return '4';
-        }
-      }
+    
 
       return '3'; // Normal durumda sütun genişliği 3
     },
@@ -186,6 +175,14 @@ export default {
       border: 'black 0.1px solid',
     };
   }
+if (totalItems === 4) {
+  // Apply the common style for all rows
+  return {
+    width: 'calc(125% - 100px)', // Adjust the width as needed
+    height: '575px',
+    border: 'black 0.1px solid',
+  };
+}
 
 
   if (totalItems === 2) {
@@ -261,15 +258,15 @@ export default {
     } else if (totalItems === 6) {
       chunkSize = 2; 
     } else if (totalItems === 8) {
-      chunkSize = 2; 
+      chunkSize = 5; 
     } else if (totalItems === 7) {
-      chunkSize = 2; 
+      chunkSize = 4; 
     } else if (totalItems === 11) {
       chunkSize = 4; 
     } else if (totalItems === 10) {
       chunkSize = 3; 
     } else if (totalItems === 4) {
-      chunkSize = 3; // Adjust this value based on your layout
+      chunkSize = 2; // Adjust this value based on your layout
     
     } else if (totalItems === 5) {
       chunkSize = 2; 
