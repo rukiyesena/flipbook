@@ -397,14 +397,10 @@ this.$store.commit('setShipPhone', this.shipPhone);
 
       console.log('Offer Number Response', offerNumberResponse);
 
-   
-      return Promise.all(promises);
-    })
-    .then((crudResponses) => {
-      console.log('All CRUD Responses', crudResponses);
-      const { offerNumber } = crudResponses[0];
+      
       this.$router.push(`/flipbook/Teklif/Onay/${offerNumber}`);
     })
+  
     .catch((error) => {
       console.error('Error', error);
     });
