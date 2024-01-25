@@ -20,9 +20,7 @@ export default {
     };
   },
   methods: {
-    addItemstoCard() {
-      console.log(this.data)
-
+    addItemstoCard() { 
       this.isInCart(this.data.stockCode)
         ? this.$router.push("/apps/eCommerce/checkout").catch(() => { })
         : this.additemInCart(this.data);

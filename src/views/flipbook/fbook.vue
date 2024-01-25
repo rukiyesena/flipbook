@@ -1,5 +1,33 @@
 <template>
   <div>
+    <vs-popup :active.sync="offerPopupVisible" title="Teklif Gönder">
+
+      <b-input-group prepend="Ad" class="mt-3">
+        <b-form-input v-model="shipName">
+          <b-avatar rounded="sm"></b-avatar>
+        </b-form-input>
+      </b-input-group>
+      <b-input-group prepend="Soyad" class="mt-3">
+        <b-form-input v-model="shipSurname">
+          <b-avatar rounded="sm"></b-avatar>
+        </b-form-input>
+      </b-input-group>
+      <b-input-group prepend="Mail Adres" class="mt-3">
+        <b-form-input v-model="eMail">
+          <b-avatar rounded="sm"></b-avatar>
+        </b-form-input>
+      </b-input-group>
+      <b-input-group prepend="Telefon" class="mt-3">
+        <b-form-input v-model="shipPhone">
+          <b-avatar rounded="sm"></b-avatar>
+        </b-form-input>
+      </b-input-group>
+      <br>
+      <div>
+        <vs-button @click="getTeklifOnayList">Teklif Gönder</vs-button>
+      </div>
+    </vs-popup>
+    <TeklifOnayMail ref="teklifOnayMailRef" />
     <div v-if="pages.length > 0">
 
       <div id="fb5-ajax" data-cat="katalog" data-template="true">
@@ -8,7 +36,7 @@
         <!-- BEGIN STRUCTURE HTML FLIPBOOK -->
 
         <div class="fb5" id="fb5">
-          
+
           <!-- CONFIGURATION BOOK -->
           <section id="config">
             <ul>
@@ -237,8 +265,12 @@ import TablePageFirst from './pages/TablePageFirst.vue';
 import TablePageSecond from './pages/TablePageSecond.vue';
 import CartDropDown from '../../layouts/components/navbar/components/CartDropDown.vue'
 import { Icon } from "@iconify/vue2";
+import TeklifOnayMail from './TeklifOnayMail.vue';
 export default {
   mounted() {
+    this.$root.$on("teklifOnay", () => {
+      this.openOfferPopup();
+    });
     console.log(this.pages)
     if (this.pages == "") {
       location.reload();
@@ -261,8 +293,18 @@ export default {
 
     document.head.appendChild(plugin);
   },
+
+  beforeDestroy() {
+    this.$root.$off("teklifOnay");
+  },
   data() {
     return {
+      shipName: "",
+      shipSurname: "",
+      shipPhone: "",
+      eMail: "",
+      offerPopupVisible: false,
+
       selectedPageIndex: 0,
 
       previousValue: null,
@@ -302,8 +344,67 @@ export default {
     EighthPage,
     NinthPage,
     TablePageFirst,
+    TeklifOnayMail
   },
   methods: {
+    openOfferPopup() {
+      this.offerPopupVisible = true;
+    },
+    getTeklifOnayList() {
+      var vm = this;
+
+      const stockCodes = vm.$store.state.eCommerce.cartItems.map(item => item.stockCode);
+
+      vm.$store.dispatch('GetOfferNumber')
+        .then((offerNumberResponse) => {
+          const { offerNumber } = offerNumberResponse;
+          const detail = {
+            shipName: vm.shipName,
+            shipSurname: vm.shipSurname,
+            eMail: vm.eMail,
+            shipPhone: vm.shipPhone
+          }
+          vm.$refs.teklifOnayMailRef.getItems(offerNumber.replace(/"/g, ""), detail);
+          setTimeout(function () {
+            console.log(vm.$refs)
+            const args = {
+              receiver: "rukiye@uzum.com.tr, evrim@uzum.com.tr",
+              message: vm.$refs.teklifOnayMailRef.$el.innerHTML,
+              subject: "Teklif Onay İşlemi"
+            };
+            console.log(args)
+            vm.$store.dispatch('sendMail', args)
+              .then((response) => {
+
+                console.log(response)
+                const promises = stockCodes.map((stockCode) => {
+                  return vm.$store.dispatch('GetCrudToOfferList', {
+                    shipName: detail.shipName,
+                    shipSurname: detail.shipSurname,
+                    eMail: detail.eMail,
+                    shipPhone: detail.shipPhone,
+                    offerNumber: offerNumber.replace(/"/g, ""),
+                    stockCode
+                  });
+                });
+
+                return Promise.all(promises);
+              })
+          }, 2000);
+
+
+        })
+      /*   .then((crudResponses) => {
+           const { offerNumber } = crudResponses[0];
+           //   vm.$router.push(`/flipbook/Teklif/Onay/${offerNumber}`);
+         })
+ 
+         .catch((error) => {
+           console.error('Error', error);
+         });*/
+      vm.offerPopupVisible = false;
+      console.log("Teklif gönderildi");
+    },
     updateSelectedPageIndex(newPageIndex) {
       console.log("Received new page index:", newPageIndex);
       this.selectedPageIndex = newPageIndex;
@@ -342,14 +443,14 @@ body {
   padding: 0;
   overflow: auto !important;
   @import './wp-content/plugins/magicbook-addon/assets/css/magicbook-addon.css';
-@import './wp-includes/css/dist/block-library/style.min.css?ver=6.4.1';
-@import './wp-content/plugins/contact-form-7/includes/css/styles.css?ver=5.8.1';
-@import './wp-content/themes/magicbook/style.css';
-@import './wp-content/themes/magicbook/css/magicbook.min.css';
-@import './wp-content/themes/magicbook/font-awesome/css/font-awesome.min.css';
-@import './wp-content/plugins/js_composer/assets/lib/flexslider/flexslider.min.css?ver=6.7.0';
-@import './wp-content/themes/magicbook/js/vendors/colorbox/colorbox.css?ver=1.2';
-@import './wp-content/plugins/js_composer/assets/css/js_composer.min.css?ver=6.7.0';
+  @import './wp-includes/css/dist/block-library/style.min.css?ver=6.4.1';
+  @import './wp-content/plugins/contact-form-7/includes/css/styles.css?ver=5.8.1';
+  @import './wp-content/themes/magicbook/style.css';
+  @import './wp-content/themes/magicbook/css/magicbook.min.css';
+  @import './wp-content/themes/magicbook/font-awesome/css/font-awesome.min.css';
+  @import './wp-content/plugins/js_composer/assets/lib/flexslider/flexslider.min.css?ver=6.7.0';
+  @import './wp-content/themes/magicbook/js/vendors/colorbox/colorbox.css?ver=1.2';
+  @import './wp-content/plugins/js_composer/assets/css/js_composer.min.css?ver=6.7.0';
 
 }
 </style>

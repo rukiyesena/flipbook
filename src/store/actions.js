@@ -87,25 +87,25 @@ const actions = {
             let pageInd = 2
             let currentPageIndex = 2;
 
-              const kategoriNo = veriler[0].categoryCountPage;
+            const kategoriNo = veriler[0].categoryCountPage;
 
-              // Kategori değiştiğinde sayfa değişimi
+            // Kategori değiştiğinde sayfa değişimi
 
-              for (let i = 0; i < kategoriNo; i++) {
-                const startIndex = i * 16;
+            for (let i = 0; i < kategoriNo; i++) {
+              const startIndex = i * 16;
 
-                pages.push({
-                  "ind": pageInd,
-                  "component": "TablePageFirst",
-                  "title": "Kategori Sayfa",
-                  "position": i % 2 === 0 ? "left" : "right",
-                  "ilkSayfa": startIndex, 
-                  "page": currentPageIndex
-                });
+              pages.push({
+                "ind": pageInd,
+                "component": "TablePageFirst",
+                "title": "Kategori Sayfa",
+                "position": i % 2 === 0 ? "left" : "right",
+                "ilkSayfa": startIndex,
+                "page": currentPageIndex
+              });
 
               currentPageIndex += 1;
               pageInd++;
-              }
+            }
 
             veriler.forEach((category, categoryIndex) => {
               const sayfaSayisi = category.sayfaSayisi;
@@ -153,42 +153,68 @@ const actions = {
             reject(err);
             return;
           }
-          
+
           client.GetOfferNumber(function (err, result) {
             if (err) {
               reject(err);
               return;
             }
-          
+
             try {
               if (result === undefined || result.GetOfferNumberResult === undefined) {
                 reject(new Error("GetOfferNumber response or its property is undefined"));
                 return;
               }
-          
+
               let offerNumber = result.GetOfferNumberResult;
-              commit("GetOfferNumber", { offerNumber });
-          
+
               resolve({ offerNumber });
             } catch (error) {
               reject(error);
               console.log(error);
             }
           });
-          
+
           client.GetOfferNumber(function (err, result) {
             console.log('SOAP Response:', result);
-          
+
           });
-                    
+
         });
       } catch (error) {
         reject(error);
         console.log(error);
       }
     });
-  },  
-  
+  },
+  sendMail({ commit, dispatch, state }, arg) {
+    const soap = require("soap");
+    const url = userJson.userService;
+    return new Promise((resolve, reject) => {
+      try {
+        soap.createClient(url, function (err, client) {
+
+          client.sendMail(arg, function (err, result) {
+
+            try {
+              if (result === undefined || result.sendMailResult === undefined) {
+                reject(new Error("sendMail response or its property is undefined"));
+                return;
+              }
+              console.log(result)
+              resolve(result);
+            } catch (error) {
+              reject(error);
+              console.log(error);
+            }
+          });
+        });
+      } catch (error) {
+        reject(error);
+        console.log(error);
+      }
+    });
+  },
   GetCrudToOfferList({ commit, dispatch, state }, arg) {
     console.log(arg)
     const soap = require("soap");
@@ -196,7 +222,7 @@ const actions = {
     try {
       let args = {
         token: state.tokenId,
-        offerNumber: arg.offerNumber,  
+        offerNumber: arg.offerNumber,
         barcode: arg.stockCode,
         description: arg.description,
         isDue: "insert",
@@ -223,41 +249,41 @@ const actions = {
         discountRateLine: 0.0,
         shipDistrictCode: arg.shipDistrictCode,
         shipSurname: arg.shipSurname,
-    };
-  
+      };
 
-  
+
+
       console.log(args);
-  
+
       return new Promise((resolve, reject) => {
         try {
-            soap.createClient(url, function (err, client) {
-                client.CrudToOfferList(args, function (err, result) {
-                    console.log('SOAP Response:', result);  // Log the entire response
-    
-                    try {
-                        let veriler = JSON.parse(result.CrudToOfferListResult);
-                        commit("CrudTo_OfferList", { veriler, offerNumber: veriler });
-                        resolve({ veriler, offerNumber: veriler });
-                    } catch (error) {
-                        reject(error);
-                        console.log(error);
-                    }
-                });
+          soap.createClient(url, function (err, client) {
+            client.CrudToOfferList(args, function (err, result) {
+              console.log('SOAP Response:', result);  // Log the entire response
+
+              try {
+                let veriler = JSON.parse(result.CrudToOfferListResult);
+                commit("CrudTo_OfferList", { veriler, offerNumber: veriler });
+                resolve({ veriler, offerNumber: veriler });
+              } catch (error) {
+                reject(error);
+                console.log(error);
+              }
             });
+          });
         } catch (error) {
-            resolve(false);
-            console.log(error);
+          resolve(false);
+          console.log(error);
         }
-    });
-    
+      });
+
 
     } catch (error) {
       console.log(error);
     }
   },
-  
- 
+
+
   getDataCategoryListPerPage({ commit, dispatch, state }, arg) {
     let pageAct = arg.page == "" ? 1 : arg.page
     const soap = require("soap");
@@ -274,7 +300,7 @@ const actions = {
         try {
           soap.createClient(url, function (err, client) {
             client.CategoryList(args, function (err, result) {
-              let veriler = JSON.parse(result.CategoryListResult); 
+              let veriler = JSON.parse(result.CategoryListResult);
               console.log(veriler)
               resolve(veriler)
             });

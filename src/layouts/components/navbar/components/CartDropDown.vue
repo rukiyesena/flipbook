@@ -1,6 +1,6 @@
 <template>
-	<!-- CART DROPDOWN -->
-  
+  <!-- CART DROPDOWN -->
+
   <vs-dropdown vs-custom-content vs-trigger-click class="cursor-pointer">
     <feather-icon icon="ShoppingCartIcon" class="cursor-pointer ml-4 mr-6 mt-1" :badge="cartItems.length" />
     <vs-dropdown-menu class="cart-dropdown vx-navbar-dropdown" :class="{ 'dropdown-custom': cartItems.length }">
@@ -31,13 +31,14 @@
               items-center
               justify-center
             ">
-              <img :src="item.url_image" alt="item" class="cart-dropdown-item-img p-4" style="max-height: 75px;" @click="navigate_to_detail_view(item)" />
-            </div>
-            
+                <img :src="item.url_image" alt="item" class="cart-dropdown-item-img p-4" style="max-height: 75px;"
+                  @click="navigate_to_detail_view(item)" />
+              </div>
+
               <!-- INFO COL -->
               <div class="vx-col w-4/5 pr-4 pl-2 py-4 flex flex-col justify-center">
-                <span class="font-medium block cart-item-title truncate"
-                  @click="navigate_to_detail_view(item)" style="color: black; font-weight: bold;">
+                <span class="font-medium block cart-item-title truncate" @click="navigate_to_detail_view(item)"
+                  style="color: black; font-weight: bold;">
                   {{ item.stockName }}
                 </span>
                 <small class="truncate mb-2">{{ item.description }}</small>
@@ -49,8 +50,8 @@
                       style="color: black; font-weight: bold;" />
                   </div>
 
-                  <feather-icon icon="XIcon" svgClasses="h-4 w-4 cursor-pointer text-danger"
-                    class="hover:text-danger" @click.stop="removeItemFromCart(item)" />
+                  <feather-icon icon="XIcon" svgClasses="h-4 w-4 cursor-pointer text-danger" class="hover:text-danger"
+                    @click.stop="removeItemFromCart(item)" />
                 </div>
               </div>
             </li>
@@ -70,17 +71,18 @@
             d-theme-border-grey-light
             cursor-pointer
           " @click="$router.push().catch(() => { })">
-          <div class="checkout-footer fixed bottom-0 rounded-b-lg text-primary font-semibold w-full p-2 text-center border border-b-0 border-l-0 border-r-0 border-solid d-theme-border-grey-light cursor-pointer"
+          <div
+            class="checkout-footer fixed bottom-0 rounded-b-lg text-primary font-semibold w-full p-2 text-center border border-b-0 border-l-0 border-r-0 border-solid d-theme-border-grey-light cursor-pointer"
             @click="openOfferPopup">
             <span class="flex items-center justify-center">
               <feather-icon icon="ShoppingCartIcon" svgClasses="h-4 w-4" />
               <span class="ml-2" style="color: black; font-weight: bold;">Teklif oluştur</span>
             </span>
           </div>
-          
+
         </div>
-     
-  
+
+
       </template>
 
       <!-- IF CART IS EMPTY -->
@@ -88,35 +90,9 @@
         <p class="p-4">Sepetiniz boş.</p>
       </template>
     </vs-dropdown-menu>
-		<!-- <ListCard ref="cardList" /> -->
-    <vs-popup :active.sync="offerPopupVisible" title="Teklif Gönder">
-
-      <b-input-group prepend="Ad" class="mt-3">
-        <b-form-input v-model="shipName">
-          <b-avatar rounded="sm"></b-avatar>
-        </b-form-input>
-      </b-input-group>
-      <b-input-group prepend="Soyad" class="mt-3">
-        <b-form-input v-model="shipSurname">
-          <b-avatar rounded="sm"></b-avatar>
-        </b-form-input>
-      </b-input-group>
-      <b-input-group prepend="Mail Adres" class="mt-3">
-        <b-form-input v-model="eMail">
-          <b-avatar rounded="sm"></b-avatar>
-        </b-form-input>
-      </b-input-group>
-      <b-input-group prepend="Telefon" class="mt-3">
-        <b-form-input v-model="shipPhone">
-          <b-avatar rounded="sm"></b-avatar>
-        </b-form-input>
-      </b-input-group>
-      <br>
-      <div>
-        <vs-button @click="submitOffer">Teklif Gönder</vs-button>
-      </div>
-    </vs-popup>
-	</vs-dropdown>
+    <!-- <ListCard ref="cardList" /> -->
+  
+  </vs-dropdown>
 </template>
 
 <script>
@@ -126,31 +102,27 @@ import state from "../../../../store/state";
 import userJson from "../../../../../public/user.json";
 
 export default {
-	components: {
-		VuePerfectScrollbar,
-	},
-	data() {
-		return {
-			offerPopupVisible: false,
+  components: {
+    VuePerfectScrollbar,
+  },
+  data() {
+    return {
       offerPrice: 0,
-      shipName: "",
-      shipSurname: "",
-      shipPhone:"",
-      eMail: "",
-			cartList: [],
-			sistemurl: "",
-			productPrice: 0.0,
-			settings: {
-				// perfectscrollbar settings
-				maxScrollbarLength: 60,
-				wheelSpeed: 0.6,
-			},
-		};
-	},
-  
-	computed: {
-		// CART DROPDOWN
-		cartItems() {
+     
+      cartList: [],
+      sistemurl: "",
+      productPrice: 0.0,
+      settings: {
+        // perfectscrollbar settings
+        maxScrollbarLength: 60,
+        wheelSpeed: 0.6,
+      },
+    };
+  },
+
+  computed: {
+    // CART DROPDOWN
+    cartItems() {
       if (this.$store.state.eCommerce.cartItems.length > 0) {
         this.cartList = this.$store.state.eCommerce.cartItems.slice().reverse();
         return this.$store.state.eCommerce.cartItems.slice().reverse();
@@ -159,113 +131,67 @@ export default {
     scrollbarTag() {
       return this.$store.getters.scrollbarTag;
     },
-  
-	},
-	methods: {
-    
-		openOfferPopup() {
-      this.offerPopupVisible = true;
-    },
-    submitOffer() {
 
-  console.log('Ad Soyad:', this.shipName);
-  console.log('Ad Soyad:', this.shipSurname);
-
-  console.log('Mail Adres:', this.eMail);
-  console.log('Telefon:', this.shipPhone);
-
-
-  this.$store.state.eCommerce.cartItems.forEach(item => {
-  });
-
-
-  const stockCodes = this.$store.state.eCommerce.cartItems.map(item => item.stockCode);
-
-  this.$store.dispatch('GetOfferNumber')
-    .then((offerNumberResponse) => {
-      const { offerNumber } = offerNumberResponse;
-
-      console.log('Offer Number Response', offerNumberResponse);
-
-      const promises = stockCodes.map((stockCode) => {
-        return this.$store.dispatch('GetCrudToOfferList', {
-          shipName: this.shipName,
-          shipSurname: this.shipSurname,
-          eMail: this.eMail,
-          shipPhone: this.shipPhone,
-          offerNumber: offerNumber.replace(/"/g, ""),  
-          stockCode
-        });
-      });
-
-      return Promise.all(promises);
-    })
-    .then((crudResponses) => {
-  console.log('All CRUD Responses', crudResponses);
-  const { offerNumber } = crudResponses[0];
-  this.$router.push(`/flipbook/Teklif/Onay/${offerNumber}`);
-})
-
-    .catch((error) => {
-      console.error('Error', error);
-    });
-
-  this.closeOfferPopup();
-  console.log("Teklif gönderildi");
-},
-  closeOfferPopup() {
-    this.offerPopupVisible = false;
   },
-		navigate_to_detail_view(event) {
-			if (userJson.varyant == "true") {
+  methods: {
+
+   
+    openOfferPopup() {
+      
+      this.$root.$emit("teklifOnay");
+
+    },
+    
+    navigate_to_detail_view(event) {
+      if (userJson.varyant == "true") {
 
 
-				this.$router
-					.push({
-						name: "ecommerce-item-detail-view",
-						params: { item_id: event.STOCKNO },
-					})
-					.catch((err) => {
-						console.log(err);
-					});
-			} else {
-				this.$router
-					.push({
-						shipName: "ecommerce-item-detail-view",
-						params: { item_id: event.BARKOD },
-					})
-					.catch(() => { });
-			}
-		},
-		errorFind(err) {
-			console.log(err);
-		},
+        this.$router
+          .push({
+            name: "ecommerce-item-detail-view",
+            params: { item_id: event.STOCKNO },
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        this.$router
+          .push({
+            shipName: "ecommerce-item-detail-view",
+            params: { item_id: event.BARKOD },
+          })
+          .catch(() => { });
+      }
+    },
+    errorFind(err) {
+      console.log(err);
+    },
     removeItemFromCart(item) {
-  const index = this.$store.state.eCommerce.cartItems.findIndex(cartItem => cartItem === item);
+      const index = this.$store.state.eCommerce.cartItems.findIndex(cartItem => cartItem === item);
 
-  if (index !== -1) {
-  this.$store.dispatch("eCommerce/removeItemInCard", item)
-  .then((response) => {
-    if (response === "ok") {
-      // If needed, perform additional actions after successful removal
-      // this.$refs.cardList.listCardItems();
+      if (index !== -1) {
+        this.$store.dispatch("eCommerce/removeItemInCard", item)
+          .then((response) => {
+            if (response === "ok") {
+              // If needed, perform additional actions after successful removal
+              // this.$refs.cardList.listCardItems();
+            }
+          });
+      }
     }
-      });
-  }
-}
 
 
-	},
-	created() {
-		this.sistemurl = userJson.resimUrl;
-		//   this.$refs.cardList.listCardItems();
-	},
+  },
+  created() {
+    this.sistemurl = userJson.resimUrl;
+    //   this.$refs.cardList.listCardItems();
+  },
 };
 </script>
 
 <style scoped>
-  .small-input {
-    width: 50px !important; 
-    margin-right: 10px;
-  }
+.small-input {
+  width: 50px !important;
+  margin-right: 10px;
+}
 </style>
