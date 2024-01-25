@@ -24,6 +24,15 @@ const mutations = {
     state.CrudToOfferList = item
 
   },
+   setShipName(state, value) {
+      state.shipName = value;
+    },
+    setShipAddress(state, value) {
+      state.shipAddress = value;
+    },
+    setShipPhone(state, value) {
+      state.shipPhone = value;
+    },
   updateName(state, newName) {
     console.log('New Name:', newName);
     state.name = newName;

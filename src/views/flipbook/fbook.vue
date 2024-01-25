@@ -1,6 +1,6 @@
 <template>
   <div>
-    <vs-popup :active.sync="offerPopupVisible" title="Teklif Gönder">
+    <vs-popup :active.sync="offerPopupVisible" title="Teklif Kaydet">
 
       <b-input-group prepend="Ad" class="mt-3">
         <b-form-input v-model="shipName">
@@ -22,13 +22,34 @@
           <b-avatar rounded="sm"></b-avatar>
         </b-form-input>
       </b-input-group>
+      <b-input-group prepend="Adres" class="mt-3">
+        <b-form-input v-model="address">
+          <b-avatar rounded="sm"></b-avatar>
+        </b-form-input>
+      </b-input-group>
+      <b-input-group prepend="Faks" class="mt-3">
+        <b-form-input v-model="shipPhone">
+          <b-avatar rounded="sm"></b-avatar>
+        </b-form-input>
+      </b-input-group>
+      <b-input-group prepend="Vergi-D." class="mt-3">
+        <b-form-input v-model="taxOffice">
+          <b-avatar rounded="sm"></b-avatar>
+        </b-form-input>
+      </b-input-group>
+      <b-input-group prepend="Vergi No" class="mt-3">
+        <b-form-input v-model="taxNumber">
+          <b-avatar rounded="sm"></b-avatar>
+        </b-form-input>
+      </b-input-group>
       <br>
       <div>
-        <vs-button @click="getTeklifOnayList">Teklif Gönder</vs-button>
+        <vs-button @click="getTeklifOnayList">Teklif Kaydet</vs-button>
       </div>
     </vs-popup>
-    <TeklifOnayMail ref="teklifOnayMailRef" />
-    <div v-if="pages.length > 0">
+  
+ 
+  <div v-if="pages.length > 0">
 
       <div id="fb5-ajax" data-cat="katalog" data-template="true">
         <!-- BACKGROUND FLIPBOOK -->
@@ -266,6 +287,8 @@ import TablePageSecond from './pages/TablePageSecond.vue';
 import CartDropDown from '../../layouts/components/navbar/components/CartDropDown.vue'
 import { Icon } from "@iconify/vue2";
 import TeklifOnayMail from './TeklifOnayMail.vue';
+import FlipBookTeklif from './FlipBookTeklif.vue';
+
 export default {
   mounted() {
     this.$root.$on("teklifOnay", () => {
@@ -300,11 +323,15 @@ export default {
   data() {
     return {
       shipName: "",
+      taxNumber: "",
+      taxOffice: "",
+      taxOffice: "",
+      address: "",
       shipSurname: "",
       shipPhone: "",
       eMail: "",
       offerPopupVisible: false,
-
+      
       selectedPageIndex: 0,
 
       previousValue: null,
@@ -344,6 +371,7 @@ export default {
     EighthPage,
     NinthPage,
     TablePageFirst,
+    FlipBookTeklif,
     TeklifOnayMail
   },
   methods: {
@@ -351,60 +379,39 @@ export default {
       this.offerPopupVisible = true;
     },
     getTeklifOnayList() {
-      var vm = this;
+      
+  console.log('Adres:', this.shipAddress);
+  const arg = {
+    // Define the properties needed for GetCrudToOfferList
+    quantity: this.quantityLine,
+    // ... other properties ...
+  };
 
-      const stockCodes = vm.$store.state.eCommerce.cartItems.map(item => item.stockCode);
+  const stockCodes = this.$store.state.eCommerce.cartItems.map(item => item.stockCode);
+  this.$store.commit('setShipName', this.shipName);
+this.$store.commit('setShipAddress', this.shipAddress);
+this.$store.commit('setShipPhone', this.shipPhone);
+  this.$store.dispatch('GetOfferNumber')
+    .then((offerNumberResponse) => {
+      const { offerNumber } = offerNumberResponse;
 
-      vm.$store.dispatch('GetOfferNumber')
-        .then((offerNumberResponse) => {
-          const { offerNumber } = offerNumberResponse;
-          const detail = {
-            shipName: vm.shipName,
-            shipSurname: vm.shipSurname,
-            eMail: vm.eMail,
-            shipPhone: vm.shipPhone
-          }
-          vm.$refs.teklifOnayMailRef.getItems(offerNumber.replace(/"/g, ""), detail);
-          setTimeout(function () {
-            console.log(vm.$refs)
-            const args = {
-              receiver: "rukiye@uzum.com.tr, evrim@uzum.com.tr",
-              message: vm.$refs.teklifOnayMailRef.$el.innerHTML,
-              subject: "Teklif Onay İşlemi"
-            };
-            console.log(args)
-            vm.$store.dispatch('sendMail', args)
-              .then((response) => {
+      console.log('Offer Number Response', offerNumberResponse);
 
-                console.log(response)
-                const promises = stockCodes.map((stockCode) => {
-                  return vm.$store.dispatch('GetCrudToOfferList', {
-                    shipName: detail.shipName,
-                    shipSurname: detail.shipSurname,
-                    eMail: detail.eMail,
-                    shipPhone: detail.shipPhone,
-                    offerNumber: offerNumber.replace(/"/g, ""),
-                    stockCode
-                  });
-                });
+   
+      return Promise.all(promises);
+    })
+    .then((crudResponses) => {
+      console.log('All CRUD Responses', crudResponses);
+      const { offerNumber } = crudResponses[0];
+      this.$router.push(`/flipbook/Teklif/Onay/${offerNumber}`);
+    })
+    .catch((error) => {
+      console.error('Error', error);
+    });
+    this.offerPopupVisible = false;
 
-                return Promise.all(promises);
-              })
-          }, 2000);
+},
 
-
-        })
-      /*   .then((crudResponses) => {
-           const { offerNumber } = crudResponses[0];
-           //   vm.$router.push(`/flipbook/Teklif/Onay/${offerNumber}`);
-         })
- 
-         .catch((error) => {
-           console.error('Error', error);
-         });*/
-      vm.offerPopupVisible = false;
-      console.log("Teklif gönderildi");
-    },
     updateSelectedPageIndex(newPageIndex) {
       console.log("Received new page index:", newPageIndex);
       this.selectedPageIndex = newPageIndex;

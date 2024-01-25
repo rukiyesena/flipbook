@@ -216,7 +216,7 @@ const actions = {
     });
   },
   GetCrudToOfferList({ commit, dispatch, state }, arg) {
-    console.log(arg)
+    console.log(arg.islem)
     const soap = require("soap");
     const url = userJson.userService;
     try {
@@ -225,7 +225,7 @@ const actions = {
         offerNumber: arg.offerNumber,
         barcode: arg.stockCode,
         description: arg.description,
-        isDue: "insert",
+        isDue: arg.islem,
         eMail: arg.eMail,
         invoiceAddress: arg.invoiceAddress,
         shipCityCode: arg.shipCityCode,

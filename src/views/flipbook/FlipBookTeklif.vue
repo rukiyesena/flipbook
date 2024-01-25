@@ -325,15 +325,18 @@
             </div>
           </div>
 
-          <div class="button-container" style="margin-left: 1292px; display: flex;">
+          <div class="button-container" style="margin-left: 1092px; display: flex;">
             <vs-button style="border-radius: 5px; margin-right: 10px;" type="gradient" color="primary"
               @click="teklifYazdir()">Teklif Yazdır</vs-button>
             <vs-button style="border-radius: 5px;" type="gradient" color="success" @click="teklifKaydet()">Teklif
               Kaydet</vs-button>
+              <vs-button style="border-radius: 5px;" type="gradient" color="danger" @click="teklifGonder()">Teklif
+                Gönder</vs-button>
           </div>
 
         </vs-card>
       </vs-table-container>
+      <TeklifOnayMail ref="teklifOnayMailRef" />
 
       <teklifYazdir ref="teklifYazdir" :cartItems="cartItems"></teklifYazdir>
     </div>
@@ -343,11 +346,23 @@
 
 <script>
 import teklifYazdir from './pages/components/teklifYazdir.vue'
+import TeklifOnayMail from './TeklifOnayMail.vue';
+
 
 
 export default {
+  props: {
+    shipName: String,
+    shipAddress: String,
+    shipPhone: String,
+    eMail: String,
+    taxOffice: String,
+    taxNumber: String,
+    // Add other props as needed
+  },
   components: {
     teklifYazdir,
+    TeklifOnayMail,
   },
   data() {
     return {
@@ -392,6 +407,67 @@ export default {
 
     teklifYazdir() {
       this.$refs.teklifYazdir.yazdir();
+    },
+    teklifGonder() {
+      var vm = this;
+
+      const stockCodes = vm.$store.state.eCommerce.cartItems.map(item => item.stockCode);
+
+      vm.$store.dispatch('GetOfferNumber')
+        .then((offerNumberResponse) => {
+          const { offerNumber } = offerNumberResponse;
+          const detail = {
+            shipName: vm.shipName,
+            address: vm.address,
+            taxNumber: vm.taxNumber,
+            taxOffice: vm.taxOffice,
+            shipSurname: vm.shipSurname,
+            eMail: vm.eMail,
+            shipPhone: vm.shipPhone
+          }
+          vm.$refs.teklifOnayMailRef.getItems(offerNumber.replace(/"/g, ""), detail);
+          setTimeout(function () {
+            console.log(vm.$refs)
+            const args = {
+              receiver: "rukiye@uzum.com.tr, evrim@uzum.com.tr",
+              message: vm.$refs.teklifOnayMailRef.$el.innerHTML,
+              subject: "Teklif Onay İşlemi"
+            };
+            console.log(args)
+            vm.$store.dispatch('sendMail', args)
+              .then((response) => {
+
+                console.log(response)
+                const promises = stockCodes.map((stockCode) => {
+                  return vm.$store.dispatch('GetCrudToOfferList', {
+                    shipName: detail.shipName,
+                    shipSurname: detail.shipSurname,
+                    address: vm.address,
+                    taxNumber: vm.taxNumber,
+                    taxOffice: vm.taxOffice,
+                    eMail: detail.eMail,
+                    shipPhone: detail.shipPhone,
+                    offerNumber: offerNumber.replace(/"/g, ""),
+                    islem:"insert",
+                    stockCode
+                  });
+                });
+
+                return Promise.all(promises);
+              })
+          }, 2000);
+
+
+        })
+      /*   .then((crudResponses) => {
+           const { offerNumber } = crudResponses[0];
+           //   vm.$router.push(`/flipbook/Teklif/Onay/${offerNumber}`);
+         })
+ 
+         .catch((error) => {
+           console.error('Error', error);
+         });*/
+      console.log("Teklif gönderildi");
     },
     teklifKaydet() {
   console.log('Adres:', this.shipAddress);
@@ -449,6 +525,16 @@ export default {
   },
 
   computed: {
+    shipName() {
+    return this.$store.state.shipName;
+  },
+
+  shipAddress() {
+    return this.$store.state.shipAddress;
+  },
+  shipPhone() {
+    return this.$store.state.shipPhone;
+  },
     quantityLine() {
     const totalQuantity = this.cartItems.reduce((total, item) => total + parseInt(item.quantity), 0);
     console.log('Total Quantity', totalQuantity); // Add this line

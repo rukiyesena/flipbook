@@ -79,6 +79,9 @@ const state = {
   tokenId: "",
   UserId: "",
   ROL: "",
+    shipName: '',
+    shipAddress: '',
+    shipPhone: '',
   STOCKPRICETYPEID: "",
 
   imgurl: "",

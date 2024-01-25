@@ -15,7 +15,7 @@
         <!-- CART ITEMS -->
         <component :is="scrollbarTag" ref="mainSidebarPs" class="scroll-area--cart-items-dropdowm p-0 mb-10"
           :settings="settings" :key="$vs.rtl">
-          <router-link to="/flipbook/Teklif/Onay" style="color: black; font-weight: bold;">
+          <router-link to="/flipbook/Teklif/Onay/${offerNumber}" style="color: black; font-weight: bold;">
             Teklif Onay Sayfasına Git
           </router-link>
 
