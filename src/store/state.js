@@ -80,7 +80,11 @@ const state = {
   UserId: "",
   ROL: "",
     shipName: '',
+    invoiceAddress: '',
     shipAddress: '',
+    taxOffice: '',
+    fax: '',
+    taxNumber: '',
     shipPhone: '',
   STOCKPRICETYPEID: "",
 

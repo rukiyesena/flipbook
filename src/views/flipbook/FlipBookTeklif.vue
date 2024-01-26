@@ -40,13 +40,25 @@
 
               <b-row align-v="center">
                 <b-col cols="2">
-                  <h6 style="margin-bottom: 5px; font-weight: bold;">ADRES:
+                  <h6 style="margin-bottom: 5px; font-weight: bold;"> TESLİMAT ADRESİ:
                   </h6>
                 </b-col>
                 <b-col>
                   <vs-input v-model="shipAddress" type="text" class="styled-input"
                     style="color: black; font-weight: bold; width: 400px;" />
                 </b-col>
+          
+              </b-row>
+              <b-row align-v="center">
+                <b-col cols="2">
+                  <h6 style="margin-bottom: 5px; font-weight: bold;"> FATURA ADRESİ:
+                  </h6>
+                </b-col>
+                <b-col>
+                  <vs-input v-model="invoiceAddress" type="text" class="styled-input"
+                    style="color: black; font-weight: bold; width: 400px;" />
+                </b-col>
+          
               </b-row>
               <b-row align-v="center">
                 <b-col cols="2">
@@ -65,7 +77,8 @@
                   </h6>
                 </b-col>
                 <b-col>
-                  <vs-input type="text" class="styled-input" style="color: black; font-weight: bold; width: 250px" />
+                  <vs-input v-model="fax" type="text" class="styled-input"
+                    style="color: black; font-weight: bold; width: 400px;" />
 
 
                 </b-col>
@@ -189,11 +202,27 @@
                 <vs-td>
                   <div>
                     <vs-input type="text" class="styled-input"
-                      style="color: black; font-weight: bold; font-size: 12px; height: 60px; width: 70px;"
+                      style="color: black; font-weight: bold; font-size: 15px; height: 20px; width: 70px;"
                       :value="tutarForItem(indextr)" disabled />
                   </div>
                 </vs-td>
-
+                <vs-td>
+                  <div>
+                    <b-form-group label="Tarih" label-for="termin">
+                      <b-form-datepicker
+                        id="baslangic"
+                        v-model="termin"
+                        size="sm"
+                        placeholder="-"
+                        :date-format-options="{
+                          year: 'numeric',
+                          month: 'numeric',
+                          day: 'numeric'  
+                        }"          
+                      />
+                    </b-form-group>
+                  </div>
+                </vs-td>
               </vs-tr>
 
 
@@ -208,71 +237,69 @@
 
             </template> </vs-table>
           <div style="display: table; width: 100%;">
-            <div class="additional-fields" style=" margin-left: 1112px;">
+            <div class="additional-fields" style="display: flex; flex-direction: column; align-items: flex-end; margin-right: 20px;">
 
-              <div>
-                <vs-th style="color: black; font-weight: bold;">TOPLAM</vs-th>
+              <div style="display: flex; align-items: center;">
+                <vs-th style="color: black; font-weight: bold; margin-right: 20px;">TOPLAM</vs-th>
                 <vs-td>
                   <div>
-                    <vs-input type="text" class="styled-input"
-                      style="color: black; font-weight: bold; height: 30px; width: 160px;" v-model="calculatedToplam" />
+                    <vs-input type="text" class="styled-input" style="color: black; font-weight: bold; height: 50px; width: 160px;" v-model="calculatedToplam" />
                   </div>
                 </vs-td>
               </div>
-              <br>
-              <div>
-                <vs-th style="color: black; font-weight: bold; ">KDV (%20) </vs-th>
+            
+              <div style="display: flex; align-items: center;">
+                <vs-th style="color: black; font-weight: bold; margin-right: 10px;">KDV (%20)</vs-th>
                 <vs-td>
                   <div>
-                    <vs-input type="text" class="styled-input"
-                      style="color: black; font-weight: bold; height: 30px; width: 160px;"
-                      :value="kdvUygulanmisGenelToplam" />
+                    <vs-input type="text" class="styled-input" style="color: black; font-weight: bold; height: 50px; width: 160px;" :value="kdvUygulanmisGenelToplam" />
                   </div>
                 </vs-td>
               </div>
-              <br>
-              <div>
-                <vs-th style="color: black; font-weight: bold;"> GENEL İSKONTO </vs-th>
+            
+              <div style="display: flex; align-items: center;">
+                <vs-th style="color: black; font-weight: bold; margin-right: 10px;">GENEL İSKONTO</vs-th>
                 <vs-td>
                   <div>
-                    <vs-input type="text" class="styled-input"
-                      style="color: rgb(2, 2, 2); font-weight: bold; height: 30px; width: 120px;"
-                      :value="totalDiscountRate" />
+                    <vs-input type="text" class="styled-input" style="color: rgb(2, 2, 2); font-weight: bold; height: 50px; width: 160px;" :value="totalDiscountRate" />
                   </div>
                 </vs-td>
               </div>
-              <br>
-              <div>
-                <vs-th style="color: black; font-weight: bold;">GENEL TOPLAM</vs-th>
+            
+              <div style="display: flex; align-items: center;">
+                <vs-th style="color: black; font-weight: bold; margin-right: 10px;">GENEL TOPLAM</vs-th>
                 <vs-td>
                   <div>
-                    <vs-input type="text" class="styled-input"
-                      style="color: rgb(232, 0, 0); font-weight: bold; height: 30px; width: 120px;"
-                      :value="totalGenelToplam" disabled />
+                    <vs-input type="text" class="styled-input" style="color: rgb(232, 0, 0); font-weight: bold; height: 50px; width: 160px;" :value="totalGenelToplam" disabled />
                   </div>
                 </vs-td>
               </div>
-
+            
             </div>
+            
 
           </div>
           <b-col> </b-col>
-          <div class="not-panel" style=" margin-top: -140px;">
+          <div class="not-panel" style="margin-top: -140px; display: flex; flex-direction: column; align-items: flex-start;">
+
             <h6> Not1: Siparişin onaylanması için bu form imzalanarak tarafımıza ulaştırılmalı ve ilgili ödeme
               gerçekleşmiş olmalıdır.</h6>
             <h6> Not2: Geçerlilik Süresi sonrasında onaylanan teklifler için fiyat, stok ve sevk tarihi bilgileri
               değişebilir.</h6>
             <h6> Not3: Üretim hataları dışında iade kabul edilmemektedir. | Firmamız e-Fatura mükellefidir.</h6>
-            <b-col>
-              <h6>Not4: <vs-input type="text" class="styled-input"
-                  style="color: rgb(185, 0, 0); font-weight: bold; width: 500px;" />
-              </h6>
-              <h6>Not5: <vs-input type="text" class="styled-input"
-                  style="color: black; font-weight: bold; width: 500px;" />
-              </h6>
-            </b-col>
-
+          
+            <div style="display: flex; align-items: center;">
+              <h6>Not4:   :</h6>
+              <vs-input type="text" class="styled-input" style="color: rgb(185, 0, 0); font-weight: bold; width: 650px;" />
+            </div>
+          
+            <div style="display: flex; align-items: center;">
+              <h6>Not5:   :</h6>
+              <vs-input type="text" class="styled-input" style="color: black; font-weight: bold; width: 650px;" />
+            </div>
+          
           </div>
+          
 
 
           <br>
@@ -347,6 +374,8 @@
 <script>
 import teklifYazdir from './pages/components/teklifYazdir.vue'
 import TeklifOnayMail from './TeklifOnayMail.vue';
+import Datepicker from "vuejs-datepicker";
+
 
 
 
@@ -362,6 +391,7 @@ export default {
   },
   components: {
     teklifYazdir,
+    Datepicker,
     TeklifOnayMail,
   },
   data() {
@@ -371,7 +401,16 @@ export default {
       quantityLine: 0,  // This is what you have in your data
       paymentType: "Peşin",
       shipName: "",
+      eMail:"",
+      taxNumber: "",
+      shipName: "",
+      shipPhone: "",
       shipAddress: "",
+      taxOffice: "",
+      shipName: "",
+      invoiceAddress: "",
+      shipAddress: "",
+      quantityLine: "",
       shipPhone: "",
       taxNumber: "",
       description: "",
@@ -509,10 +548,11 @@ export default {
       return Promise.all(promises);
     })
     .then((crudResponses) => {
-      console.log('All CRUD Responses', crudResponses);
-      const { offerNumber } = crudResponses[0];
-      this.$router.push(`/flipbook/Teklif/Onay/${offerNumber}`);
-    })
+  console.log('All CRUD Responses', crudResponses);
+  const { offerNumber } = crudResponses[0];
+  this.$router.replace(`/flipbook/Teklif/Onay/${offerNumber}`);
+})
+
     .catch((error) => {
       console.error('Error', error);
     });
@@ -525,6 +565,21 @@ export default {
   },
 
   computed: {
+    invoiceAddress() {
+    return this.$store.state.invoiceAddress;
+  },
+     fax() {
+    return this.$store.state.fax;
+  },
+    taxOffice() {
+    return this.$store.state.taxOffice;
+  },
+    eMail() {
+    return this.$store.state.eMail;
+  },
+    taxNumber() {
+    return this.$store.state.taxNumber;
+  },
     shipName() {
     return this.$store.state.shipName;
   },

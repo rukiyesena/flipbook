@@ -27,11 +27,26 @@ const mutations = {
    setShipName(state, value) {
       state.shipName = value;
     },
+    setEmail(state, value) {
+      state.eMail = value;
+    },
+    setİnvoiceAddres(state, value) {
+      state.invoiceAddress = value;
+    },
+    setTaxOffice(state, value) {
+      state.taxOffice = value;
+    },
+    setFaks(state, value) {
+      state.fax = value;
+    },
     setShipAddress(state, value) {
       state.shipAddress = value;
     },
     setShipPhone(state, value) {
       state.shipPhone = value;
+    },
+    setTaxNumber(state, value) {
+      state.taxNumber = value;
     },
   updateName(state, newName) {
     console.log('New Name:', newName);

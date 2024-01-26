@@ -1,12 +1,13 @@
 <template>
   <div>
     <vs-popup :active.sync="offerPopupVisible" title="Teklif Kaydet">
-
-      <b-input-group prepend="Ad" class="mt-3">
-        <b-form-input v-model="shipName">
+      <b-input-group prepend="Ad" class="mt-3" :state="isFieldValid('shipName')">
+        <b-form-input v-model="shipName" @input="clearError('shipName')">
           <b-avatar rounded="sm"></b-avatar>
         </b-form-input>
+        <div v-if="!isFieldValid('shipName')" class="text-danger">Lütfen adınızı giriniz...</div>
       </b-input-group>
+      
       <b-input-group prepend="Soyad" class="mt-3">
         <b-form-input v-model="shipSurname">
           <b-avatar rounded="sm"></b-avatar>
@@ -22,13 +23,23 @@
           <b-avatar rounded="sm"></b-avatar>
         </b-form-input>
       </b-input-group>
-      <b-input-group prepend="Adres" class="mt-3">
-        <b-form-input v-model="address">
+      <b-input-group prepend="Teslimat Adresi" class="mt-3">
+        <b-form-input v-model="shipAddress">
           <b-avatar rounded="sm"></b-avatar>
         </b-form-input>
       </b-input-group>
+      
+
+      <b-input-group v-if="!selected.includes('sameAsShipping')" prepend="Fatura Adresi" class="mt-3">
+        <b-form-input v-model="invoiceAddress">
+          <b-avatar rounded="sm"></b-avatar>
+        </b-form-input>
+      </b-input-group>
+      <div>
+        <b-form-checkbox v-model="selected" size="md" style="color: red;">Teslim adresiyle aynı mı?</b-form-checkbox>
+      </div>
       <b-input-group prepend="Faks" class="mt-3">
-        <b-form-input v-model="shipPhone">
+        <b-form-input v-model="fax">
           <b-avatar rounded="sm"></b-avatar>
         </b-form-input>
       </b-input-group>
@@ -44,12 +55,12 @@
       </b-input-group>
       <br>
       <div>
-        <vs-button @click="getTeklifOnayList">Teklif Kaydet</vs-button>
+        <vs-button @click="getTeklifOnayList" :disabled="hasInvalidFields">Teklif Kaydet</vs-button>
       </div>
     </vs-popup>
-  
- 
-  <div v-if="pages.length > 0">
+
+
+    <div v-if="pages.length > 0">
 
       <div id="fb5-ajax" data-cat="katalog" data-template="true">
         <!-- BACKGROUND FLIPBOOK -->
@@ -288,6 +299,23 @@ import CartDropDown from '../../layouts/components/navbar/components/CartDropDow
 import { Icon } from "@iconify/vue2";
 import TeklifOnayMail from './TeklifOnayMail.vue';
 import FlipBookTeklif from './FlipBookTeklif.vue';
+import { Validator } from "vee-validate";
+const dict = {
+  custom: {
+    bayiKodu: {
+      required: "Bayi Kodu gereklidir",
+      alpha: "Bayi Kodu gereklidir"
+    },
+    username: {
+      required: "Kullanıcı adı gereklidir",
+      alpha: "Kullanıcı adı gereklidir"
+    },
+    password: {
+      required: "Şifre gereklidir",
+      alpha: "Şifre gereklidir"
+    }
+  }
+};
 
 export default {
   mounted() {
@@ -322,8 +350,17 @@ export default {
   },
   data() {
     return {
+      shipAddress: "",
+      invoiceAddress: "", // Add this line
+      selected: [],
+      options: [{ text: 'Evet', value: 'sameAsShipping' }],
+      fieldValidity: {
+        shipName: true,
+        // ... add other fields here ...
+      },
       shipName: "",
       taxNumber: "",
+      fax: "",
       taxOffice: "",
       taxOffice: "",
       address: "",
@@ -331,7 +368,7 @@ export default {
       shipPhone: "",
       eMail: "",
       offerPopupVisible: false,
-      
+
       selectedPageIndex: 0,
 
       previousValue: null,
@@ -340,6 +377,9 @@ export default {
     }
   },
   computed: {
+    hasInvalidFields() {
+      return Object.values(this.fieldValidity).some((validity) => !validity);
+    },
     pages: {
       get() {
         return JSON.parse(localStorage.getItem("pages"))
@@ -375,38 +415,59 @@ export default {
     TeklifOnayMail
   },
   methods: {
+    isFieldValid(fieldName) {
+      return this.fieldValidity[fieldName];
+    },
+    // Function to clear error for a field
+    clearError(fieldName) {
+      this.fieldValidity[fieldName] = true;
+    },
     openOfferPopup() {
       this.offerPopupVisible = true;
     },
     getTeklifOnayList() {
-      
-  console.log('Adres:', this.shipAddress);
-  const arg = {
-    // Define the properties needed for GetCrudToOfferList
-    quantity: this.quantityLine,
-    // ... other properties ...
-  };
+      if (!this.shipName) {
+    this.fieldValidity.shipName = false;
+  }
 
-  const stockCodes = this.$store.state.eCommerce.cartItems.map(item => item.stockCode);
-  this.$store.commit('setShipName', this.shipName);
-this.$store.commit('setShipAddress', this.shipAddress);
-this.$store.commit('setShipPhone', this.shipPhone);
-  this.$store.dispatch('GetOfferNumber')
-    .then((offerNumberResponse) => {
-      const { offerNumber } = offerNumberResponse;
+      console.log('Adres:', this.shipAddress);
+      const arg = {
+        // Define the properties needed for GetCrudToOfferList
+        quantity: this.quantityLine,
+        // ... other properties ...
+      };
+      if (this.hasInvalidFields) {
+    return;
+  }
+      const stockCodes = this.$store.state.eCommerce.cartItems.map(item => item.stockCode);
+      this.$store.commit('setShipName', this.shipName);
+      this.$store.commit('setFaks', this.fax);
+      this.$store.commit('setİnvoiceAddres', this.invoiceAddress);
 
-      console.log('Offer Number Response', offerNumberResponse);
 
-      
-      this.$router.push(`/flipbook/Teklif/Onay/${offerNumber}`);
-    })
+      this.$store.commit('setEmail', this.eMail);
+
+      this.$store.commit('setTaxNumber', this.taxNumber);
+      this.$store.commit('setTaxOffice', this.taxOffice);
+
+      this.$store.commit('setShipAddress', this.shipAddress);
+      this.$store.commit('setShipPhone', this.shipPhone);
+      this.$store.dispatch('GetOfferNumber')
+        .then((offerNumberResponse) => {
+          const { offerNumber } = offerNumberResponse;
+
+          console.log('Offer Number Response', offerNumberResponse);
+
+
+          this.$router.push(`/flipbook/Teklif/Onay/${offerNumber}`);
+        })
+
+        .catch((error) => {
+          console.error('Error', error);
+        });
+      this.offerPopupVisible = false;
   
-    .catch((error) => {
-      console.error('Error', error);
-    });
-    this.offerPopupVisible = false;
-
-},
+    },
 
     updateSelectedPageIndex(newPageIndex) {
       console.log("Received new page index:", newPageIndex);
@@ -430,6 +491,24 @@ this.$store.commit('setShipPhone', this.shipPhone);
 
 
   },
+  watch: {
+  selected(newValues) {
+    if (newValues.includes(true)) {
+      this.invoiceAddress = this.shipAddress;
+    } else {
+      this.invoiceAddress = "";
+    }
+  },
+  shipAddress(newShipAddress) {
+    if (this.selected.includes(true)) {
+      this.invoiceAddress = newShipAddress;
+    }
+  },
+},
+
+
+
+
 
 };
 </script>
@@ -448,12 +527,6 @@ body {
   @import './wp-content/plugins/magicbook-addon/assets/css/magicbook-addon.css';
   @import './wp-includes/css/dist/block-library/style.min.css?ver=6.4.1';
   @import './wp-content/plugins/contact-form-7/includes/css/styles.css?ver=5.8.1';
-  @import './wp-content/themes/magicbook/style.css';
-  @import './wp-content/themes/magicbook/css/magicbook.min.css';
-  @import './wp-content/themes/magicbook/font-awesome/css/font-awesome.min.css';
-  @import './wp-content/plugins/js_composer/assets/lib/flexslider/flexslider.min.css?ver=6.7.0';
-  @import './wp-content/themes/magicbook/js/vendors/colorbox/colorbox.css?ver=1.2';
-  @import './wp-content/plugins/js_composer/assets/css/js_composer.min.css?ver=6.7.0';
-
+  
 }
 </style>
