@@ -118,7 +118,9 @@ require('iyzipay');
 import JsonExcel from 'vue-json-excel'
 
 Vue.component('downloadExcel', JsonExcel)
-
+// VeeValidate
+import VeeValidate from 'vee-validate'
+Vue.use(VeeValidate)
 
 import customers from "./layouts/components/servicecomp/customers"
 Vue.component("customer-component", customers)

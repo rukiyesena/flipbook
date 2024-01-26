@@ -1,58 +1,152 @@
 <template>
   <div>
+    
     <vs-popup :active.sync="offerPopupVisible" title="Teklif Kaydet">
-      <b-input-group prepend="Ad" class="mt-3" :state="isFieldValid('shipName')">
-        <b-form-input v-model="shipName" @input="clearError('shipName')">
-          <b-avatar rounded="sm"></b-avatar>
-        </b-form-input>
-        <div v-if="!isFieldValid('shipName')" class="text-danger">Lütfen adınızı giriniz...</div>
-      </b-input-group>
       
-      <b-input-group prepend="Soyad" class="mt-3">
-        <b-form-input v-model="shipSurname">
-          <b-avatar rounded="sm"></b-avatar>
-        </b-form-input>
-      </b-input-group>
-      <b-input-group prepend="Mail Adres" class="mt-3">
-        <b-form-input v-model="eMail">
-          <b-avatar rounded="sm"></b-avatar>
-        </b-form-input>
-      </b-input-group>
-      <b-input-group prepend="Telefon" class="mt-3">
-        <b-form-input v-model="shipPhone">
-          <b-avatar rounded="sm"></b-avatar>
-        </b-form-input>
-      </b-input-group>
-      <b-input-group prepend="Teslimat Adresi" class="mt-3">
-        <b-form-input v-model="shipAddress">
-          <b-avatar rounded="sm"></b-avatar>
-        </b-form-input>
-      </b-input-group>
-      
+      <vs-input
+      class="input-size"
+      name="shipName"
+      icon-no-border
+      icon="icon icon-user"
+      icon-pack="feather"
+      label-placeholder="Ad"
+      v-model="shipName"
+      v-validate="'required'"
+    />
+    <span class="text-danger">{{
+      errors.first("shipName")
+    }}</span>
 
-      <b-input-group v-if="!selected.includes('sameAsShipping')" prepend="Fatura Adresi" class="mt-3">
-        <b-form-input v-model="invoiceAddress">
+      <vs-input
+        class="input-size"
+        name="shipSurname"
+        icon-no-border
+        icon="icon icon-user"
+        icon-pack="feather"
+        label-placeholder="Soyad"
+        v-model="shipSurname"
+        v-validate="'required'"
+      />
+      <span class="text-danger">{{
+        errors.first("shipSurname")
+      }}</span>
+      <vs-input
+        class="input-size"
+        name="eMail"
+        icon-no-border
+        icon="icon icon-user"
+        icon-pack="feather"
+        label-placeholder="E-Mail"
+        v-model="eMail"
+        v-validate="'required'"
+      />
+      <span class="text-danger">{{
+        errors.first("eMail")
+      }}</span>
+
+      <vs-input
+        class="input-size"
+        name="shipPhone"
+        icon-no-border
+        icon="icon icon-user"
+        icon-pack="feather"
+        label-placeholder="Telefon"
+        v-model="shipPhone"
+        v-validate="'required'"
+      />
+    <span class="text-danger">{{
+        errors.first("shipPhone")
+      }}</span>
+      <vs-input
+        class="input-size"
+        name="shipAddress"
+        icon-no-border
+        icon="icon icon-user"
+        icon-pack="feather"
+        label-placeholder="Teslimat Adresi"
+        v-model="shipAddress"
+      >
+      <span class="text-danger">{{
+        errors.first("shipAddress")
+      }}</span>
+        <template #prepend>
           <b-avatar rounded="sm"></b-avatar>
-        </b-form-input>
-      </b-input-group>
+        </template>
+      </vs-input>
+
+      <vs-input
+        v-if="!selected.includes('sameAsShipping')"
+        class="input-size"
+        name="invoiceAddress"
+        icon-no-border
+        icon="icon icon-user"
+        icon-pack="feather"
+        label-placeholder="Fatura Adresi"
+        v-model="invoiceAddress"
+      >
+      <span class="text-danger">{{
+        errors.first("invoiceAddress")
+      }}</span>
+        <template #prepend>
+          <b-avatar rounded="sm"></b-avatar>
+        </template>
+      </vs-input>
+
       <div>
         <b-form-checkbox v-model="selected" size="md" style="color: red;">Teslim adresiyle aynı mı?</b-form-checkbox>
       </div>
-      <b-input-group prepend="Faks" class="mt-3">
-        <b-form-input v-model="fax">
+
+      <vs-input
+        class="input-size"
+        name="fax"
+        icon-no-border
+        icon="icon icon-user"
+        icon-pack="feather"
+        label-placeholder="Faks"
+        v-model="fax"
+      >
+      <span class="text-danger">{{
+        errors.first("fax")
+      }}</span>
+        <template #prepend>
           <b-avatar rounded="sm"></b-avatar>
-        </b-form-input>
-      </b-input-group>
-      <b-input-group prepend="Vergi-D." class="mt-3">
-        <b-form-input v-model="taxOffice">
+        </template>
+      </vs-input>
+
+      <vs-input
+        class="input-size"
+        name="taxOffice"
+        icon-no-border
+        icon="icon icon-user"
+        icon-pack="feather"
+        label-placeholder="Vergi-D."
+        v-model="taxOffice"
+      >
+      <span class="text-danger">{{
+        errors.first("taxOffice")
+      }}</span>
+        <template #prepend>
           <b-avatar rounded="sm"></b-avatar>
-        </b-form-input>
-      </b-input-group>
-      <b-input-group prepend="Vergi No" class="mt-3">
-        <b-form-input v-model="taxNumber">
+        </template>
+      </vs-input>
+
+      <vs-input
+        class="input-size"
+        name="taxNumber"
+        icon-no-border
+        icon="icon icon-user"
+        icon-pack="feather"
+        label-placeholder="Vergi No"
+        v-model="taxNumber"
+      >
+      <span class="text-danger">{{
+        errors.first("taxNumber")
+      }}</span>
+        <template #prepend>
           <b-avatar rounded="sm"></b-avatar>
-        </b-form-input>
-      </b-input-group>
+        </template>
+      </vs-input>
+
       <br>
       <div>
         <vs-button @click="getTeklifOnayList" :disabled="hasInvalidFields">Teklif Kaydet</vs-button>
@@ -302,20 +396,34 @@ import FlipBookTeklif from './FlipBookTeklif.vue';
 import { Validator } from "vee-validate";
 const dict = {
   custom: {
-    bayiKodu: {
-      required: "Bayi Kodu gereklidir",
-      alpha: "Bayi Kodu gereklidir"
+    shipName: {
+      required: "Ad alanı gereklidir",
     },
-    username: {
-      required: "Kullanıcı adı gereklidir",
-      alpha: "Kullanıcı adı gereklidir"
+    shipSurname: {
+      required: "Soyad alanı gereklidir",
     },
-    password: {
-      required: "Şifre gereklidir",
-      alpha: "Şifre gereklidir"
-    }
+    eMail: {
+      required: "E-Mail alanı gereklidir",
+    },
+    shipAddress: {
+      required: "Adres alanı gereklidir",
+    },
+    shipPhone: {
+      required: "Telefon alanı gereklidir",
+    },
+    taxNumber: {
+      required: "Vergi No  gereklidir",
+    },
+    taxOffice: {
+      required: "Vergi D. gereklidir",
+    },
+    fax: {
+      required: "Fax  gereklidir",
+    },
   }
 };
+
+Validator.localize("en", dict);
 
 export default {
   mounted() {
@@ -415,6 +523,7 @@ export default {
     TeklifOnayMail
   },
   methods: {
+    
     isFieldValid(fieldName) {
       return this.fieldValidity[fieldName];
     },
@@ -426,49 +535,45 @@ export default {
       this.offerPopupVisible = true;
     },
     getTeklifOnayList() {
-      if (!this.shipName) {
-    this.fieldValidity.shipName = false;
-  }
+      // Trigger validation
+      this.$validator.validateAll().then((result) => {
+        if (result) {
 
-      console.log('Adres:', this.shipAddress);
-      const arg = {
-        // Define the properties needed for GetCrudToOfferList
-        quantity: this.quantityLine,
-        // ... other properties ...
-      };
-      if (this.hasInvalidFields) {
-    return;
-  }
-      const stockCodes = this.$store.state.eCommerce.cartItems.map(item => item.stockCode);
-      this.$store.commit('setShipName', this.shipName);
-      this.$store.commit('setFaks', this.fax);
-      this.$store.commit('setİnvoiceAddres', this.invoiceAddress);
+          console.log('Adres:', this.shipAddress);
+          const arg = {
+            quantity: this.quantityLine,
+          };
 
+          const stockCodes = this.$store.state.eCommerce.cartItems.map(item => item.stockCode);
+          this.$store.commit('setShipName', this.shipName);
+          this.$store.commit('setFaks', this.fax);
+          this.$store.commit('setİnvoiceAddres', this.invoiceAddress);
 
-      this.$store.commit('setEmail', this.eMail);
+          this.$store.commit('setEmail', this.eMail);
+          this.$store.commit('setTaxNumber', this.taxNumber);
+          this.$store.commit('setTaxOffice', this.taxOffice);
+          this.$store.commit('setShipAddress', this.shipAddress);
+          this.$store.commit('setShipPhone', this.shipPhone);
 
-      this.$store.commit('setTaxNumber', this.taxNumber);
-      this.$store.commit('setTaxOffice', this.taxOffice);
+          this.$store.dispatch('GetOfferNumber')
+            .then((offerNumberResponse) => {
+              const { offerNumber } = offerNumberResponse;
 
-      this.$store.commit('setShipAddress', this.shipAddress);
-      this.$store.commit('setShipPhone', this.shipPhone);
-      this.$store.dispatch('GetOfferNumber')
-        .then((offerNumberResponse) => {
-          const { offerNumber } = offerNumberResponse;
+              console.log('Offer Number Response', offerNumberResponse);
 
-          console.log('Offer Number Response', offerNumberResponse);
-
-
-          this.$router.push(`/flipbook/Teklif/Onay/${offerNumber}`);
-        })
-
-        .catch((error) => {
-          console.error('Error', error);
-        });
-      this.offerPopupVisible = false;
-  
+              this.$router.push(`/flipbook/Teklif/Onay/${offerNumber}`);
+            })
+            .catch((error) => {
+              console.error('Error', error);
+            });
+          
+          this.offerPopupVisible = false;
+        } else {
+          // Validation failed, display error messages
+          console.log('Validation failed. Please check the form for errors.');
+        }
+      });
     },
-
     updateSelectedPageIndex(newPageIndex) {
       console.log("Received new page index:", newPageIndex);
       this.selectedPageIndex = newPageIndex;
@@ -513,6 +618,9 @@ export default {
 };
 </script>
 <style>
+.input-size {
+  width: 80%; /* Set your desired width here */
+}
 @import './css/style.css';
 @import './css/font-awesome.min.css';
 @import './css.css?family=Play:400,700';
