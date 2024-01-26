@@ -153,33 +153,35 @@ const actions = {
             reject(err);
             return;
           }
-
+  
           client.GetOfferNumber(function (err, result) {
             if (err) {
               reject(err);
               return;
             }
-
+  
             try {
               if (result === undefined || result.GetOfferNumberResult === undefined) {
                 reject(new Error("GetOfferNumber response or its property is undefined"));
                 return;
               }
-
+  
               let offerNumber = result.GetOfferNumberResult;
-
+  
+              // Çift tırnakları kaldır
+              offerNumber = offerNumber.replace(/"/g, "");
+  
               resolve({ offerNumber });
             } catch (error) {
               reject(error);
               console.log(error);
             }
           });
-
+  
           client.GetOfferNumber(function (err, result) {
             console.log('SOAP Response:', result);
-
           });
-
+  
         });
       } catch (error) {
         reject(error);
@@ -187,6 +189,7 @@ const actions = {
       }
     });
   },
+  
   sendMail({ commit, dispatch, state }, arg) {
     const soap = require("soap");
     const url = userJson.userService;

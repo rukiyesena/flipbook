@@ -550,8 +550,10 @@ export default {
     .then((crudResponses) => {
   console.log('All CRUD Responses', crudResponses);
   const { offerNumber } = crudResponses[0];
-  this.$router.replace(`/flipbook/Teklif/Onay/${offerNumber}`);
+  const cleanedOfferNumber = offerNumber.replace(/"/g, ""); // Çift tırnakları kaldır
+  this.$router.replace(`/flipbook/Teklif/Onay/${cleanedOfferNumber}`);
 })
+
 
     .catch((error) => {
       console.error('Error', error);
