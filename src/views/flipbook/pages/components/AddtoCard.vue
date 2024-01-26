@@ -1,7 +1,7 @@
 <template>
   <div>
   
-      <b-button class="bg-danger" style=" border-color:rgb(0, 0, 0);margin-top: 15px" size="sm" @click="addItemstoCard">
+      <b-button class="bg-danger" style=" border-color:rgb(0, 0, 0);" size="sm" @click="addItemstoCard">
         
         <Icon icon="iconamoon:shopping-card-add"  style="    background-color:rgba(234, 0, 47, 0.795) " width="62" height="42" />
       </b-button>

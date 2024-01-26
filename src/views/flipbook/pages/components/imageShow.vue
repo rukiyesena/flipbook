@@ -31,7 +31,7 @@
 import { Icon } from "@iconify/vue2";
 
 export default {
-  props: ["popupResimSw", "imgSrc", "stockCode", "stockName", "selectedValue"],
+  props: ["popupResimSw", "imgSrc", "stockCode", "stockName" ],
   components: { Icon },
 
   data() {
@@ -45,8 +45,7 @@ export default {
     };
   },
   watch: {
-    popupResimSw(val) {
-      console.log(this.selectedValue);
+    popupResimSw(val) { 
       return val;
     },
   },

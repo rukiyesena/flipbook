@@ -200,8 +200,7 @@ const actions = {
               if (result === undefined || result.sendMailResult === undefined) {
                 reject(new Error("sendMail response or its property is undefined"));
                 return;
-              }
-              console.log(result)
+              } 
               resolve(result);
             } catch (error) {
               reject(error);
@@ -300,8 +299,7 @@ const actions = {
         try {
           soap.createClient(url, function (err, client) {
             client.CategoryList(args, function (err, result) {
-              let veriler = JSON.parse(result.CategoryListResult);
-              console.log(veriler)
+              let veriler = JSON.parse(result.CategoryListResult); 
               resolve(veriler)
             });
           });
@@ -326,12 +324,12 @@ const actions = {
         kategori: arg.kategori,
         pageCounts: "12",
         ilkKayit: arg.ilkKayit
-      };
+      }; 
       return new Promise((resolve, reject) => {
         try {
           soap.createClient(url, function (err, client) {
             client.StockList(args, function (err, result) {
-              let veriler = JSON.parse(result.StockListResult);
+              let veriler = JSON.parse(result.StockListResult); 
               commit("STOCK_LIST_RIGHT", veriler);
               resolve(veriler)
             });

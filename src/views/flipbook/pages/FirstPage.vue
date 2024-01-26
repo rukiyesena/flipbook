@@ -1,93 +1,92 @@
-<template> 
-   <b-container fluid>
+<template>
+  <b-container fluid style="height: 100%;">
 
-  <div style="height: 90%;">
-    <b-row style="height: 90%;">
-      <topleftbanner :page="index" :header="item.categoryName"/>
+    <div style="height: 100%;">
+      <b-row style="height: 100%;">
+        <b-col cols="12" align-self="start">
+          <topleftbanner :page="index" :header="item.categoryName" />
 
-   
-      <div data-slug="portfolios">
-        <div class="bb-custom-side" style="width: 99%;">
-          <div class="content-wrapper">
-            <b-row v-for="(row, rowIndex) in stockListChunks" :key="rowIndex">
-              <b-col v-for="(value, columnIndex) in row" :key="columnIndex" :cols="columnWidth(value)">
-                <div id="portfolio-container-oBTIBx9p91" class="portfolio-container"
-                  :style="getPortfolioContainerStyle(value)">
-                  <b-row>
-                    <b-col>
-                      <AddtoCard :data="value"
-                  
+        </b-col>
+
+        <b-col cols="12" align-self="start" style="height: 90%;"> 
+          <b-row v-for="(row, rowIndex) in stockListChunks" :key="rowIndex" align-v="stretch">
+            <b-col v-for="(value, columnIndex) in row.stList" :key="columnIndex" :cols="columnWidth(value, row)"
+              style="min-height: 390px;">
+              <div style=" border: black 0.1px solid; height: 100%;">
+                <b-row>
+                  <b-col>
+                    <AddtoCard :data="value"
                       :indexItem="'tooltip-target-' + index + '-' + (rowIndex * 4 + columnIndex)" />
-                    </b-col>
-                    <b-col cols="6">
-                             
-                      <h4 style=" font-weight: bold; color: rgb(3, 14, 215) !important">{{ value.stockCode }} </h4>
-                     
-                    </b-col>
-                  </b-row>
+                  </b-col>
+                  <b-col cols="9">
+
+                    <h4 style="text-align: end;  font-weight: bold; color: rgb(3, 14, 215) !important" class="mr-3">
+                      {{ value.stockCode }} </h4>
+
+                  </b-col>
+                </b-row>
+
+
+                <b-row v-on:click="showImageDetails(value)">
+                  <b-col style="text-align: -webkit-center;"
+                    :id="'tooltip-target-' + index + '-' + (rowIndex * 4 + columnIndex)" v-b-tooltip.hover>
                  
+                    <img loading="lazy" decoding="async"
+                      :style="row.lngh == '3' ? 'max-height: 205px;' : row.lngh == '2' ? 'max-height: 415px;' : 'max-height: 1010px;'"
+                      style="  height: auto; object-fit: cover; object-position: center;  " :src="value.url_image"
+                      class="attachment-portfolio_thumbnail size-portfolio_thumbnail wp-post-image" alt="" />
+                    <div style="position: relative; " class="ml-3 mr-3">
+                      <b-row>
 
-                  <b-row v-on:click="showImageDetails(value)">
-                    <b-col style="text-align: -webkit-center;"
-                      :id="'tooltip-target-' + index + '-' + (rowIndex * 4 + columnIndex)" v-b-tooltip.hover>
-                    
-                      <img loading="lazy" decoding="async" style="
-                          width: 63%;
-                          height: auto;
-                          object-fit: cover;
-                          object-position: center;
-                        " :src="value.url_image"
-                        class="attachment-portfolio_thumbnail size-portfolio_thumbnail wp-post-image" alt="" />
-                      <div style="position: relative; height: 95px;">
-                        <b-row>
-                        
-                          <b-col>
-                            <h4 style="color: red !important">
-                              {{ value.stockCount !== undefined && value.stockCount !== "" ? parseInt(value.stockCount) + ' Ad.' : '0 Ad.' }}
-                            </h4>
-                          </b-col>
-                          
-                          <b-col>
-                            <h4 style="font-size: 24px; color: red !important;">{{ value.stockPrice }} TL</h4>
-                           
-                            
-                          </b-col>
-                        </b-row>
-                        <b-row>
+                        <b-col>
+                          <h4 style="color: red !important;">
+                            {{ value.stockCount !== undefined && value.stockCount !== "" ?
+                              parseInt(value.stockCount) + ' Ad.' : '0 Ad.' }}
+                          </h4>
+                        </b-col>
 
-                          <b-col align-h="end">
-                            
-                            <span style="font-size: 27px; color: black; margin:0px" v-if="value.attr1_cins"> 
-                              {{  value.attr1_cins.replace('cm', '') }} /
-                            </span>
-                            <span style="font-size: 27px; color: black; margin:0px" v-if="value.attr2_en"> 
-                              {{value.attr2_en.replace('cm', '') }} x {{value.attr3_boy}}
-                            </span>
-         
-                            
-                          </b-col>
-                        </b-row>
+                        <b-col>
+                          <h4 style="font-size: 24px; color: red !important; text-align: end;">{{ value.stockPrice
+                          }} TL</h4>
 
-                      </div>
-                    </b-col>
-                  </b-row>
-                </div>
-              </b-col>
-            </b-row>
-          </div>
-        </div>
-      </div>
 
-      <b-col cols="12" align-self="end">
-        <bottomBanner2 :page="index" />
-      </b-col>
-    </b-row>
+                        </b-col>
+                      </b-row>
+                      <b-row>
 
-    <imageShow :popupResimSw="imagePopup" @closeSidebar="closeSidebar" :imgSrc="imgSrc" :stockCode="stockCode" :selectedValue="selectedValue" :stockName="stockName" />
+                        <b-col align-h="end">
 
-  </div>
-</b-container>
+                          <span style="font-size: 27px; color: black; margin:0px" v-if="value.attr1_cins">
+                            {{ value.attr1_cins.replace('cm', '') }} /
+                          </span>
+                          <span style="font-size: 27px; color: black; margin:0px" v-if="value.attr2_en">
+                            {{ value.attr2_en.replace('cm', '') }} x {{ value.attr3_boy }}
+                          </span>
 
+
+                        </b-col>
+                      </b-row>
+
+                    </div>
+                  </b-col>
+                </b-row>
+              </div>
+            </b-col>
+          </b-row>
+
+        </b-col>
+
+
+        <b-col cols="12" align-self="end">
+          <bottomBanner2 :page="index" />
+        </b-col>
+      </b-row>
+
+      <imageShow :popupResimSw="imagePopup" @closeSidebar="closeSidebar" :imgSrc="imgSrc" :stockCode="stockCode"
+        :stockName="stockName" />
+
+    </div>
+  </b-container>
 </template>
 
 <script>
@@ -100,8 +99,8 @@ import AddtoCard from './components/AddtoCard.vue';
 
 export default {
   props: {
-  
-    page: "", position: "", index: "", item: {  },
+
+    page: "", position: "", index: "", item: {},
   },
   data() {
     return {
@@ -124,7 +123,7 @@ export default {
       this.imgSrc = value.url_image;
       this.stockCode = value.stockCode;
       this.selectedValue = value;
-    
+
       this.stockName = value.stockName;
       this.imageShowBtn();
     },
@@ -134,65 +133,65 @@ export default {
     closeSidebar() {
       this.imagePopup = false;
     },
-   
 
-    columnWidth(value) {
+
+    columnWidth(value, row) {
       const totalItems = this.stockList.length;
       const itemsPerRow = 3;
 
       // Eğer resim sayısı 9 ise, sütunları eşit genişlet
       if (totalItems === 9) {
-        return '4'; // 3 sütunu da eşit genişlet
+        return '3'; // 3 sütunu da eşit genişlet
       }
       // Eğer resim sayısı 8 ise ve bu resimlerden biri ikinci sıradaysa,
       // sütunları genişlet
       if (totalItems === 8) {
-        const columnIndex = this.stockList.indexOf(value);
-        const lastRowStart = totalItems - itemsPerRow;
-
-        if (columnIndex >= lastRowStart) {
+        
           return '3'; // Son iki sütunu genişlet
-        }
+        
       }
+      if (totalItems === 7) {
+        
+        return '3'; // Son iki sütunu genişlet
+      
+    }
 
-    
+      if (totalItems === 4) {
+        return '6'; // 3 sütunu da eşit genişlet
+      }
+      
 
       // Eğer resim sayısı 11 ise ve bu resimlerden biri bu sıradaysa,
       // son sütunu genişlet
-    
 
-      return '3'; // Normal durumda sütun genişliği 3
+
+      return ''; // Normal durumda sütun genişliği 3
     },
 
     getPortfolioContainerStyle(value) {
-  const totalItems = this.stockList.length;
+      const totalItems = this.stockList.length;
 
-  if (totalItems === 9) {
-    // Apply the common style for all rows
-    return {
-      width: '76%',
-      height: '205px',
-      border: 'black 0.1px solid',
-    };
-  }
-if (totalItems === 4) {
-  // Apply the common style for all rows
-  return {
-    width: 'calc(125% - 100px)', // Adjust the width as needed
-    height: '575px',
-    border: 'black 0.1px solid',
-  };
-}
+      if (totalItems === 9) {
+        // Apply the common style for all rows
+        return {
+          width: '76%',
+        };
+      }
+      if (totalItems === 4) {
+        // Apply the common style for all rows
+        return {
+          width: 'calc(125% - 100px)', // Adjust the width as needed
+
+        };
+      }
 
 
-  if (totalItems === 2) {
-    // Apply the common style for all rows
-    return {
-      width: '248%',
-      height: '427px',
-      border: 'black 0.1px solid',
-    };
-  }
+      if (totalItems === 2) {
+        // Apply the common style for all rows
+        return {
+          width: '248%',
+        };
+      }
 
 
       if (totalItems === 10) {
@@ -203,13 +202,10 @@ if (totalItems === 4) {
           if (columnIndex === lastRowStart || columnIndex === lastRowStart + 1) {
             return {
               width: '100%',
-              height: '344px',
-              border: 'green 0.1px solid',
             };
           } else if (columnIndex === lastRowStart + 2) {
             return {
               width: '200%',
-              height: '644px',
             };
           }
         }
@@ -222,8 +218,6 @@ if (totalItems === 4) {
         if (columnIndex >= lastRowStart) {
           return {
             width: '100%',
-            height: '344px',
-            border: 'red 0.1px solid',
           };
         }
       }
@@ -231,8 +225,6 @@ if (totalItems === 4) {
       // Default style
       return {
         width: '100%',
-        height: '344px',
-        border: 'black 0.1px solid',
       };
     },
 
@@ -250,57 +242,63 @@ if (totalItems === 4) {
   },
   computed: {
     stockListChunks() {
-    const totalItems = this.stockList.length;
-    let chunkSize = 4;
+      const totalItems = this.stockList.length;
+      let chunkSize = 4;
 
-    if (totalItems === 9) {
-      chunkSize = 3;
-    } else if (totalItems === 6) {
-      chunkSize = 2; 
-    } else if (totalItems === 8) {
-      chunkSize = 5; 
-    } else if (totalItems === 7) {
-      chunkSize = 4; 
-    } else if (totalItems === 11) {
-      chunkSize = 4; 
-    } else if (totalItems === 10) {
-      chunkSize = 3; 
-    } else if (totalItems === 4) {
-      chunkSize = 2; // Adjust this value based on your layout
-    
-    } else if (totalItems === 5) {
-      chunkSize = 2; 
-    } else if (totalItems === 3) {
-      chunkSize = 3; 
-    } else if (totalItems === 2) {
-      
-      chunkSize = 1;
-    }
-    
+      if (totalItems === 9) {
+        chunkSize = 3;
+      } else if (totalItems === 6) {
+        chunkSize = 2;
+      } else if (totalItems === 8) {
+        chunkSize = 4;
+      } else if (totalItems === 7) {
+        chunkSize = 4;
+      } else if (totalItems === 11) {
+        chunkSize = 4;
+      } else if (totalItems === 10) {
+        chunkSize = 4;
+      } else if (totalItems === 4) {
+        chunkSize = 2; // Adjust this value based on your layout
 
-    const remainder = totalItems % chunkSize;
-    const chunks = [];
-    let start = 0;
+      } else if (totalItems === 5) {
+        chunkSize = 3;
+      } else if (totalItems === 3) {
+        chunkSize = 2;
+      } else if (totalItems === 2) {
 
-    // Add rows with full chunkSize items
-    for (let i = 0; i < totalItems - remainder; i += chunkSize) {
-      chunks.push(this.stockList.slice(i, i + chunkSize));
-      start = i + chunkSize;
-    }
+        chunkSize = 1;
+      }
 
-    // Add the remaining items in a separate row if there is a remainder
-    if (remainder > 0) {
-      chunks.push(this.stockList.slice(start, totalItems));
-    }
 
-    return chunks;
+      const remainder = totalItems % chunkSize;
+      const chunks = [];
+      let start = 0;
+
+      // Add rows with full chunkSize items
+      for (let i = 0; i < totalItems - remainder; i += chunkSize) {
+        chunks.push(this.stockList.slice(i, i + chunkSize));
+        start = i + chunkSize;
+      }
+
+      // Add the remaining items in a separate row if there is a remainder
+      if (remainder > 0) {
+        chunks.push(this.stockList.slice(start, totalItems));
+      }
+
+      chunks.forEach((val, index) => {
+        chunks[index] = {
+          stList: val,
+          lngh: chunks.length
+        }
+      });  
+      return chunks;
+    },
   },
-},
 
 
   watch: {
     page(val) {
-      if (this.index == val - 2 || this.index == val - 1 || this.index == val) {
+      if (this.index == val - 1 || this.index == val) {
 
         try {
           let args = {
@@ -308,7 +306,7 @@ if (totalItems === 4) {
             kategori: this.item.category,
             pageCounts: "12",
             ilkKayit: this.item.ilkSayfa
-          } 
+          }
           this.$store
             .dispatch("getDataStock", args)
             .then(response => {
