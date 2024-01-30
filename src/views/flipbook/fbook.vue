@@ -1,6 +1,5 @@
 <template>
   <div>
-    
     <vs-popup :active.sync="offerPopupVisible" title="Teklif Kaydet">
       
       <vs-input
@@ -153,7 +152,6 @@
       </div>
     </vs-popup>
 
-
     <div v-if="pages.length > 0">
 
       <div id="fb5-ajax" data-cat="katalog" data-template="true">
@@ -212,7 +210,7 @@
                   <canvas id="canv1"></canvas>
                   <div class="fb5-page-book">
                     <component :is="item.component" :key="item.ind" :index="item.ind" :page="currentValue"
-                      :position="item.position" :item="item" />
+                      :position="item.position" :item="item" :searchedValue="searched"/>
                   </div>
                 </div>
               </div>
@@ -234,7 +232,18 @@
               <ul>
 
                 <!-- icon_home -->
-                <li>
+                <li class="mr-8">
+                  <b-row align-v="end">
+                    <b-col style="    text-align: center;">
+                      <Icon icon="wpf:search" width="21" height="21" color="#FFFFFF" />
+                    </b-col>
+                    <b-col cols="9">
+                      <vs-input size="small" v-model="searched" type="text" name="customerStockNo" class="w-full"
+                        style="border: none !important;   border-radius: 5px; background: darkgrey;     color: white;"
+                        @keyup.enter="filterStockList" />
+                    </b-col>
+
+                  </b-row>
 
                 </li>
 
@@ -296,7 +305,8 @@
               <div id="fb5-menu-holder">
                 <ul id="fb5-slider">
                   <!-- thumb 1 -->
-                  <li class="1">
+                  <li class="mr-8">
+
 
                   </li>
 
@@ -429,12 +439,10 @@ export default {
   mounted() {
     this.$root.$on("teklifOnay", () => {
       this.openOfferPopup();
-    });
-    console.log(this.pages)
+    }); 
     if (this.pages == "") {
       location.reload();
       this.pages = JSON.parse(localStorage.getItem("pages"))
-      console.log(this.pages)
     }
     setInterval(() => {
       const el = document.getElementById('fb5-page-number');
@@ -458,6 +466,7 @@ export default {
   },
   data() {
     return {
+      searched: "",
       shipAddress: "",
       invoiceAddress: "", // Add this line
       selected: [],
@@ -523,7 +532,46 @@ export default {
     TeklifOnayMail
   },
   methods: {
-    
+    getCurrentPageIndex(category) { 
+
+      const filteredPages = this.pages.filter(page => page.category === category);
+
+      if (filteredPages.length === 0) {
+        return -1;
+      }
+
+      const pageIndex = filteredPages[0].page;
+      this.selectedPageIndex = pageIndex; 
+      return pageIndex;
+    },
+    filterStockList() {
+      try {
+        let args = {
+          pageCounts: "120000",
+          ilkKayit: 0,
+          stockCode: this.searched
+        } 
+        this.$store
+          .dispatch("getDataStock", args)
+          .then(response => { 
+            this.currentPageIndex = this.getCurrentPageIndex(response[0].category);
+            let setPageValue = parseInt(this.currentPageIndex) + parseInt(response[0].stockRowNumber)
+             
+            // Otomatik olarak input alanına değeri yazdır
+            const inputElement = document.getElementById("fb5-page-number");
+            if (inputElement) {
+              inputElement.value = setPageValue;
+
+              // Trigger the logic as if the "Enter" key was pressed
+              setPage(setPageValue);
+            } else {
+              console.error("Error: Input element with id 'fb5-page-number' not found.");
+            }
+          });
+      } catch (error) {
+        console.log(error)
+      }
+    },
     isFieldValid(fieldName) {
       return this.fieldValidity[fieldName];
     },
@@ -574,12 +622,10 @@ export default {
         }
       });
     },
-    updateSelectedPageIndex(newPageIndex) {
-      console.log("Received new page index:", newPageIndex);
+    updateSelectedPageIndex(newPageIndex) { 
       this.selectedPageIndex = newPageIndex;
     },
-    handlePageInputChange(inputValue) {
-      console.log("dsd")
+    handlePageInputChange(inputValue) { 
       setPage($('#fb5-page-number').val());
       const pageNumber = parseInt(inputValue);
       if (!isNaN(pageNumber) && pageNumber >= 1 && pageNumber <= this.pages.length) {
@@ -597,19 +643,19 @@ export default {
 
   },
   watch: {
-  selected(newValues) {
-    if (newValues.includes(true)) {
-      this.invoiceAddress = this.shipAddress;
-    } else {
-      this.invoiceAddress = "";
-    }
+    selected(newValues) {
+      if (newValues.includes(true)) {
+        this.invoiceAddress = this.shipAddress;
+      } else {
+        this.invoiceAddress = "";
+      }
+    },
+    shipAddress(newShipAddress) {
+      if (this.selected.includes(true)) {
+        this.invoiceAddress = newShipAddress;
+      }
+    },
   },
-  shipAddress(newShipAddress) {
-    if (this.selected.includes(true)) {
-      this.invoiceAddress = newShipAddress;
-    }
-  },
-},
 
 
 
@@ -635,6 +681,10 @@ body {
   @import './wp-content/plugins/magicbook-addon/assets/css/magicbook-addon.css';
   @import './wp-includes/css/dist/block-library/style.min.css?ver=6.4.1';
   @import './wp-content/plugins/contact-form-7/includes/css/styles.css?ver=5.8.1';
-  
+
+}
+
+[dir] .vs-input--input.small {
+  border: none !important;
 }
 </style>

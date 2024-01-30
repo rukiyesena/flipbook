@@ -3,22 +3,17 @@
     <b-row style="height: 100%;">
       <topleftbanner :page="index" />
 
-     <b-col  cols="12">
-      <b-row style="height: 100%;">
-        <b-col v-for="(category, index) in CategoryList" :key="index" cols="3" md="3" lg="3">
-          
-                <h3 style="color: rgb(73, 62, 144);     position: absolute;">{{ category.categoryName }}</h3>
-                <img
-                  :src="category.image"
-                  alt="Category Image"
-                  style="    width: 65%;
-                  "
-                  @click="handleClick(category)"
-                />
-        </b-col>
-      </b-row>
-  
-     </b-col>
+      <b-col cols="12">
+        <b-row style="height: 100%;">
+          <b-col v-for="(category, index) in CategoryList" :key="index" cols="3" md="3" lg="3">
+
+            <h3 style="color: rgb(73, 62, 144);     position: absolute;">{{ category.categoryName }}</h3>
+            <img :src="category.image" alt="Category Image" style="    width: 65%;
+                  " @click="handleClick(category)" />
+          </b-col>
+        </b-row>
+
+      </b-col>
       <b-col cols="12" align-self="end">
         <bottomBanner2 :page="index" />
       </b-col>
@@ -40,54 +35,58 @@ import imageShow from './components/imageShow.vue';
 export default {
   mounted() {
     const storedPages = localStorage.getItem("pages");
-  if (storedPages) {
-    this.pages = JSON.parse(storedPages);
-  }
+    if (storedPages) {
+      this.pages = JSON.parse(storedPages);
+    }
 
     const storedCategoryList = localStorage.getItem("CategoryList");
     if (storedCategoryList) {
       this.CategoryList = JSON.parse(storedCategoryList);
     }
   },
-  props:{
-    page: "", position: "", index: "", item: {  },
+  props: {
+    page: "", position: "", index: "", item: {},
   },
-  data() { return {    CategoryList:[],   selectedPageIndex: 0, // Eklenen değişken
-    
- imgSrc: "", imagePopup: false } },
+  data() {
+    return {
+      CategoryList: [], selectedPageIndex: 0, // Eklenen değişken
+
+      imgSrc: "", imagePopup: false
+    }
+  },
   components: { imageShow, topBanner2, topleftbanner, rightBanner, bottomBanner2 },
   methods: {
 
-getCurrentPageIndex(category) {
-  const filteredPages = this.pages.filter(page => page.categoryName === category.categoryName);
+    getCurrentPageIndex(category) {
+      const filteredPages = this.pages.filter(page => page.categoryName === category.categoryName);
 
-  if (filteredPages.length === 0) { 
-    return -1;
-  }
+      if (filteredPages.length === 0) {
+        return -1;
+      }
 
-  const pageIndex = filteredPages[0].page;
-  this.selectedPageIndex = pageIndex;
-  console.log("Found index:", this.selectedPageIndex);
-  return pageIndex;
-},
+      const pageIndex = filteredPages[0].page;
+      this.selectedPageIndex = pageIndex;
+      console.log("Found index:", this.selectedPageIndex);
+      return pageIndex;
+    },
 
-handleClick(categoryItem) {
-  const categoryCode = categoryItem.categoryCode;
-  const categoryName = categoryItem.categoryName; 
+    handleClick(categoryItem) {
+      const categoryCode = categoryItem.categoryCode;
+      const categoryName = categoryItem.categoryName;
 
-  this.currentPageIndex = this.getCurrentPageIndex(categoryItem);
+      this.currentPageIndex = this.getCurrentPageIndex(categoryItem);
 
-  // Otomatik olarak input alanına değeri yazdır
-  const inputElement = document.getElementById("fb5-page-number");
-  if (inputElement) {
-    inputElement.value = this.selectedPageIndex;
+      // Otomatik olarak input alanına değeri yazdır
+      const inputElement = document.getElementById("fb5-page-number");
+      if (inputElement) {
+        inputElement.value = this.selectedPageIndex;
 
-    // Trigger the logic as if the "Enter" key was pressed
-    setPage(this.selectedPageIndex);
-  } else {
-    console.error("Error: Input element with id 'fb5-page-number' not found.");
-  }
-},
+        // Trigger the logic as if the "Enter" key was pressed
+        setPage(this.selectedPageIndex);
+      } else {
+        console.error("Error: Input element with id 'fb5-page-number' not found.");
+      }
+    },
 
 
 
@@ -103,23 +102,23 @@ handleClick(categoryItem) {
 
     }
   },
-/*
-  computed: {
-    CategoryList: {
-      get() {
-        return JSON.parse(localStorage.getItem("CategoryList"))
-      },
-      set(val) {
-        if (!val) {
-          this.$emit('closeSidebar')
-          // this.$validator.reset()
-          // this.initValues()
+  /*
+    computed: {
+      CategoryList: {
+        get() {
+          return JSON.parse(localStorage.getItem("CategoryList"))
+        },
+        set(val) {
+          if (!val) {
+            this.$emit('closeSidebar')
+            // this.$validator.reset()
+            // this.initValues()
+          }
         }
-      }
-
-    },
-
-  },*/
+  
+      },
+  
+    },*/
   watch: {
     page(val) {
       if (this.index == val - 2 || this.index == val - 1 || this.index == val) {
@@ -130,13 +129,13 @@ handleClick(categoryItem) {
             kategori: this.item.category,
             pageCounts: "16",
             ilkKayit: this.item.ilkSayfa
-          } 
+          }
           this.$store
             .dispatch("getDataCategoryListPerPage", args)
             .then(response => {
               console.log(response)
               this.CategoryList = response
-          //    this.stockList = response
+              //    this.stockList = response
             });
         } catch (error) {
           console.log(error)

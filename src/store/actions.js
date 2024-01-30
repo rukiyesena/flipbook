@@ -326,7 +326,8 @@ const actions = {
         page: pageAct,
         kategori: arg.kategori,
         pageCounts: "12",
-        ilkKayit: arg.ilkKayit
+        ilkKayit: arg.ilkKayit,
+        stockCode: arg.stockCode
       }; 
       return new Promise((resolve, reject) => {
         try {

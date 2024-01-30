@@ -8,10 +8,10 @@
 
         </b-col>
 
-        <b-col cols="12" align-self="start" style="height: 90%;"> 
+        <b-col cols="12" align-self="start" style="height: 90%;">
           <b-row v-for="(row, rowIndex) in stockListChunks" :key="rowIndex" align-v="stretch">
             <b-col v-for="(value, columnIndex) in row.stList" :key="columnIndex" :cols="columnWidth(value, row)"
-              style="min-height: 390px;">
+              style="min-height: 390px;" :style="value.stockCode == searchedValue && value.stockCode != '' ? 'background-color: yellow;' : ''">
               <div style=" border: black 0.1px solid; height: 100%;">
                 <b-row>
                   <b-col>
@@ -30,7 +30,7 @@
                 <b-row v-on:click="showImageDetails(value)">
                   <b-col style="text-align: -webkit-center;"
                     :id="'tooltip-target-' + index + '-' + (rowIndex * 4 + columnIndex)" v-b-tooltip.hover>
-                 
+
                     <img loading="lazy" decoding="async"
                       :style="row.lngh == '3' ? 'max-height: 205px;' : row.lngh == '2' ? 'max-height: 415px;' : 'max-height: 1010px;'"
                       style="  height: auto; object-fit: cover; object-position: center;  " :src="value.url_image"
@@ -100,7 +100,7 @@ import AddtoCard from './components/AddtoCard.vue';
 export default {
   props: {
 
-    page: "", position: "", index: "", item: {},
+    page: "", position: "", index: "", item: {}, searchedValue: ""
   },
   data() {
     return {
@@ -146,20 +146,20 @@ export default {
       // Eğer resim sayısı 8 ise ve bu resimlerden biri ikinci sıradaysa,
       // sütunları genişlet
       if (totalItems === 8) {
-        
-          return '3'; // Son iki sütunu genişlet
-        
+
+        return '3'; // Son iki sütunu genişlet
+
       }
       if (totalItems === 7) {
-        
+
         return '3'; // Son iki sütunu genişlet
-      
-    }
+
+      }
 
       if (totalItems === 4) {
         return '6'; // 3 sütunu da eşit genişlet
       }
-      
+
 
       // Eğer resim sayısı 11 ise ve bu resimlerden biri bu sıradaysa,
       // son sütunu genişlet
@@ -290,14 +290,14 @@ export default {
           stList: val,
           lngh: chunks.length
         }
-      });  
+      });
       return chunks;
     },
   },
 
 
   watch: {
-    page(val) {
+    page(val) { 
       if (this.index == val - 1 || this.index == val) {
 
         try {
