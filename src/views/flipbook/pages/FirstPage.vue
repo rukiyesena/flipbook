@@ -15,8 +15,7 @@
               <div style=" border: black 0.1px solid; height: 100%;">
                 <b-row>
                   <b-col>
-                    <AddtoCard :data="value"
-                      :indexItem="'tooltip-target-' + index + '-' + (rowIndex * 4 + columnIndex)" />
+                    
                   </b-col>
                   <b-col cols="9">
 
@@ -39,7 +38,10 @@
                       <b-row>
 
                         <b-col>
-                          <h4 style="color: red !important;">
+                          <h4 style="color: red !important;" v-if="value.stockCount.includes('-')">
+                            Üretimde  
+                          </h4>
+                          <h4 style="color: red !important;" v-else>
                             {{ value.stockCount !== undefined && value.stockCount !== "" ?
                               parseInt(value.stockCount) + ' Ad.' : '0 Ad.' }}
                           </h4>

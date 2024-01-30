@@ -5,7 +5,7 @@
         <vs-card>
           <div class="card-header">
             <h3 style="color: rgb(202, 0, 0); font-weight: bold;">Teklif Formu</h3>
-            <img :src="require('@/assets/images/logo/FFlogo.png')" alt="Logo" class="logoFirm" />
+            <img :src="require('@/assets/images/logo/FFlogo.png')" style="width: 15px" alt="Logo" class="logoFirm" />
           </div>
           <div class="sender-address-container">
             <div class="sender-details">
