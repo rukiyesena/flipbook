@@ -102,7 +102,7 @@ const router = new Router({
 
 				},
 				{
-					path: '/flipbook/Teklif/Onay/:offerNumber',
+					path: '/flipbook/Teklif/Onay/:offerNumber/:onay',
 					name: "TeklifOnay",
 					component: () => import("@/views/flipbook/FlipBookTeklif.vue"),
 					props: true, // To pass route params as props to the component
@@ -111,7 +111,7 @@ const router = new Router({
 				},
 
 				{
-					path: "/flipbook/Teklif/Onay/Musteri",
+					path: "/flipbook/Teklif/Onay/Musteri/:offerNumber/:onay",
 					name: "FlipBookTeklif",
 					component: () => import("@/views/flipbook/FlipBookTeklifMusteri.vue"),
 

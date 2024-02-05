@@ -24,37 +24,42 @@ const mutations = {
     state.CrudToOfferList = item
 
   },
-   setShipName(state, value) {
-      state.shipName = value;
-    },
-    setEmail(state, value) {
-      state.eMail = value;
-    },
-    setİnvoiceAddres(state, value) {
-      state.invoiceAddress = value;
-    },
-    setTaxOffice(state, value) {
-      state.taxOffice = value;
-    },
-    setFaks(state, value) {
-      state.fax = value;
-    },
-    setShipAddress(state, value) {
-      state.shipAddress = value;
-    },
-    setShipPhone(state, value) {
-      state.shipPhone = value;
-    },
-    setTaxNumber(state, value) {
-      state.taxNumber = value;
-    },
+  offerItem(state, value) {
+    console.log(value)
+    localStorage.setItem("offerItem", JSON.stringify(value));
+    state.offerItem = value;
+  },
+  setShipName(state, value) {
+    state.shipName = value;
+  },
+  setEmail(state, value) {
+    state.eMail = value;
+  },
+  setİnvoiceAddres(state, value) {
+    state.invoiceAddress = value;
+  },
+  setTaxOffice(state, value) {
+    state.taxOffice = value;
+  },
+  setFaks(state, value) {
+    state.fax = value;
+  },
+  setShipAddress(state, value) {
+    state.shipAddress = value;
+  },
+  setShipPhone(state, value) {
+    state.shipPhone = value;
+  },
+  setTaxNumber(state, value) {
+    state.taxNumber = value;
+  },
   updateName(state, newName) {
     console.log('New Name:', newName);
     state.name = newName;
   },
-  
+
   PAGES(state, pages) {
-      state.Pages = pages;
+    state.Pages = pages;
 
 
   },

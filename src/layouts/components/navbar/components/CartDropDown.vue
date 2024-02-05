@@ -8,16 +8,14 @@
       <template v-if="cartItems.length">
         <div class="notification-header text-center p-5 bg-primary text-white">
           <p class="opacity-75">
-            Sepetinizde {{ cartItems.length }} adet ürün bulunmaktadır
+            {{ $t("inCard") }} {{ cartItems.length }} {{ $t("inCardCont") }}
           </p>
         </div>
 
         <!-- CART ITEMS -->
         <component :is="scrollbarTag" ref="mainSidebarPs" class="scroll-area--cart-items-dropdowm p-0 mb-10"
           :settings="settings" :key="$vs.rtl">
-          <router-link to="/flipbook/Teklif/Onay/${offerNumber}" style="color: black; font-weight: bold;">
-            Teklif Onay Sayfasına Git
-          </router-link>
+
 
           <ul class="bordered-items">
             <li v-for="(item, index) in cartItems" :key="index" class="vx-row no-gutter cart-item cursor-pointer">
@@ -39,15 +37,23 @@
               <div class="vx-col w-4/5 pr-4 pl-2 py-4 flex flex-col justify-center">
                 <span class="font-medium block cart-item-title truncate" @click="navigate_to_detail_view(item)"
                   style="color: black; font-weight: bold;">
-                  {{ item.stockName }}
+                  {{ item.stockCode }}
                 </span>
                 <small class="truncate mb-2">{{ item.description }}</small>
                 <div class="flex items-center justify-between">
                   <span class="text-sm font-medium">{{ item.quantity }} <small>x</small> {{ item.stockPrice }} TL</span>
                   <div>
-                    <label for="itemQuantity" style="color: black; font-weight: bold;">Adet:</label>
-                    <vs-input v-model="item.quantity" id="itemQuantity" type="number" min="0" class="small-input"
-                      style="color: black; font-weight: bold;" />
+                    <b-row align-v="center">
+                      <b-col>
+                        <label for="itemQuantity" style="color: black; font-weight: bold;">Adet:</label>
+
+                      </b-col>
+                      <b-col>
+                        <vs-input size="small" v-model="item.quantity" id="itemQuantity" type="number" min="0" class="small-input"
+                          style="color: black; font-weight: bold;" />
+                      </b-col>
+                    </b-row>
+
                   </div>
 
                   <feather-icon icon="XIcon" svgClasses="h-4 w-4 cursor-pointer text-danger" class="hover:text-danger"
@@ -76,7 +82,7 @@
             @click="openOfferPopup">
             <span class="flex items-center justify-center">
               <feather-icon icon="ShoppingCartIcon" svgClasses="h-4 w-4" />
-              <span class="ml-2" style="color: black; font-weight: bold;">Teklif oluştur</span>
+              <span class="ml-2" style="color: black; font-weight: bold;">{{ $t("showOffer") }}</span>
             </span>
           </div>
 
@@ -91,7 +97,7 @@
       </template>
     </vs-dropdown-menu>
     <!-- <ListCard ref="cardList" /> -->
-  
+
   </vs-dropdown>
 </template>
 
@@ -108,7 +114,7 @@ export default {
   data() {
     return {
       offerPrice: 0,
-     
+
       cartList: [],
       sistemurl: "",
       productPrice: 0.0,
@@ -123,10 +129,13 @@ export default {
   computed: {
     // CART DROPDOWN
     cartItems() {
-      if (this.$store.state.eCommerce.cartItems.length > 0) {
-        this.cartList = this.$store.state.eCommerce.cartItems.slice().reverse();
-        return this.$store.state.eCommerce.cartItems.slice().reverse();
-      } else return 0;
+      console.log(this.$store.state.eCommerce.cartItems)
+      if (this.$store.state.eCommerce.cartItems != null)
+        if (this.$store.state.eCommerce.cartItems.length > 0) {
+
+          this.cartList = this.$store.state.eCommerce.cartItems.slice().reverse();
+          return this.$store.state.eCommerce.cartItems.slice().reverse();
+        } else return 0;
     },
     scrollbarTag() {
       return this.$store.getters.scrollbarTag;
@@ -135,13 +144,13 @@ export default {
   },
   methods: {
 
-   
+
     openOfferPopup() {
-      
+
       this.$root.$emit("teklifOnay");
 
     },
-    
+
     navigate_to_detail_view(event) {
       if (userJson.varyant == "true") {
 

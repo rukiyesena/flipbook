@@ -5,11 +5,32 @@
 
       <b-col cols="12">
         <b-row style="height: 100%;">
-          <b-col v-for="(category, index) in CategoryList" :key="index" cols="3" md="3" lg="3">
+          <b-col v-for="(category, index) in CategoryList" :key="index" cols="3" md="3" lg="3"
+            style="text-align: center; max-height: 375px;">
+            <b-row>
+              <b-col cols="2">
 
-            <h3 style="color: rgb(73, 62, 144);     position: absolute;">{{ category.categoryName }}</h3>
-            <img :src="category.image" alt="Category Image" style="    width: 65%;
+
+              </b-col>
+              <b-col>
+                <b-row style="position: absolute;">
+
+                  <span style="font-size: large; float: inline-end;font-weight: bold;color: rgb(73, 62, 144);">
+                    {{ category.categoryName }}</span>
+                </b-row>
+
+                <img :src="category.image" alt="Category Image" style="    width: 100%;
                   " @click="handleClick(category)" />
+              </b-col>
+              <b-col cols="2">
+
+
+              </b-col>
+            </b-row>
+
+
+
+
           </b-col>
         </b-row>
 
@@ -153,6 +174,15 @@ export default {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+}
+
+.dikey-yazi {
+  writing-mode: vertical-lr;
+  /* Yazı modunu dikey olarak ayarlar */
+  white-space: nowrap;
+  /* Metnin bir satırda kalmasını sağlar */
+  display: inline-block;
+  /* Öğeyi bir satırda tutar */
 }
 
 .main-wrapper .hero-image {

@@ -47,6 +47,32 @@ const actions = {
     commit("UPDATE_THEME", val);
   },
 
+  fetchExchangeRates() {
+    // TCMB'nin günlük döviz kuru XML verisi endpoint'i
+    const apiUrl = 'https://www.tcmb.gov.tr/kurlar/today.xml';
+
+    // axios ile XML verisi çekme
+    axios.get(apiUrl, { responseType: 'document' })
+      .then(response => {
+        console.log(response)
+        // XML verisini JSON'a dönüştürme işlemi
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(response.data, 'text/xml');
+
+        // XML'den döviz kuru verilerini çıkartma
+        const currencies = xmlDoc.querySelectorAll('Currency');
+        currencies.forEach(currency => {
+          const currencyName = currency.querySelector('CurrencyName').textContent;
+          const forexBuying = currency.querySelector('ForexBuying').textContent;
+
+          this.exchangeRates.push({ CurrencyName: currencyName, ForexBuying: forexBuying });
+        });
+      })
+      .catch(error => {
+        console.error('Döviz kuru alınamadı:', error);
+      });
+  },
+
   // /////////////////////////////////////////////
   // User/Account
   getDataCategoryList({ commit, dispatch, state }, arg) {
@@ -130,7 +156,7 @@ const actions = {
               }
               currentPageIndex += sayfaSayisi;
 
-            });
+            }); 
             localStorage.setItem("pages", JSON.stringify(pages));
             commit("PAGES", pages);
 
@@ -153,35 +179,35 @@ const actions = {
             reject(err);
             return;
           }
-  
+
           client.GetOfferNumber(function (err, result) {
             if (err) {
               reject(err);
               return;
             }
-  
+
             try {
               if (result === undefined || result.GetOfferNumberResult === undefined) {
                 reject(new Error("GetOfferNumber response or its property is undefined"));
                 return;
               }
-  
+
               let offerNumber = result.GetOfferNumberResult;
-  
+
               // Çift tırnakları kaldır
               offerNumber = offerNumber.replace(/"/g, "");
-  
+
               resolve({ offerNumber });
             } catch (error) {
               reject(error);
               console.log(error);
             }
           });
-  
+
           client.GetOfferNumber(function (err, result) {
             console.log('SOAP Response:', result);
           });
-  
+
         });
       } catch (error) {
         reject(error);
@@ -189,7 +215,7 @@ const actions = {
       }
     });
   },
-  
+
   sendMail({ commit, dispatch, state }, arg) {
     const soap = require("soap");
     const url = userJson.userService;
@@ -203,7 +229,7 @@ const actions = {
               if (result === undefined || result.sendMailResult === undefined) {
                 reject(new Error("sendMail response or its property is undefined"));
                 return;
-              } 
+              }
               resolve(result);
             } catch (error) {
               reject(error);
@@ -217,8 +243,7 @@ const actions = {
       }
     });
   },
-  GetCrudToOfferList({ commit, dispatch, state }, arg) {
-    console.log(arg.islem)
+  GetCrudToOfferList({ commit, dispatch, state }, arg) { 
     const soap = require("soap");
     const url = userJson.userService;
     try {
@@ -252,10 +277,7 @@ const actions = {
         shipDistrictCode: arg.shipDistrictCode,
         shipSurname: arg.shipSurname,
       };
-
-
-
-      console.log(args);
+ 
 
       return new Promise((resolve, reject) => {
         try {
@@ -302,7 +324,7 @@ const actions = {
         try {
           soap.createClient(url, function (err, client) {
             client.CategoryList(args, function (err, result) {
-              let veriler = JSON.parse(result.CategoryListResult); 
+              let veriler = JSON.parse(result.CategoryListResult);
               resolve(veriler)
             });
           });
@@ -328,12 +350,12 @@ const actions = {
         pageCounts: "12",
         ilkKayit: arg.ilkKayit,
         stockCode: arg.stockCode
-      }; 
+      };
       return new Promise((resolve, reject) => {
         try {
           soap.createClient(url, function (err, client) {
             client.StockList(args, function (err, result) {
-              let veriler = JSON.parse(result.StockListResult); 
+              let veriler = JSON.parse(result.StockListResult);
               commit("STOCK_LIST_RIGHT", veriler);
               resolve(veriler)
             });

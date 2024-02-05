@@ -9,7 +9,7 @@
 
 
 export default {
-  isInCart: state => itemId => {
+  isInCart: state => itemId => { 
     return state.cartItems.some((item) => item.stockCode === itemId)
   },
   isInWishList: state => itemId => {

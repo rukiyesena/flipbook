@@ -1,94 +1,107 @@
 <template>
-  <b-container fluid style="height: 100%;">
+  <div style="height: 100%;">
 
-    <div style="height: 100%;">
-      <b-row style="height: 100%;">
-        <b-col cols="12" align-self="start">
-          <topleftbanner :page="index" :header="item.categoryName" />
-
-        </b-col>
-
-        <b-col cols="12" align-self="start" style="height: 90%;">
-          <b-row v-for="(row, rowIndex) in stockListChunks" :key="rowIndex" align-v="stretch">
-            <b-col v-for="(value, columnIndex) in row.stList" :key="columnIndex" :cols="columnWidth(value, row)"
-              style="min-height: 390px;" :style="value.stockCode == searchedValue && value.stockCode != '' ? 'background-color: yellow;' : ''">
-              <div style=" border: black 0.1px solid; height: 100%;">
-                <b-row>
-                  <b-col>
-                    
-                  </b-col>
-                  <b-col cols="9">
-
-                    <h4 style="text-align: end;  font-weight: bold; color: rgb(3, 14, 215) !important" class="mr-3">
-                      {{ value.stockCode }} </h4>
-
-                  </b-col>
-                </b-row>
+    <b-container fluid style="height: 100%;">
 
 
-                <b-row v-on:click="showImageDetails(value)">
-                  <b-col style="text-align: -webkit-center;"
-                    :id="'tooltip-target-' + index + '-' + (rowIndex * 4 + columnIndex)" v-b-tooltip.hover>
+      <div style="height: 100%;">
+        <b-row style="height: 100%;">
+          <b-col cols="12" align-self="start">
+            <topleftbanner :page="index" :header="item.categoryName" />
 
-                    <img loading="lazy" decoding="async"
-                      :style="row.lngh == '3' ? 'max-height: 205px;' : row.lngh == '2' ? 'max-height: 415px;' : 'max-height: 1010px;'"
-                      style="  height: auto; object-fit: cover; object-position: center;  " :src="value.url_image"
-                      class="attachment-portfolio_thumbnail size-portfolio_thumbnail wp-post-image" alt="" />
-                    <div style="position: relative; " class="ml-3 mr-3">
-                      <b-row>
+          </b-col>
 
-                        <b-col>
-                          <h4 style="color: red !important;" v-if="value.stockCount.includes('-')">
-                            Üretimde  
-                          </h4>
-                          <h4 style="color: red !important;" v-else>
-                            {{ value.stockCount !== undefined && value.stockCount !== "" ?
-                              parseInt(value.stockCount) + ' Ad.' : '0 Ad.' }}
-                          </h4>
-                        </b-col>
-
-                        <b-col>
-                          <h4 style="font-size: 24px; color: red !important; text-align: end;">{{ value.stockPrice
-                          }} TL</h4>
-
-
-                        </b-col>
-                      </b-row>
-                      <b-row>
-
-                        <b-col align-h="end">
-
-                          <span style="font-size: 27px; color: black; margin:0px" v-if="value.attr1_cins">
-                            {{ value.attr1_cins.replace('cm', '') }} /
-                          </span>
-                          <span style="font-size: 27px; color: black; margin:0px" v-if="value.attr2_en">
-                            {{ value.attr2_en.replace('cm', '') }} x {{ value.attr3_boy }}
-                          </span>
-
-
-                        </b-col>
-                      </b-row>
-
-                    </div>
-                  </b-col>
-                </b-row>
+          <b-col cols="12" align-self="start" style="height: 90%;">
+            <div class="centerx example-loading" v-if="stockList.length < 1">
+              <div class="fill-row-loading">
+                <div :class="{ 'activeLoading': activeLoading }" :id="[`loading-${index}`]"
+                  class="vs-con-loading__container loading-example">
+                </div>
               </div>
-            </b-col>
-          </b-row>
+            </div>
+            <b-row v-for="(row, rowIndex) in stockListChunks" :key="rowIndex" align-v="stretch">
+              <b-col v-for="(value, columnIndex) in row.stList" :key="columnIndex" :cols="columnWidth(value, row)"
+                style="min-height: 390px;"
+                :style="value.stockCode == searchedValue && value.stockCode != '' ? 'background-color: yellow;' : ''">
+                <div style=" border: black 0.1px solid; height: 100%;">
+                  <b-row>
 
-        </b-col>
+                    <b-col cols="12">
+
+                      <h4 style="text-align: end;  font-weight: bold; color: rgb(3, 14, 215) !important" class="mr-3">
+                        {{ value.stockCode }} </h4>
+
+                    </b-col>
+                  </b-row>
 
 
-        <b-col cols="12" align-self="end">
-          <bottomBanner2 :page="index" />
-        </b-col>
-      </b-row>
+                  <b-row v-on:click="showImageDetails(value)">
+                    <b-col style="text-align: -webkit-center;"
+                      :id="'tooltip-target-' + index + '-' + (rowIndex * 4 + columnIndex)" v-b-tooltip.hover>
 
-      <imageShow :popupResimSw="imagePopup" @closeSidebar="closeSidebar" :imgSrc="imgSrc" :stockCode="stockCode"
-        :stockName="stockName" />
+                      <img loading="lazy" decoding="async"
+                        :style="row.lngh == '3' ? 'max-height: 205px;' : row.lngh == '2' ? 'max-height: 415px;' : 'max-height: 1010px;'"
+                        style="  height: auto; object-fit: cover; object-position: center;  " :src="value.url_image"
+                        class="attachment-portfolio_thumbnail size-portfolio_thumbnail wp-post-image" alt="" />
+                      <div style="position: relative; " class="ml-3 mr-3">
+                        <b-row>
 
-    </div>
-  </b-container>
+                          <b-col>
+                            <h4 style="color: red !important;" v-if="value.stockCount.includes('-')">
+                              Üretimde
+                            </h4>
+                            <h4 style="color: red !important;" v-else>
+                              {{ value.stockCount !== undefined && value.stockCount !== "" ?
+                                new Intl.NumberFormat().format(parseInt(value.stockCount)) + ' Ad.' : '0 Ad.' }}
+                            </h4>
+                          </b-col>
+
+                          <b-col>
+                            <h4 style="font-size: 24px; color: red !important; text-align: end;">{{
+                              new Intl.NumberFormat("tr-TR",
+                                { style: "currency", currency: "TRY" }).format(parseFloat(value.stockPrice))
+
+                            }} </h4>
+
+
+                          </b-col>
+                        </b-row>
+                        <b-row>
+
+                          <b-col align-h="end">
+
+                            <span style="font-size: 27px; color: black; margin:0px" v-if="value.attr1_cins">
+                              {{ value.attr1_cins.replace('cm', '') }} /
+                            </span>
+                            <span style="font-size: 27px; color: black; margin:0px" v-if="value.attr2_en">
+                              {{ value.attr2_en.replace('cm', '') }} x {{ value.attr3_boy }}
+                            </span>
+
+
+                          </b-col>
+                        </b-row>
+
+                      </div>
+                    </b-col>
+                  </b-row>
+                </div>
+              </b-col>
+            </b-row>
+
+          </b-col>
+
+
+          <b-col cols="12" align-self="end">
+            <bottomBanner2 :page="index" />
+          </b-col>
+        </b-row>
+
+        <imageShow :popupResimSw="imagePopup" @closeSidebar="closeSidebar" :imgSrc="imgSrc" :stockCode="stockCode"
+          :stockName="stockName" :selectedValue="selectedValue" />
+
+      </div>
+    </b-container>
+  </div>
 </template>
 
 <script>
@@ -106,6 +119,11 @@ export default {
   },
   data() {
     return {
+
+      types: [
+        'material',
+      ],
+      activeLoading: false,
       isCartOpen: false, // Sepetin açık veya kapalı olduğunu izleyen durum
       url_image: "",
       imgSrc: "",
@@ -114,10 +132,28 @@ export default {
       stockCode: "", // Add this line
       attr4_motif: "",
       stockName: "", // Add this line
+      selectedValue: []
     };
   },
   components: { AddtoCard, imageShow, topBanner2, topleftbanner, rightBanner, bottomBanner2 },
+  mounted() {
+    let type = "material"
+    this.$vs.loading({
+      container: `#loading-${this.index}`,
+      type,
+    })
+  },
   methods: {
+    openLoading(type) {
+      this.activeLoading = true
+      this.$vs.loading({
+        type: type,
+      })
+      setTimeout(() => {
+        this.activeLoading = false
+        this.$vs.loading.close()
+      }, 3000);
+    },
     openCart() {
       this.isCartOpen = true;
     },
@@ -299,7 +335,7 @@ export default {
 
 
   watch: {
-    page(val) { 
+    page(val) {
       if (this.index == val - 1 || this.index == val) {
 
         try {
@@ -312,7 +348,9 @@ export default {
           this.$store
             .dispatch("getDataStock", args)
             .then(response => {
+              var vs = this.$vs;
               this.stockList = response
+              vs.loading.close(`#loading-${this.index}` + " > .con-vs-loading");
             });
         } catch (error) {
           console.log(error)
@@ -322,9 +360,40 @@ export default {
   }
 };
 </script>
+<style lang="stylus">
+.fill-row-loading
+  display flex
+  align-items center
+  justify-content center
+  flex-wrap wrap
+  .loading-example
+    width 350px;
+    float left
+    height 1160px;
+    box-shadow 0px 5px 20px 0px rgba(0,0,0,.05)
+    border-radius 10px;
+    margin 8px
+    transition all .3s ease
+    cursor pointer
+    &:hover
+      box-shadow 0px 0px 0px 0px rgba(0,0,0,.05)
+      transform translate(0,4px)
+    h4
+      z-index 40000
+      position relative
+      text-align center
+      padding 10px
 
+    &.activeLoading
+      opacity 0 !important
+      transform scale(.5)
+</style>
 
 <style scoped lang="scss">
+.con-vs-loading .title-loading {
+  display: none
+}
+
 .main-wrapper {
   position: relative;
   width: 200vw;

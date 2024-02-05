@@ -105,14 +105,14 @@ export default {
 		window.addEventListener("resize", this.handleWindowResize);
 		window.addEventListener("scroll", this.handleScroll);
 		try {
-    let args = {
-      page: 0
-    };
+			let args = {
+				page: 0
+			};
 
 			this.$store.dispatch("getDataCategoryList", args)
 				.then(response => {
-					if (response === true) { 
-						 
+					if (response === true) {
+
 					}
 				})
 				.catch(error => {
@@ -123,9 +123,7 @@ export default {
 		}
 
 		const data = [];
-		data["servisAdresi"] = userJson.userService;
-
-
+		data["servisAdresi"] = userJson.userService; 
 		data["id"] = localStorage.getItem("id");
 		data["B2BfirmaAdi"] = localStorage.getItem("B2BfirmaAdi");
 		data["tokenId"] = localStorage.getItem("tokenId");
@@ -148,19 +146,25 @@ export default {
 		localStorage.setItem("ROL", localStorage.getItem("ROL"));
 		localStorage.setItem("imgurl", localStorage.getItem("imgurl"));
 		localStorage.setItem("STOCKPRICETYPEID", localStorage.getItem("STOCKPRICETYPEID"));
- 
+		localStorage.setItem("offerItem", localStorage.getItem("offerItem"));
+		localStorage.setItem("cartList", localStorage.getItem("cartList"));
+		localStorage.setItem('userLanguage', "tr")
 
 		this.$store.commit("setToken", data);
-/*
-		this.$store
-			.dispatch("tokenKontrol")
-			.then(response => {
-				if (response == "-1") {
-					data["isCurrActive"] = false;
-				} else {
-					data["isCurrActive"] = true;
-				}
-			});*/
+		this.$store.commit('offerItem', JSON.parse(localStorage.getItem("offerItem")));
+		if (JSON.parse(localStorage.getItem("cartList")) == null) this.$store.commit('eCommerce/SET_ITEM_IN_CART', []);
+		else this.$store.commit('eCommerce/SET_ITEM_IN_CART', JSON.parse(localStorage.getItem("cartList")));
+
+		/*
+				this.$store
+					.dispatch("tokenKontrol")
+					.then(response => {
+						if (response == "-1") {
+							data["isCurrActive"] = false;
+						} else {
+							data["isCurrActive"] = true;
+						}
+					});*/
 
 	},
 	destroyed() {

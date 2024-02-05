@@ -50,7 +50,7 @@ Vue.prototype.$http = axios
 import '../themeConfig.js'
 
  
-
+import i18n from './i18n/i18n'
 
 
 // Globally Registered Components
@@ -132,6 +132,7 @@ Vue.config.productionTip = false
 new Vue({
   router,
   store,
+  i18n,
   el: '#app',
   render: h => h(App)
 }).$mount('#app')

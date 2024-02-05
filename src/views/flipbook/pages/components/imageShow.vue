@@ -1,7 +1,7 @@
 <template>
   <div>
-    <vs-popup type="filled" title="Ürün Resim" :active.sync="isSidebarActiveLocal">
-      <img :src="imgSrc" style="width: 100%" />
+    <vs-popup type="filled" title="Ürün Resim" :active.sync="isSidebarActiveLocal" style="text-align: center;">
+      <img :src="imgSrc" style="max-width: 70%" />
       <!-- Display additional values with null checks -->
       <h4 style="color: black">{{ stockCode || '' }}</h4>
 
@@ -18,7 +18,7 @@
 
         <b-col>
           <b-button class="bg-danger" style="border-color:white; margin-top: 6px" size="sm" @click="addItemstoCard">
-            Ekle
+            {{ $t('add') }}
             <Icon icon="iconamoon:shopping-card-add" width="20" height="20" />
           </b-button>
         </b-col>
@@ -31,7 +31,7 @@
 import { Icon } from "@iconify/vue2";
 
 export default {
-  props: ["popupResimSw", "imgSrc", "stockCode", "stockName" ],
+  props: ["popupResimSw", "imgSrc", "stockCode", "stockName", "selectedValue"],
   components: { Icon },
 
   data() {
@@ -45,7 +45,7 @@ export default {
     };
   },
   watch: {
-    popupResimSw(val) { 
+    popupResimSw(val) {
       return val;
     },
   },
@@ -67,21 +67,26 @@ export default {
   methods: {
     addItemstoCard() {
       const quantity = parseInt(this.item.quantity);
+      let itemVal = {
+        stockCode: this.stockCode,
+        url_image: this.imgSrc,
+        stockName: this.stockName,
+        stockPrice: this.selectedValue.stockPrice,
+        stockEn: this.selectedValue.attr2_en,
+        stockBoy: this.selectedValue.attr3_boy,
+        stockAgirlik: this.selectedValue.attr10_agirlik,
+        quantity: quantity, // Corrected from this.quantity to quantity
+        stockQty: this.selectedValue.stockCount
 
+      }
       this.isInCart(this.stockCode)
-        ? this.$router.push("/apps/eCommerce/checkout").catch(() => {})
-        : this.additemInCart({
-            stockCode: this.stockCode,
-            url_image: this.imgSrc,
-            stockName: this.stockName,
-            quantity: quantity, // Corrected from this.quantity to quantity
-          });
-
+        ? this.$store.dispatch("eCommerce/toggleItemInCart", itemVal)
+        : '';
+      this.additemInCart(itemVal)
       // Close the popup after adding the item
       this.isSidebarActiveLocal = false;
 
-      // Emit an event to notify the parent component
-      this.$emit("itemAddedToCard");
+
     },
     additemInCart(item) {
       // Adjust this logic according to your store structure and actions

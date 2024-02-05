@@ -1,160 +1,132 @@
 <template>
   <div>
-    <vs-popup :active.sync="offerPopupVisible" title="Teklif Kaydet">
-      
-      <vs-input
-      class="input-size"
-      name="shipName"
-      icon-no-border
-      icon="icon icon-user"
-      icon-pack="feather"
-      label-placeholder="Ad"
-      v-model="shipName"
-      v-validate="'required'"
-    />
-    <span class="text-danger">{{
-      errors.first("shipName")
-    }}</span>
-
-      <vs-input
-        class="input-size"
-        name="shipSurname"
-        icon-no-border
-        icon="icon icon-user"
-        icon-pack="feather"
-        label-placeholder="Soyad"
-        v-model="shipSurname"
-        v-validate="'required'"
-      />
-      <span class="text-danger">{{
-        errors.first("shipSurname")
-      }}</span>
-      <vs-input
-        class="input-size"
-        name="eMail"
-        icon-no-border
-        icon="icon icon-user"
-        icon-pack="feather"
-        label-placeholder="E-Mail"
-        v-model="eMail"
-        v-validate="'required'"
-      />
-      <span class="text-danger">{{
-        errors.first("eMail")
-      }}</span>
-
-      <vs-input
-        class="input-size"
-        name="shipPhone"
-        icon-no-border
-        icon="icon icon-user"
-        icon-pack="feather"
-        label-placeholder="Telefon"
-        v-model="shipPhone"
-        v-validate="'required'"
-      />
-    <span class="text-danger">{{
-        errors.first("shipPhone")
-      }}</span>
-      <vs-input
-        class="input-size"
-        name="shipAddress"
-        icon-no-border
-        icon="icon icon-user"
-        icon-pack="feather"
-        label-placeholder="Teslimat Adresi"
-        v-model="shipAddress"
-      >
-      <span class="text-danger">{{
-        errors.first("shipAddress")
-      }}</span>
-        <template #prepend>
-          <b-avatar rounded="sm"></b-avatar>
-        </template>
-      </vs-input>
-
-      <vs-input
-        v-if="!selected.includes('sameAsShipping')"
-        class="input-size"
-        name="invoiceAddress"
-        icon-no-border
-        icon="icon icon-user"
-        icon-pack="feather"
-        label-placeholder="Fatura Adresi"
-        v-model="invoiceAddress"
-      >
-      <span class="text-danger">{{
-        errors.first("invoiceAddress")
-      }}</span>
-        <template #prepend>
-          <b-avatar rounded="sm"></b-avatar>
-        </template>
-      </vs-input>
-
+    <vs-popup :active.sync="offerPopupVisible" :title="$t('saveQuote')">
+      <b-row>
+        <b-col cols="4" align-self="center">
+          <b-form-group :label="'* ' + $t('title')" label-for="h-first-name">
+          </b-form-group>
+        </b-col>
+        <b-col cols="8">
+          <vs-input size="small" v-model="title" type="text" name="title" v-validate="'required'" />
+          <span class="text-danger text-sm" v-show="errors.has('title')">{{ errors.first('title')
+          }}</span>
+        </b-col>
+      </b-row>
+      <b-row style="margin-top:8px">
+        <b-col cols="4" align-self="center">
+          <b-form-group :label="'* ' + $t('shipName')" label-for="h-first-name">
+          </b-form-group>
+        </b-col>
+        <b-col cols="8">
+          <vs-input size="small" v-model="shipName" type="text" name="shipName" v-validate="'required'" />
+          <span class="text-danger text-sm" v-show="errors.has('shipName')">{{ errors.first('shipName')
+          }}</span>
+        </b-col>
+      </b-row>
+      <b-row style="margin-top:8px">
+        <b-col cols="4" align-self="center">
+          <b-form-group :label="'* ' + $t('shipSurname')" label-for="h-first-name">
+          </b-form-group>
+        </b-col>
+        <b-col cols="8">
+          <vs-input size="small" v-model="shipSurname" type="text" name="shipSurname" v-validate="'required'" />
+          <span class="text-danger text-sm" v-show="errors.has('shipSurname')">{{ errors.first('shipSurname')
+          }}</span>
+        </b-col>
+      </b-row>
+      <b-row style="margin-top:8px">
+        <b-col cols="4" align-self="center">
+          <b-form-group :label="'* ' + $t('Email')" label-for="h-first-name">
+          </b-form-group>
+        </b-col>
+        <b-col cols="8">
+          <vs-input size="small" v-model="eMail" type="text" name="eMail" v-validate="'required|email'" />
+          <span class="text-danger text-sm" v-show="errors.has('eMail')">{{ errors.first('eMail')
+          }}</span>
+        </b-col>
+      </b-row>
+      <b-row style="margin-top:8px">
+        <b-col cols="4" align-self="center">
+          <b-form-group :label="'* ' + $t('shipPhone')" label-for="h-first-name">
+          </b-form-group>
+        </b-col>
+        <b-col cols="8">
+          <vs-input size="small" v-model="shipPhone" type="text" name="shipPhone" v-validate="'required'" />
+          <span class="text-danger text-sm" v-show="errors.has('shipPhone')">{{ errors.first('shipPhone')
+          }}</span>
+        </b-col>
+      </b-row>
+      <b-row style="margin-top:8px">
+        <b-col cols="4" align-self="center">
+          <b-form-group :label="'* ' + $t('shipAddress')" label-for="h-first-name">
+          </b-form-group>
+        </b-col>
+        <b-col cols="8">
+          <vs-input size="small" v-model="shipAddress" type="text" name="shipAddress" v-validate="'required'" />
+          <span class="text-danger text-sm" v-show="errors.has('shipAddress')">{{ errors.first('shipAddress')
+          }}</span>
+        </b-col>
+      </b-row>
+      <b-row style="margin-top:8px">
+        <b-col cols="4" align-self="center">
+          <b-form-group :label="'* ' + $t('invoiceAddress')" label-for="h-first-name">
+          </b-form-group>
+        </b-col>
+        <b-col cols="8">
+          <vs-input size="small" v-model="invoiceAddress" type="text" name="invoiceAddress" v-validate="'required'" />
+          <span class="text-danger text-sm" v-show="errors.has('invoiceAddress')">{{ errors.first('invoiceAddress')
+          }}</span>
+        </b-col>
+      </b-row>
       <div>
-        <b-form-checkbox v-model="selected" size="md" style="color: red;">Teslim adresiyle aynı mı?</b-form-checkbox>
+        <b-form-checkbox v-model="selected" size="md" style="color: red;">{{ $t("tsAddress") }}</b-form-checkbox>
       </div>
 
-      <vs-input
-        class="input-size"
-        name="fax"
-        icon-no-border
-        icon="icon icon-user"
-        icon-pack="feather"
-        label-placeholder="Faks"
-        v-model="fax"
-      >
-      <span class="text-danger">{{
-        errors.first("fax")
-      }}</span>
-        <template #prepend>
-          <b-avatar rounded="sm"></b-avatar>
-        </template>
-      </vs-input>
+      <b-row style="margin-top:8px">
+        <b-col cols="4" align-self="center">
+          <b-form-group :label="'* ' + $t('fax')" label-for="h-first-name">
+          </b-form-group>
+        </b-col>
+        <b-col cols="8">
+          <vs-input size="small" v-model="fax" type="text" name="fax" v-validate="'required'" />
+          <span class="text-danger text-sm" v-show="errors.has('fax')">{{ errors.first('fax')
+          }}</span>
+        </b-col>
+      </b-row>
+      <b-row style="margin-top:8px">
+        <b-col cols="4" align-self="center">
+          <b-form-group :label="'* ' + $t('taxOffice')" label-for="h-first-name">
+          </b-form-group>
+        </b-col>
+        <b-col cols="8">
+          <vs-input size="small" v-model="taxOffice" type="text" name="taxOffice" v-validate="'required'" />
+          <span class="text-danger text-sm" v-show="errors.has('taxOffice')">{{ errors.first('taxOffice')
+          }}</span>
+        </b-col>
+      </b-row>
+      <b-row style="margin-top:8px">
+        <b-col cols="4" align-self="center">
+          <b-form-group :label="'* ' + $t('taxNumber')" label-for="h-first-name">
+          </b-form-group>
+        </b-col>
+        <b-col cols="8">
+          <vs-input size="small" v-model="taxNumber" type="text" name="taxNumber" v-validate="'required'" />
+          <span class="text-danger text-sm" v-show="errors.has('taxNumber')">{{ errors.first('taxNumber')
+          }}</span>
+        </b-col>
+      </b-row>
 
-      <vs-input
-        class="input-size"
-        name="taxOffice"
-        icon-no-border
-        icon="icon icon-user"
-        icon-pack="feather"
-        label-placeholder="Vergi-D."
-        v-model="taxOffice"
-      >
-      <span class="text-danger">{{
-        errors.first("taxOffice")
-      }}</span>
-        <template #prepend>
-          <b-avatar rounded="sm"></b-avatar>
-        </template>
-      </vs-input>
-
-      <vs-input
-        class="input-size"
-        name="taxNumber"
-        icon-no-border
-        icon="icon icon-user"
-        icon-pack="feather"
-        label-placeholder="Vergi No"
-        v-model="taxNumber"
-      >
-      <span class="text-danger">{{
-        errors.first("taxNumber")
-      }}</span>
-        <template #prepend>
-          <b-avatar rounded="sm"></b-avatar>
-        </template>
-      </vs-input>
 
       <br>
       <div>
-        <vs-button @click="getTeklifOnayList" :disabled="hasInvalidFields">Teklif Kaydet</vs-button>
+        <vs-button @click="getTeklifOnayList" :disabled="hasInvalidFields">{{ $t('saveQuote') }}</vs-button>
+        <vs-button @click="getTeklifOnayList" :disabled="hasInvalidFields">{{ $t('saveQuote') }}</vs-button>
       </div>
     </vs-popup>
 
-    <div v-if="pages.length > 0">
+    <div v-if="pages">
 
-      <div id="fb5-ajax" data-cat="katalog" data-template="true">
+      <div v-if="pages.length > 0" id="fb5-ajax" data-cat="katalog" data-template="true">
         <!-- BACKGROUND FLIPBOOK -->
         <div class="fb5-bcg-book"></div>
         <!-- BEGIN STRUCTURE HTML FLIPBOOK -->
@@ -210,7 +182,7 @@
                   <canvas id="canv1"></canvas>
                   <div class="fb5-page-book">
                     <component :is="item.component" :key="item.ind" :index="item.ind" :page="currentValue"
-                      :position="item.position" :item="item" :searchedValue="searched"/>
+                      :position="item.position" :item="item" :searchedValue="searched" />
                   </div>
                 </div>
               </div>
@@ -280,6 +252,12 @@
                 </li>
                 <li>
                   <cart-drop-down />
+                </li>
+                <li>
+                  <vs-button color="primary" type="filled" @click="getProductInfo">{{ $t('materialInfo') }}</vs-button>
+                </li>
+                <li>
+                  <i18n />
                 </li>
               </ul>
             </div>
@@ -377,7 +355,9 @@
           </div>
           <!-- END CLOSE LIGHTBOX -->
         </div>
-
+        <vs-popup type="filled" :title="$t('materialInfo')" :active.sync="imageShow">
+          <img :src="imgSrc" style="width: 100%" />
+        </vs-popup>
 
       </div>
     </div>
@@ -400,46 +380,18 @@ import NinthPage from './pages/NinthPage.vue';
 import TablePageFirst from './pages/TablePageFirst.vue';
 import TablePageSecond from './pages/TablePageSecond.vue';
 import CartDropDown from '../../layouts/components/navbar/components/CartDropDown.vue'
+import I18n from '../../layouts/components/navbar/components/I18n.vue'
 import { Icon } from "@iconify/vue2";
 import TeklifOnayMail from './TeklifOnayMail.vue';
 import FlipBookTeklif from './FlipBookTeklif.vue';
 import { Validator } from "vee-validate";
-const dict = {
-  custom: {
-    shipName: {
-      required: "Ad alanı gereklidir",
-    },
-    shipSurname: {
-      required: "Soyad alanı gereklidir",
-    },
-    eMail: {
-      required: "E-Mail alanı gereklidir",
-    },
-    shipAddress: {
-      required: "Adres alanı gereklidir",
-    },
-    shipPhone: {
-      required: "Telefon alanı gereklidir",
-    },
-    taxNumber: {
-      required: "Vergi No  gereklidir",
-    },
-    taxOffice: {
-      required: "Vergi D. gereklidir",
-    },
-    fax: {
-      required: "Fax  gereklidir",
-    },
-  }
-};
 
-Validator.localize("en", dict);
 
 export default {
   mounted() {
     this.$root.$on("teklifOnay", () => {
       this.openOfferPopup();
-    }); 
+    });
     if (this.pages == "") {
       location.reload();
       this.pages = JSON.parse(localStorage.getItem("pages"))
@@ -466,6 +418,9 @@ export default {
   },
   data() {
     return {
+      title: "",
+      imgSrc: "http://sistem.uzum.com.tr/img/ozellikler-tr.jpg",
+      imageShow: false,
       searched: "",
       shipAddress: "",
       invoiceAddress: "", // Add this line
@@ -478,7 +433,6 @@ export default {
       shipName: "",
       taxNumber: "",
       fax: "",
-      taxOffice: "",
       taxOffice: "",
       address: "",
       shipSurname: "",
@@ -494,6 +448,19 @@ export default {
     }
   },
   computed: {
+    offerItem: {
+      get() {
+        return JSON.parse(localStorage.getItem("offerItem"))
+      },
+      set(val) {
+        if (!val) {
+          this.$emit('closeSidebar')
+          // this.$validator.reset()
+          // this.initValues()
+        }
+      }
+
+    },
     hasInvalidFields() {
       return Object.values(this.fieldValidity).some((validity) => !validity);
     },
@@ -514,6 +481,7 @@ export default {
   },
 
   components: {
+    I18n,
     CartDropDown,
     Icon,
     TablePageSecond,
@@ -532,7 +500,11 @@ export default {
     TeklifOnayMail
   },
   methods: {
-    getCurrentPageIndex(category) { 
+    getProductInfo() {
+      this.imgSrc = "http://sistem.uzum.com.tr/img/ozellikler-tr.jpg"
+      this.imageShow = true
+    },
+    getCurrentPageIndex(category) {
 
       const filteredPages = this.pages.filter(page => page.category === category);
 
@@ -541,7 +513,7 @@ export default {
       }
 
       const pageIndex = filteredPages[0].page;
-      this.selectedPageIndex = pageIndex; 
+      this.selectedPageIndex = pageIndex;
       return pageIndex;
     },
     filterStockList() {
@@ -550,13 +522,13 @@ export default {
           pageCounts: "120000",
           ilkKayit: 0,
           stockCode: this.searched
-        } 
+        }
         this.$store
           .dispatch("getDataStock", args)
-          .then(response => { 
+          .then(response => {
             this.currentPageIndex = this.getCurrentPageIndex(response[0].category);
             let setPageValue = parseInt(this.currentPageIndex) + parseInt(response[0].stockRowNumber)
-             
+
             // Otomatik olarak input alanına değeri yazdır
             const inputElement = document.getElementById("fb5-page-number");
             if (inputElement) {
@@ -580,6 +552,21 @@ export default {
       this.fieldValidity[fieldName] = true;
     },
     openOfferPopup() {
+      console.log(this.offerItem)
+      if (this.offerItem) {
+        this.shipName = this.offerItem.shipName
+        this.taxNumber = this.offerItem.taxNumber
+        this.fax = this.offerItem.fax
+        this.taxOffice = this.offerItem.taxOffice
+        this.address = this.offerItem.address
+        this.shipSurname = this.offerItem.shipSurname
+        this.shipPhone = this.offerItem.shipPhone
+        this.eMail = this.offerItem.eMail
+        this.invoiceAddress = this.offerItem.invoiceAddress;
+        this.shipAddress = this.offerItem.shipAddress;
+        this.title = this.offerItem.title
+      }
+
       this.offerPopupVisible = true;
     },
     getTeklifOnayList() {
@@ -587,34 +574,37 @@ export default {
       this.$validator.validateAll().then((result) => {
         if (result) {
 
-          console.log('Adres:', this.shipAddress);
           const arg = {
             quantity: this.quantityLine,
           };
 
           const stockCodes = this.$store.state.eCommerce.cartItems.map(item => item.stockCode);
-          this.$store.commit('setShipName', this.shipName);
-          this.$store.commit('setFaks', this.fax);
-          this.$store.commit('setİnvoiceAddres', this.invoiceAddress);
-
-          this.$store.commit('setEmail', this.eMail);
-          this.$store.commit('setTaxNumber', this.taxNumber);
-          this.$store.commit('setTaxOffice', this.taxOffice);
-          this.$store.commit('setShipAddress', this.shipAddress);
-          this.$store.commit('setShipPhone', this.shipPhone);
-
+          let offerItemLocal = {
+            title: this.title,
+            shipName: this.shipName,
+            shipSurname: this.shipSurname,
+            eMail: this.eMail,
+            invoiceAddress: this.invoiceAddress,
+            taxOffice: this.taxOffice,
+            fax: this.fax,
+            shipAddress: this.shipAddress,
+            shipPhone: this.shipPhone,
+            taxNumber: this.taxNumber,
+            title: this.title,
+          }
+          console.log(offerItemLocal)
+          this.$store.commit('offerItem', offerItemLocal); 
           this.$store.dispatch('GetOfferNumber')
             .then((offerNumberResponse) => {
               const { offerNumber } = offerNumberResponse;
 
-              console.log('Offer Number Response', offerNumberResponse);
 
-              this.$router.push(`/flipbook/Teklif/Onay/${offerNumber}`);
+              this.$router.push(`/flipbook/Teklif/Onay/${offerNumber}/false`);
             })
             .catch((error) => {
               console.error('Error', error);
             });
-          
+
           this.offerPopupVisible = false;
         } else {
           // Validation failed, display error messages
@@ -622,10 +612,10 @@ export default {
         }
       });
     },
-    updateSelectedPageIndex(newPageIndex) { 
+    updateSelectedPageIndex(newPageIndex) {
       this.selectedPageIndex = newPageIndex;
     },
-    handlePageInputChange(inputValue) { 
+    handlePageInputChange(inputValue) {
       setPage($('#fb5-page-number').val());
       const pageNumber = parseInt(inputValue);
       if (!isNaN(pageNumber) && pageNumber >= 1 && pageNumber <= this.pages.length) {
@@ -657,7 +647,42 @@ export default {
     },
   },
 
+  created() {
+    // this.locale = this.$i18n.locale == 'en' ? 'en-US' : this.$i18n.locale;
+    const dict = {
+      custom: {
+        title: {
+          required: this.$t('requireTitle')
+        },
+        shipName: {
+          required: this.$t('requireName'),
+        },
+        shipSurname: {
+          required: this.$t('requireSurname'),
+        },
+        eMail: {
+          required: this.$t('requireMail'),
+        },
+        shipAddress: {
+          required: this.$t('requireShipaddress'),
+        },
+        shipPhone: {
+          required: this.$t('requireshipPhone'),
+        },
+        taxNumber: {
+          required: this.$t('requiretaxNumber'),
+        },
+        taxOffice: {
+          required: this.$t('requiretaxOffice'),
+        },
+        fax: {
+          required: this.$t('requirefax'),
+        },
+      }
+    };
 
+    Validator.localize("en", dict);
+  },
 
 
 
@@ -665,13 +690,28 @@ export default {
 </script>
 <style>
 .input-size {
-  width: 80%; /* Set your desired width here */
+  width: 80%;
+  /* Set your desired width here */
 }
+
 @import './css/style.css';
 @import './css/font-awesome.min.css';
 @import './css.css?family=Play:400,700';
 @import './content.css';
 
+.vs-button {
+  -webkit-transition: all .2s ease !important;
+  transition: all .2s ease !important;
+  padding: 5px !important;
+  border: 0 !important;
+  border-radius: 6px !important;
+  cursor: pointer !important;
+  position: relative !important;
+  overflow: hidden !important;
+  color: #fff !important;
+  -webkit-box-sizing: border-box !important;
+  box-sizing: border-box !important;
+}
 
 html,
 body {
@@ -682,9 +722,5 @@ body {
   @import './wp-includes/css/dist/block-library/style.min.css?ver=6.4.1';
   @import './wp-content/plugins/contact-form-7/includes/css/styles.css?ver=5.8.1';
 
-}
-
-[dir] .vs-input--input.small {
-  border: none !important;
 }
 </style>

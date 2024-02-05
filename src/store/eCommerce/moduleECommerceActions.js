@@ -15,8 +15,8 @@ export default {
   toggleItemInWishList({ commit }, item) {
     commit('TOGGLE_ITEM_IN_WISH_LIST', item)
   },
-  toggleItemInCart({ getters, commit, dispatch }, item) {
-    getters.isInCart(item.objectID) ? commit('REMOVE_ITEM_FROM_CART', item) : dispatch('additemInCart', item)
+  toggleItemInCart({ getters, commit, dispatch }, item) { 
+    getters.isInCart(item.stockCode) ? commit('REMOVE_ITEM_FROM_CART', item) : dispatch('additemInCart', item)
   },
   additemInCart({ commit }, item) {
 
@@ -29,7 +29,14 @@ export default {
 
     commit('ADD_ITEM_IN_CART', item) 
   },
+  setItemCart({ commit }, item) {
+ 
+    commit('SET_ITEM_IN_CART', item) 
+  },
   updateItemQuantity({ commit }, payload) {
     commit('UPDATE_ITEM_QUANTITY', payload)
+  },
+  updateItem({ commit }, payload) {
+    commit('UPDATE_ITEM', payload)
   }
 }
