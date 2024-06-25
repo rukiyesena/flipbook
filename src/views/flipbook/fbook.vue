@@ -407,9 +407,6 @@ export default {
     }, 500); // Örneğin, her 1 saniyede bir kontrol edebilirsiniz
     const plugin = document.createElement("script");
 
-    plugin.setAttribute("src", "http://sistem.uzum.com.tr/flipbook-js/js/onload.js");
-
-
     document.head.appendChild(plugin);
   },
 
@@ -501,7 +498,7 @@ export default {
   },
   methods: {
     getProductInfo() {
-      this.imgSrc = "http://sistem.uzum.com.tr/img/ozellikler-tr.jpg"
+    
       this.imageShow = true
     },
     getCurrentPageIndex(category) {
